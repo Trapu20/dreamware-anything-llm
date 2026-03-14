@@ -1,12 +1,22 @@
-v-env
+# Environment files — NEVER commit
 .env
-!.env.example
+.env.*
+!.env.*.example
 
-node_modules
-__pycache__
-v-env
+# Backups created during deploy
+.env.backup.*
+
+# Certs
+infra/nginx/certs/
+
+# Node
+node_modules/
+.npm/
+
+# Build artifacts
+dist/
+build/
+.next/
+
+# macOS
 .DS_Store
-aws_cf_deploy_anything_llm.json
-yarn.lock
-*.bak
-.idea

@@ -1,0 +1,56 @@
+name: Deploy → Test Server
+
+on:
+  push:
+    branches:
+      - develop
+
+concurrency:
+  group: deploy-test
+  cancel-in-progress: false  # queue, don't cancel in-flight deployments
+
+jobs:
+  build:
+    name: Build & Push (develop)
+    uses: ./.github/workflows/_docker-build-push.yml
+    with:
+      image_tag: develop
+    secrets:
+      GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+
+  deploy:
+    name: SSH Deploy to Test
+    needs: build
+    runs-on: ubuntu-latest
+    environment: test
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HETZNER_TEST_HOST }}
+          username: ${{ secrets.HETZNER_SSH_USER }}
+          key: ${{ secrets.HETZNER_TEST_SSH_KEY }}
+          script: |
+            set -euo pipefail
+
+            cd /opt/dreamanything/test
+
+            echo "==> Pulling latest image..."
+            docker compose pull app
+
+            echo "==> Starting updated container..."
+            docker compose up -d --no-build --remove-orphans
+
+            echo "==> Waiting for health check (up to 90s)..."
+            timeout 90 bash -c '
+              until docker compose exec -T app wget -qO- http://localhost:3001/api/ping > /dev/null 2>&1; do
+                echo "  Waiting..."
+                sleep 5
+              done
+            '
+
+            echo "==> Pruning old images..."
+            docker image prune -f --filter "until=72h"
+
+            echo "==> Deploy complete."

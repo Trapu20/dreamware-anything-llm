@@ -1,0 +1,151 @@
+name: Upstream Sync
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"  # Every Monday at 08:00 UTC
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run — fetch only, no PR"
+        required: false
+        default: "false"
+        type: choice
+        options: ["true", "false"]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Configure Git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/Mintplex-Labs/anything-llm.git
+          git remote set-url --push upstream DISABLE
+          git fetch upstream --no-tags
+
+      - name: Check for upstream changes
+        id: check
+        run: |
+          UPSTREAM_SHA=$(git rev-parse upstream/master)
+          BASE_SHA=$(git merge-base HEAD upstream/master)
+          if [ "$UPSTREAM_SHA" = "$BASE_SHA" ]; then
+            echo "up_to_date=true" >> "$GITHUB_OUTPUT"
+            echo "No upstream changes — skipping."
+          else
+            echo "up_to_date=false" >> "$GITHUB_OUTPUT"
+            COMMIT_COUNT=$(git rev-list --count HEAD..upstream/master)
+            echo "commit_count=$COMMIT_COUNT" >> "$GITHUB_OUTPUT"
+            echo "$COMMIT_COUNT new upstream commit(s) found."
+          fi
+
+      - name: Create sync branch
+        if: steps.check.outputs.up_to_date == 'false' && inputs.dry_run != 'true'
+        id: branch
+        run: |
+          BRANCH="upstream-sync/$(date +%Y-%m-%d)-${{ github.run_number }}"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          git checkout -b "$BRANCH"
+
+      - name: Merge upstream
+        if: steps.check.outputs.up_to_date == 'false' && inputs.dry_run != 'true'
+        id: merge
+        run: |
+          set +e
+          git merge --no-commit --no-ff upstream/master
+          MERGE_EXIT=$?
+          set -e
+
+          if [ $MERGE_EXIT -ne 0 ]; then
+            echo "has_conflicts=true" >> "$GITHUB_OUTPUT"
+            # Stage everything including conflict markers so the PR shows a diff
+            git add -A
+            git commit -m "chore: upstream sync $(date +%Y-%m-%d) [CONFLICTS - resolve before merging]
+
+          Upstream: Mintplex-Labs/anything-llm @ $(git rev-parse upstream/master)
+          New commits: ${{ steps.check.outputs.commit_count }}
+
+          ⚠️  This PR has merge conflicts. Check files with conflict markers,
+          keep DREAMWARE CUSTOM blocks, then push --force-with-lease to update."
+          else
+            echo "has_conflicts=false" >> "$GITHUB_OUTPUT"
+            git commit -m "chore: upstream sync $(date +%Y-%m-%d)
+
+          Upstream: Mintplex-Labs/anything-llm @ $(git rev-parse upstream/master)
+          New commits: ${{ steps.check.outputs.commit_count }}" || echo "Nothing to commit — already up-to-date after merge."
+          fi
+
+      - name: Push sync branch
+        if: steps.check.outputs.up_to_date == 'false' && inputs.dry_run != 'true'
+        run: |
+          git push origin "${{ steps.branch.outputs.branch }}"
+
+      - name: Create Pull Request
+        if: steps.check.outputs.up_to_date == 'false' && inputs.dry_run != 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GH_PAT }}
+          script: |
+            const hasConflicts = '${{ steps.merge.outputs.has_conflicts }}' === 'true';
+            const branch = '${{ steps.branch.outputs.branch }}';
+            const commitCount = '${{ steps.check.outputs.commit_count }}';
+
+            const labels = hasConflicts
+              ? ['upstream-sync', 'has-conflicts']
+              : ['upstream-sync'];
+
+            const body = hasConflicts
+              ? `## ⚠️ Upstream Sync — Conflicts Detected\n\n**${commitCount} new upstream commit(s)** from \`Mintplex-Labs/anything-llm\`.\n\nThis PR contains merge conflicts. To resolve:\n\n\`\`\`bash\ngit fetch origin && git checkout ${branch}\n# Resolve conflicts — keep DREAMWARE CUSTOM blocks!\ngit add . && git commit --amend --no-edit\ngit push --force-with-lease origin ${branch}\n\`\`\`\n\nThen review and merge via GitHub UI.`
+              : `## ✅ Upstream Sync — Clean Merge\n\n**${commitCount} new upstream commit(s)** from \`Mintplex-Labs/anything-llm\`.\n\nReview the diff for any breaking changes before merging into \`develop\`.`;
+
+            const { data: pr } = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: hasConflicts
+                ? `chore: upstream sync ${new Date().toISOString().slice(0,10)} ⚠️ conflicts`
+                : `chore: upstream sync ${new Date().toISOString().slice(0,10)}`,
+              head: branch,
+              base: 'develop',
+              body,
+            });
+
+            // Add labels (create them if missing)
+            for (const label of labels) {
+              try {
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: pr.number,
+                  labels: [label],
+                });
+              } catch (e) {
+                // Label may not exist yet — create it
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label,
+                  color: label === 'has-conflicts' ? 'e11d48' : '7c3aed',
+                });
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: pr.number,
+                  labels: [label],
+                });
+              }
+            }
+
+            console.log(`PR created: ${pr.html_url}`);

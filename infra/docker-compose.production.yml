@@ -1,0 +1,28 @@
+services:
+  app:
+    image: ghcr.io/YOUR_ORG/dreamanything-llm:latest
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "3001:3001"
+    volumes:
+      - /data/dreamanything/production/storage:/app/server/storage
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3001/api/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      app:
+        condition: service_healthy

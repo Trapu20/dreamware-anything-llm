@@ -1,0 +1,59 @@
+name: Deploy → Production Server
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false  # queue, don't cancel in-flight deployments
+
+jobs:
+  build:
+    name: Build & Push (latest)
+    uses: ./.github/workflows/_docker-build-push.yml
+    with:
+      image_tag: latest
+    secrets:
+      GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+
+  deploy:
+    name: SSH Deploy to Production
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production  # ← triggers manual approval gate
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HETZNER_PROD_HOST }}
+          username: ${{ secrets.HETZNER_SSH_USER }}
+          key: ${{ secrets.HETZNER_PROD_SSH_KEY }}
+          script: |
+            set -euo pipefail
+
+            cd /opt/dreamanything/production
+
+            echo "==> Backing up .env..."
+            cp .env ".env.backup.$(date +%Y%m%d%H%M%S)"
+
+            echo "==> Pulling latest image..."
+            docker compose pull app
+
+            echo "==> Starting updated container..."
+            docker compose up -d --no-build --remove-orphans
+
+            echo "==> Waiting for health check (up to 120s)..."
+            timeout 120 bash -c '
+              until docker compose exec -T app wget -qO- http://localhost:3001/api/ping > /dev/null 2>&1; do
+                echo "  Waiting..."
+                sleep 5
+              done
+            '
+
+            echo "==> Pruning old images..."
+            docker image prune -f --filter "until=72h"
+
+            echo "==> Production deploy complete."
