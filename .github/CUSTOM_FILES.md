@@ -28,9 +28,10 @@ Upstream files with modifications are listed under **Modified Files**.
 | `.github/workflows/deploy-production.yml` | Manual-approval deploy main → prod server | 2026-03-14 |
 | `.github/CUSTOM_FILES.md` | This file | 2026-03-14 |
 | `docker/.env.dreamware.example` | Dreamware-specific env vars documented | 2026-03-14 |
-| `infra/docker-compose.test.yml` | Docker Compose for test server | 2026-03-14 |
-| `infra/docker-compose.production.yml` | Docker Compose for production server | 2026-03-14 |
-| `infra/nginx/nginx.conf` | Nginx reverse proxy config | 2026-03-14 |
+| `infra/docker-compose.test.yml` | Docker Compose for test server (Caddy + app) | 2026-03-14 |
+| `infra/docker-compose.production.yml` | Docker Compose for production server (Caddy + app) | 2026-03-14 |
+| `infra/Caddyfile.test` | Caddy reverse proxy config for test.dreamware.at | 2026-03-14 |
+| `infra/Caddyfile.production` | Caddy reverse proxy config for app.dreamware.at | 2026-03-14 |
 | `infra/bootstrap.sh` | One-time server bootstrap script | 2026-03-14 |
 
 ## Modified Files (upstream files with Dreamware changes)

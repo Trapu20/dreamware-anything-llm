@@ -4,8 +4,8 @@
 # Run as root on a fresh Ubuntu 22.04 Hetzner server.
 #
 # Usage:
-#   ENV=test  bash bootstrap.sh    # for test server
-#   ENV=production bash bootstrap.sh  # for production server
+#   ENV=test  bash bootstrap.sh
+#   ENV=production bash bootstrap.sh
 # =============================================================================
 set -euo pipefail
 
@@ -30,7 +30,7 @@ fi
 
 # ── Directory structure ───────────────────────────────────────────────────────
 echo "==> Creating directories..."
-mkdir -p "/opt/dreamanything/$ENV/nginx/certs"
+mkdir -p "/opt/dreamanything/$ENV"
 mkdir -p "/data/dreamanything/$ENV/storage"
 
 # ── Firewall ──────────────────────────────────────────────────────────────────
@@ -38,6 +38,7 @@ echo "==> Configuring UFW firewall..."
 ufw allow ssh
 ufw allow 80/tcp
 ufw allow 443/tcp
+ufw allow 443/udp   # HTTP/3 (QUIC) for Caddy
 ufw --force enable
 
 # ── Deploy SSH key ─────────────────────────────────────────────────────────────
@@ -49,31 +50,36 @@ if [[ ! -f "$KEY_PATH" ]]; then
   chmod 600 "$HOME/.ssh/authorized_keys"
   echo ""
   echo "======================================================================="
-  echo "  Add this PRIVATE key as a GitHub Secret:"
-  echo "  Secret name: HETZNER_${ENV^^}_SSH_KEY"
+  echo "  Add this PRIVATE key as GitHub Secret: HETZNER_${ENV^^}_SSH_KEY"
   echo "======================================================================="
   cat "$KEY_PATH"
   echo "======================================================================="
 else
   echo "  Deploy key already exists at $KEY_PATH — skipping."
+  echo ""
+  echo "  Existing public key (already in authorized_keys):"
+  cat "$KEY_PATH.pub"
 fi
 
-# ── Copy compose file ─────────────────────────────────────────────────────────
-COMPOSE_SRC="$(dirname "$0")/docker-compose.$ENV.yml"
+# ── Copy compose + Caddyfile ──────────────────────────────────────────────────
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+COMPOSE_SRC="$SCRIPT_DIR/docker-compose.$ENV.yml"
 COMPOSE_DEST="/opt/dreamanything/$ENV/docker-compose.yml"
 if [[ -f "$COMPOSE_SRC" ]]; then
   cp "$COMPOSE_SRC" "$COMPOSE_DEST"
   echo "==> Copied docker-compose.$ENV.yml → $COMPOSE_DEST"
 else
-  echo "  WARNING: $COMPOSE_SRC not found. Copy it manually to $COMPOSE_DEST"
+  echo "  WARNING: $COMPOSE_SRC not found. Copy manually to $COMPOSE_DEST"
 fi
 
-# ── Copy nginx config ─────────────────────────────────────────────────────────
-NGINX_SRC="$(dirname "$0")/nginx/nginx.conf"
-NGINX_DEST="/opt/dreamanything/$ENV/nginx/nginx.conf"
-if [[ -f "$NGINX_SRC" ]]; then
-  cp "$NGINX_SRC" "$NGINX_DEST"
-  echo "==> Copied nginx.conf → $NGINX_DEST"
+CADDY_SRC="$SCRIPT_DIR/Caddyfile.$ENV"
+CADDY_DEST="/opt/dreamanything/$ENV/Caddyfile"
+if [[ -f "$CADDY_SRC" ]]; then
+  cp "$CADDY_SRC" "$CADDY_DEST"
+  echo "==> Copied Caddyfile.$ENV → $CADDY_DEST"
+else
+  echo "  WARNING: $CADDY_SRC not found. Copy manually to $CADDY_DEST"
 fi
 
 echo ""
@@ -81,11 +87,11 @@ echo "======================================================================="
 echo "  Bootstrap complete for ENV=$ENV"
 echo ""
 echo "  Next steps:"
-echo "  1. Copy .env.dreamware.example → /opt/dreamanything/$ENV/.env"
-echo "     and fill in all values (JWT_SECRET, API keys, etc.)"
-echo "  2. Add TLS certs to /opt/dreamanything/$ENV/nginx/certs/"
-echo "     (use certbot or copy existing certs)"
-echo "  3. Log in to GHCR on this server:"
-echo "     echo \$GHCR_TOKEN | docker login ghcr.io -u YOUR_ORG --password-stdin"
-echo "  4. Add GitHub Secrets (see output above for SSH key)"
+echo "  1. Create /opt/dreamanything/$ENV/.env"
+echo "     (copy docker/.env.dreamware.example from the repo and fill in values)"
+echo "  2. Log in to GHCR:"
+echo "     echo \$GHCR_TOKEN | docker login ghcr.io -u trapu20 --password-stdin"
+echo "  3. Add GitHub Secrets (SSH key printed above)"
+echo "  4. Start the stack:"
+echo "     cd /opt/dreamanything/$ENV && docker compose up -d"
 echo "======================================================================="

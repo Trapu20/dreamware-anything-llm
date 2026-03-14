@@ -1,0 +1,16 @@
+test.dreamware.at {
+    reverse_proxy app:3001 {
+        # WebSocket support
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+    }
+
+    # Large file uploads (document ingestion)
+    request_body {
+        max_size 100MB
+    }
+
+    encode gzip
+}
