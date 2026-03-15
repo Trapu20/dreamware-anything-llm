@@ -95,3 +95,4 @@ echo "  3. Add GitHub Secrets (SSH key printed above)"
 echo "  4. Start the stack:"
 echo "     cd /opt/dreamanything/$ENV && docker compose up -d"
 echo "======================================================================="
+# storage permissions: chown -R 1000:1000 /data/dreamanything/{env}/storage
