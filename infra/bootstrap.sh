@@ -32,6 +32,8 @@ fi
 echo "==> Creating directories..."
 mkdir -p "/opt/dreamanything/$ENV"
 mkdir -p "/data/dreamanything/$ENV/storage"
+# Container runs as anythingllm (UID 1000) — must own the storage directory
+chown -R 1000:1000 "/data/dreamanything/$ENV/storage"
 
 # ── Firewall ──────────────────────────────────────────────────────────────────
 echo "==> Configuring UFW firewall..."
@@ -95,4 +97,3 @@ echo "  3. Add GitHub Secrets (SSH key printed above)"
 echo "  4. Start the stack:"
 echo "     cd /opt/dreamanything/$ENV && docker compose up -d"
 echo "======================================================================="
-# storage permissions: chown -R 1000:1000 /data/dreamanything/{env}/storage
