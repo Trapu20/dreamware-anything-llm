@@ -8,7 +8,7 @@ services:
     volumes:
       - /data/dreamanything/production/storage:/app/server/storage
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3001/api/ping"]
+      test: ["CMD", "bash", "/usr/local/bin/docker-healthcheck.sh"]
       interval: 30s
       timeout: 10s
       retries: 3
