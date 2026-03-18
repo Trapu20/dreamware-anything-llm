@@ -39,3 +39,11 @@ resolves #
 - [ ] Relevant documentation has been updated (if applicable)
 - [ ] I have tested my code functionality
 - [ ] Docker build succeeds locally
+
+### Dreamware Checklist
+
+<!-- Required for any change to Dreamware-specific or upstream files. -->
+
+- [ ] Dreamware-specific code is wrapped in `DREAMWARE CUSTOM BEGIN/END` markers (if modifying upstream files)
+- [ ] New or modified files are recorded in `.github/CUSTOM_FILES.md`
+- [ ] No `.env` files or secrets are included in the diff
