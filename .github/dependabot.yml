@@ -1,0 +1,84 @@
+version: 2
+
+updates:
+  # GitHub Actions — keep workflow action versions current
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Vienna"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "chore(deps)"
+
+  # Root package (Jest, concurrently, etc.)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Vienna"
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "chore(deps)"
+    ignore:
+      # Let upstream control these; we pick them up via the weekly upstream sync
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  # Server package
+  - package-ecosystem: "npm"
+    directory: "/server"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Vienna"
+    labels:
+      - "dependencies"
+      - "server"
+    commit-message:
+      prefix: "chore(deps)"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  # Frontend package
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Vienna"
+    labels:
+      - "dependencies"
+      - "frontend"
+    commit-message:
+      prefix: "chore(deps)"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  # Collector package
+  - package-ecosystem: "npm"
+    directory: "/collector"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Vienna"
+    labels:
+      - "dependencies"
+      - "collector"
+    commit-message:
+      prefix: "chore(deps)"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
