@@ -38,7 +38,8 @@ Upstream files with modifications are listed under **Modified Files**.
 
 | File | What changed | Modified |
 |------|-------------|----------|
-| _(none yet)_ | | |
+| `server/package.json` | Bump multer to 2.1.1 | 2026-03-18 |
+| `server/yarn.lock` | Update lockfile for multer 2.1.1 | 2026-03-18 |
 
 ---
 
