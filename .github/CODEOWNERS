@@ -17,6 +17,7 @@ docker/                             @Trapu20
 # Agent / Copilot configuration files — require explicit owner sign-off
 .github/copilot-instructions.md    @Trapu20
 CLAUDE.md                          @Trapu20
+.claude/                           @Trapu20
 .github/CUSTOM_FILES.md            @Trapu20
 .github/CODEOWNERS                 @Trapu20
 
