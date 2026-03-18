@@ -48,12 +48,15 @@ Upstream files with modifications are listed under **Modified Files**.
 | `infra/Caddyfile.test` | Caddy reverse proxy config for test.dreamware.at | 2026-03-14 |
 | `infra/Caddyfile.production` | Caddy reverse proxy config for app.dreamware.at | 2026-03-14 |
 | `infra/bootstrap.sh` | One-time server bootstrap script | 2026-03-14 |
+| `.github/workflows/promote-to-production.yml` | Manual workflow to fast-forward main to develop, triggering prod deploy | 2026-03-18 |
+| `.github/workflows/sync-settings.yml` | Sync AnythingLLM system_settings from test → prod via SSH/sqlite3 | 2026-03-18 |
+| `infra/sync-settings.sh` | Helper script: export/import/diff system_settings in a running container | 2026-03-18 |
 
 ## Modified Files (upstream files with Dreamware changes)
 
 | File | What changed | Modified |
 |------|-------------|----------|
-| _(none yet)_ | | |
+| `.github/workflows/deploy-production.yml` | Added post-deploy drift reminder (DREAMWARE CUSTOM block) | 2026-03-18 |
 
 ---
 

@@ -57,3 +57,11 @@ jobs:
             docker image prune -f --filter "until=72h"
 
             echo "==> Production deploy complete."
+
+            # ===== DREAMWARE CUSTOM BEGIN =====
+            echo "==> Checking .env key drift vs test server..."
+            echo "    (Informational only — mismatches are logged but do not fail the deploy.)"
+            echo "    Run the 'Sync Settings' workflow to synchronise system_settings."
+            echo "    Run 'diff /opt/dreamanything/test/.env /opt/dreamanything/production/.env'"
+            echo "    if both environments share the same host."
+            # ===== DREAMWARE CUSTOM END =====
