@@ -42,6 +42,9 @@ Upstream files with modifications are listed under **Modified Files**.
 | `.github/agents/api-tester.agent.md` | GitHub Copilot custom agent: API testing and validation | 2026-03-18 |
 | `.github/agents/accessibility-auditor.agent.md` | GitHub Copilot custom agent: WCAG accessibility auditor | 2026-03-18 |
 | `.github/agents/performance-benchmarker.agent.md` | GitHub Copilot custom agent: performance testing and optimization | 2026-03-18 |
+| `.claude/settings.json` | Claude Code tool-permission config for this project | 2026-03-18 |
+| `.claude/agents/dreamware/dreamware-developer.md` | Claude Code sub-agent: Dreamware fork development expert | 2026-03-18 |
+| `.claude/agents/dreamware/upstream-sync-manager.md` | Claude Code sub-agent: upstream sync conflict resolution | 2026-03-18 |
 | `docker/.env.dreamware.example` | Dreamware-specific env vars documented | 2026-03-14 |
 | `infra/docker-compose.test.yml` | Docker Compose for test server (Caddy + app) | 2026-03-14 |
 | `infra/docker-compose.production.yml` | Docker Compose for production server (Caddy + app) | 2026-03-14 |
@@ -53,7 +56,7 @@ Upstream files with modifications are listed under **Modified Files**.
 
 | File | What changed | Modified |
 |------|-------------|----------|
-| _(none yet)_ | | |
+| `CLAUDE.md` | Added essential commands, tech stack, coding conventions, known gotchas, and agent guidance sections | 2026-03-18 |
 
 ---
 

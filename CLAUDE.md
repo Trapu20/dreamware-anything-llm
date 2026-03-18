@@ -7,6 +7,60 @@ This file provides context to Claude Code and AI agents working in this reposito
 A managed fork of [`Mintplex-Labs/anything-llm`](https://github.com/Mintplex-Labs/anything-llm) maintained by Dreamware.
 Upstream changes are merged weekly via an automated PR. Custom Dreamware code is kept additive and clearly marked.
 
+## Essential Commands (run these first)
+
+```bash
+# Install all dependencies and set up .env files
+yarn setup
+
+# Lint (auto-fix) — run before every commit
+yarn lint
+
+# Lint check only (CI mode, no writes)
+yarn lint:ci
+
+# Run all tests
+yarn test
+
+# Start all dev servers simultaneously
+yarn dev:all
+
+# Regenerate Prisma client after schema changes
+yarn prisma:generate
+
+# Run DB migrations + seed (dev only)
+yarn prisma:setup
+```
+
+## Tech Stack Quick Reference
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 18, Vite, Tailwind CSS, JavaScript (JSX) |
+| Backend | Node 18, Express, Prisma, SQLite (dev) / PostgreSQL (prod) |
+| Collector | Node 18, Express, Puppeteer |
+| Package manager | Yarn (no npm/pnpm) |
+| Linter | ESLint flat config (`eslint.config.{js,mjs}`) |
+| Formatter | Prettier (`.prettierrc`) |
+| Tests | Jest — `server/utils/__tests__/` and `collector/__tests__/` |
+
+## Coding Conventions for Agents
+
+- **JavaScript only** — no TypeScript; JSDoc for public APIs.
+- **ESM** (`"type": "module"`) in server, collector and root.
+- Import order: external packages → internal modules → relative paths.
+- Prefer `async/await` over Promises/callbacks.
+- Do **not** use `console.log` in production code — use the Winston logger at `server/utils/logger.js`.
+- Wrap ALL Dreamware-specific changes in `DREAMWARE CUSTOM` markers (see below).
+- Never commit `.env` files or secrets.
+
+## Known Gotchas
+
+- **Storage ownership**: The Docker container runs as UID 1000. The host storage directory must be owned by UID 1000: `chown -R 1000:1000 /data/dreamanything/{env}/storage`
+- **Prisma client**: After any change to `server/prisma/schema.prisma`, run `yarn prisma:generate` or the server will fail to start.
+- **Upstream conflicts**: When resolving merge conflicts in upstream files, always keep `DREAMWARE CUSTOM` blocks; apply upstream changes around them.
+- **Yarn only**: The repo enforces Yarn via `engines` in `package.json`. Running `npm install` will create a broken `package-lock.json`.
+
 ## Remotes
 
 ```bash
@@ -115,7 +169,11 @@ chown -R 1000:1000 /data/dreamanything/{env}/storage
 │   ├── upstream-sync.yml           # weekly upstream sync
 │   ├── deploy-test.yml             # develop → test server
 │   └── deploy-production.yml       # main → prod server (approval gate)
+├── agents/                         # GitHub Copilot custom agents
 └── CUSTOM_FILES.md                 # living list of all Dreamware deviations
+.claude/
+├── settings.json                   # Claude Code tool permissions
+└── agents/                         # Claude Code custom sub-agents
 infra/
 ├── docker-compose.test.yml         # test server stack
 ├── docker-compose.production.yml   # production server stack
@@ -125,3 +183,26 @@ infra/
 docker/
 └── .env.dreamware.example          # env vars template (never commit .env)
 ```
+
+## Agent Guidance
+
+### Sub-agents available
+
+The `.claude/agents/` directory contains Claude Code sub-agents. Use them via `@<agent-name>` in Claude Code.
+
+Project-specific agents (`.claude/agents/dreamware/`):
+- `dreamware-developer` — Dreamware fork context, custom-code markers, CUSTOM_FILES.md
+- `upstream-sync-manager` — Upstream conflict resolution, keeping DREAMWARE CUSTOM blocks
+
+Generic engineering agents (pre-existing in `.claude/agents/engineering/`):
+- `code-reviewer`, `backend-architect`, `frontend-developer`, `security-engineer`, and more.
+
+### PR Checklist for Agents
+
+Before finishing any PR:
+1. `yarn lint` passes (no errors).
+2. `yarn test` passes.
+3. All new/modified upstream files are recorded in `.github/CUSTOM_FILES.md`.
+4. Dreamware-specific blocks use `DREAMWARE CUSTOM BEGIN/END` markers.
+5. No `.env` files or secrets in the diff.
+6. Docker build succeeds: `docker build -f docker/Dockerfile .`
