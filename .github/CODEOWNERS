@@ -1,0 +1,25 @@
+# CODEOWNERS
+#
+# Each line is a file pattern followed by one or more owners.
+# Owners are automatically requested for review when a PR touches matching files.
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default — Dreamware team reviews everything
+*                                   @Trapu20
+
+# Dreamware-specific infrastructure & CI
+infra/                              @Trapu20
+.github/workflows/deploy-*.yml     @Trapu20
+.github/workflows/_docker-*.yml    @Trapu20
+.github/workflows/upstream-sync.yml @Trapu20
+docker/                             @Trapu20
+
+# Agent / Copilot configuration files — require explicit owner sign-off
+.github/copilot-instructions.md    @Trapu20
+CLAUDE.md                          @Trapu20
+.github/CUSTOM_FILES.md            @Trapu20
+.github/CODEOWNERS                 @Trapu20
+
+# Security-sensitive files
+SECURITY.md                        @Trapu20
+docker/.env.dreamware.example      @Trapu20

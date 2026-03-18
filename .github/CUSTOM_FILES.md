@@ -27,6 +27,21 @@ Upstream files with modifications are listed under **Modified Files**.
 | `.github/workflows/deploy-test.yml` | Auto-deploy develop branch → test server | 2026-03-14 |
 | `.github/workflows/deploy-production.yml` | Manual-approval deploy main → prod server | 2026-03-14 |
 | `.github/CUSTOM_FILES.md` | This file | 2026-03-14 |
+| `.github/copilot-instructions.md` | GitHub Copilot agent instructions (tech stack, conventions, PR checklist) | 2026-03-18 |
+| `.github/CODEOWNERS` | Automatic PR review routing for Dreamware-owned files | 2026-03-18 |
+| `.github/dependabot.yml` | Automated dependency update configuration | 2026-03-18 |
+| `.github/agents/code-reviewer.agent.md` | GitHub Copilot custom agent: expert code reviewer | 2026-03-18 |
+| `.github/agents/frontend-developer.agent.md` | GitHub Copilot custom agent: React/Vite frontend developer | 2026-03-18 |
+| `.github/agents/backend-architect.agent.md` | GitHub Copilot custom agent: Node.js/Express backend architect | 2026-03-18 |
+| `.github/agents/security-engineer.agent.md` | GitHub Copilot custom agent: application security engineer | 2026-03-18 |
+| `.github/agents/devops-automator.agent.md` | GitHub Copilot custom agent: CI/CD and infrastructure automation | 2026-03-18 |
+| `.github/agents/technical-writer.agent.md` | GitHub Copilot custom agent: developer documentation writer | 2026-03-18 |
+| `.github/agents/git-workflow-master.agent.md` | GitHub Copilot custom agent: Git branching and workflow expert | 2026-03-18 |
+| `.github/agents/database-optimizer.agent.md` | GitHub Copilot custom agent: Prisma/PostgreSQL database optimizer | 2026-03-18 |
+| `.github/agents/software-architect.agent.md` | GitHub Copilot custom agent: software architecture and system design | 2026-03-18 |
+| `.github/agents/api-tester.agent.md` | GitHub Copilot custom agent: API testing and validation | 2026-03-18 |
+| `.github/agents/accessibility-auditor.agent.md` | GitHub Copilot custom agent: WCAG accessibility auditor | 2026-03-18 |
+| `.github/agents/performance-benchmarker.agent.md` | GitHub Copilot custom agent: performance testing and optimization | 2026-03-18 |
 | `docker/.env.dreamware.example` | Dreamware-specific env vars documented | 2026-03-14 |
 | `infra/docker-compose.test.yml` | Docker Compose for test server (Caddy + app) | 2026-03-14 |
 | `infra/docker-compose.production.yml` | Docker Compose for production server (Caddy + app) | 2026-03-14 |

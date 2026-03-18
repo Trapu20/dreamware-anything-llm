@@ -10,7 +10,7 @@
 
 <p align="center">
     <b>AnythingLLM:</b> The all-in-one AI app you were looking for.<br />
-    Chat with your docs, use AI Agents, hyper-configurable, multi-user, & no frustrating setup required.
+    Chat with your docs, use AI. sdf Agents, hyper-configurable, multi-user, & no frustrating setup required.
 </p>
 
 <p align="center">
