@@ -56,7 +56,7 @@ Upstream files with modifications are listed under **Modified Files**.
 
 | File | What changed | Modified |
 |------|-------------|----------|
-| `.github/workflows/deploy-production.yml` | Added post-deploy drift reminder (DREAMWARE CUSTOM block) | 2026-03-18 |
+| _(none yet)_ | | |
 
 ---
 
