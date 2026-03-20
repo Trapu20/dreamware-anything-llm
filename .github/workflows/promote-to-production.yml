@@ -1,0 +1,194 @@
+name: Promote Test → Production
+
+# ===== DREAMWARE CUSTOM BEGIN =====
+# Manually promote the tested develop branch to main, triggering the
+# production deploy pipeline. Optionally syncs AnythingLLM settings
+# (system_settings table) from the test server to production after deploy.
+# ===== DREAMWARE CUSTOM END =====
+
+on:
+  workflow_dispatch:
+    inputs:
+      sync_settings:
+        description: "Sync AnythingLLM settings (system_settings) from test → prod after deploy?"
+        required: false
+        type: boolean
+        default: false
+      dry_run:
+        description: "Dry run — show what would happen without pushing to main"
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: promote-to-production
+  cancel-in-progress: false
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 1. Verify develop is deployable before touching main
+  # ─────────────────────────────────────────────────────────────────────────────
+  preflight:
+    name: Preflight Check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      develop_sha: ${{ steps.get_sha.outputs.sha }}
+      main_sha: ${{ steps.get_main_sha.outputs.sha }}
+      already_in_sync: ${{ steps.compare.outputs.same }}
+
+    steps:
+      - name: Checkout develop
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+
+      - name: Get develop SHA
+        id: get_sha
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Get main SHA
+        id: get_main_sha
+        run: |
+          git fetch origin main
+          echo "sha=$(git rev-parse origin/main)" >> "$GITHUB_OUTPUT"
+
+      - name: Check if already in sync
+        id: compare
+        run: |
+          if [ "${{ steps.get_sha.outputs.sha }}" = "${{ steps.get_main_sha.outputs.sha }}" ]; then
+            echo "same=true" >> "$GITHUB_OUTPUT"
+            echo "ℹ️  develop and main are already at the same commit — nothing to promote."
+          else
+            echo "same=false" >> "$GITHUB_OUTPUT"
+            echo "📦 develop (${{ steps.get_sha.outputs.sha }}) differs from main (${{ steps.get_main_sha.outputs.sha }})"
+          fi
+
+      - name: Summarise promotion
+        run: |
+          echo "### Promotion summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| | SHA |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| develop | \`${{ steps.get_sha.outputs.sha }}\` |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| main    | \`${{ steps.get_main_sha.outputs.sha }}\` |" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [ "${{ steps.compare.outputs.same }}" = "true" ]; then
+            echo "✅ Already in sync — no promotion needed." >> "$GITHUB_STEP_SUMMARY"
+          elif [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "🔎 **Dry run** — main would be fast-forwarded to develop." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "🚀 main will be fast-forwarded to develop." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 2. Merge develop → main (fast-forward, no merge commit)
+  # ─────────────────────────────────────────────────────────────────────────────
+  merge:
+    name: Fast-forward main → develop
+    needs: preflight
+    if: |
+      needs.preflight.outputs.already_in_sync == 'false' &&
+      inputs.dry_run == false
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Configure Git identity
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Fast-forward main to develop
+        run: |
+          git fetch origin develop
+          git merge --ff-only origin/develop
+          git push origin main
+          echo "✅ main fast-forwarded to \`$(git rev-parse HEAD)\`" >> "$GITHUB_STEP_SUMMARY"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 3. Wait for the production deploy workflow triggered by the push above
+  # ─────────────────────────────────────────────────────────────────────────────
+  wait_for_deploy:
+    name: Wait for Production Deploy
+    needs: merge
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+
+    steps:
+      - name: Wait for deploy-production.yml to complete
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GH_PAT }}
+          script: |
+            const owner = context.repo.owner;
+            const repo  = context.repo.repo;
+
+            // Time constants
+            const INITIAL_WAIT_MS = 15_000;   // allow GitHub to register the new workflow run
+            const POLL_INTERVAL_MS = 20_000;  // how often to re-check deploy status
+            const DEPLOY_TIMEOUT_MS = 15 * 60 * 1000; // max wait for prod deploy (incl. approval)
+
+            // Give GitHub a few seconds to register the new workflow run
+            await new Promise(r => setTimeout(r, INITIAL_WAIT_MS));
+
+            const deadline = Date.now() + DEPLOY_TIMEOUT_MS;
+
+            while (Date.now() < deadline) {
+              const { data: { workflow_runs: runs } } = await github.rest.actions.listWorkflowRuns({
+                owner,
+                repo,
+                workflow_id: 'deploy-production.yml',
+                branch:      'main',
+                per_page:    1,
+              });
+
+              if (runs.length === 0) {
+                console.log('No deploy run found yet, waiting…');
+                await new Promise(r => setTimeout(r, POLL_INTERVAL_MS));
+                continue;
+              }
+
+              const run = runs[0];
+              console.log(`Deploy run ${run.id}: status=${run.status} conclusion=${run.conclusion}`);
+
+              if (run.status === 'completed') {
+                if (run.conclusion === 'success') {
+                  console.log('✅ Production deploy succeeded.');
+                  core.summary.addRaw(`✅ Production deploy **succeeded** — [run #${run.run_number}](${run.html_url})\n`);
+                  break;
+                } else {
+                  core.setFailed(`❌ Production deploy ${run.conclusion}. Check ${run.html_url}`);
+                  break;
+                }
+              }
+
+              await new Promise(r => setTimeout(r, POLL_INTERVAL_MS));
+            }
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 4. Optional: sync AnythingLLM system_settings from test → prod
+  # ─────────────────────────────────────────────────────────────────────────────
+  sync_settings:
+    name: Sync Settings (test → prod)
+    needs: wait_for_deploy
+    if: inputs.sync_settings == true
+    permissions: {}
+    uses: ./.github/workflows/sync-settings.yml
+    secrets:
+      HETZNER_TEST_HOST:    ${{ secrets.HETZNER_TEST_HOST }}
+      HETZNER_PROD_HOST:    ${{ secrets.HETZNER_PROD_HOST }}
+      HETZNER_SSH_USER:     ${{ secrets.HETZNER_SSH_USER }}
+      HETZNER_TEST_SSH_KEY: ${{ secrets.HETZNER_TEST_SSH_KEY }}
+      HETZNER_PROD_SSH_KEY: ${{ secrets.HETZNER_PROD_SSH_KEY }}
