@@ -43,6 +43,8 @@ upstream  https://github.com/Mintplex-Labs/anything-llm.git   # upstream (push d
 | `_docker-build-push.yml` | (reusable) | Builds image, pushes to `ghcr.io/trapu20/dreamware-anything-llm` |
 | `deploy-test.yml` | push to `develop` | Build `:develop` image → SSH deploy to test server |
 | `deploy-production.yml` | push to `main` | Build `:latest` image → manual approval → SSH deploy to prod |
+| `promote-to-production.yml` | manual | Fast-forward `main` to `develop`, waits for prod deploy, optionally syncs settings |
+| `sync-settings.yml` | manual / callable | Sync `system_settings` table from test → prod SQLite DB |
 | `upstream-sync.yml` | Monday 08:00 UTC + manual | Opens a PR merging `upstream/master` into `develop` |
 
 ## Custom Code Convention
@@ -114,14 +116,17 @@ chown -R 1000:1000 /data/dreamanything/{env}/storage
 │   ├── _docker-build-push.yml      # reusable Docker build/push
 │   ├── upstream-sync.yml           # weekly upstream sync
 │   ├── deploy-test.yml             # develop → test server
-│   └── deploy-production.yml       # main → prod server (approval gate)
+│   ├── deploy-production.yml       # main → prod server (approval gate)
+│   ├── promote-to-production.yml   # manual: ff main→develop + optional settings sync
+│   └── sync-settings.yml           # manual/callable: sync system_settings test→prod
 └── CUSTOM_FILES.md                 # living list of all Dreamware deviations
 infra/
 ├── docker-compose.test.yml         # test server stack
 ├── docker-compose.production.yml   # production server stack
 ├── Caddyfile.test                  # Caddy config for test.dreamware.at
 ├── Caddyfile.production            # Caddy config for app.dreamware.at
-└── bootstrap.sh                    # one-time server setup
+├── bootstrap.sh                    # one-time server setup
+└── sync-settings.sh                # export/import/diff system_settings helper
 docker/
 └── .env.dreamware.example          # env vars template (never commit .env)
 ```

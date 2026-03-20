@@ -57,3 +57,5 @@ jobs:
             docker image prune -f --filter "until=72h"
 
             echo "==> Production deploy complete."
+            echo ""
+            echo "  TIP: Run the 'Sync Settings' workflow to synchronise system_settings from test."

@@ -1,0 +1,197 @@
+name: Sync Settings (Test → Production)
+
+# ===== DREAMWARE CUSTOM BEGIN =====
+# Copies the AnythingLLM system_settings rows from the test SQLite database
+# to production, keeping test and prod UI settings in sync without touching
+# user accounts, chat history, or documents.
+#
+# Secrets that contain API keys are intentionally excluded from the sync so
+# that each environment keeps its own credentials.
+#
+# Trigger options
+# ───────────────
+# • Manual (workflow_dispatch)     — on-demand sync
+# • Called by promote-to-production.yml after a successful prod deploy
+# ===== DREAMWARE CUSTOM END =====
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run — show what would be synced without applying changes"
+        required: false
+        type: boolean
+        default: false
+
+  workflow_call:
+    secrets:
+      HETZNER_TEST_HOST:
+        required: true
+      HETZNER_PROD_HOST:
+        required: true
+      HETZNER_SSH_USER:
+        required: true
+      HETZNER_TEST_SSH_KEY:
+        required: true
+      HETZNER_PROD_SSH_KEY:
+        required: true
+
+concurrency:
+  group: sync-settings
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Sync system_settings
+    runs-on: ubuntu-latest
+    permissions: {}
+    environment: production  # requires the same approval gate as a prod deploy
+
+    steps:
+      # ── 1. Export settings from the test server ──────────────────────────────
+      - name: Export settings from test
+        id: export
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host:     ${{ secrets.HETZNER_TEST_HOST }}
+          username: ${{ secrets.HETZNER_SSH_USER }}
+          key:      ${{ secrets.HETZNER_TEST_SSH_KEY }}
+          script: |
+            set -euo pipefail
+
+            COMPOSE_DIR="/opt/dreamanything/test"
+            EXPORT_FILE="/tmp/anythingllm_system_settings_export.sql"
+
+            echo "==> Finding container name…"
+            CONTAINER=$(docker compose -f "$COMPOSE_DIR/docker-compose.yml" ps -q app 2>/dev/null | head -1)
+            if [ -z "$CONTAINER" ]; then
+              echo "ERROR: app container not running on test server" >&2
+              exit 1
+            fi
+
+            echo "==> Exporting system_settings (excluding secrets)…"
+            # Excluded labels (keep in sync with infra/sync-settings.sh):
+            #   JWTSecret, AuthToken     — per-environment credentials
+            #   MultiUserMode            — environment state (may differ intentionally)
+            #   HasCompletedSetup        — onboarding flag; must not be reset on prod
+            docker exec "$CONTAINER" sqlite3 /app/server/storage/anythingllm.db \
+              "SELECT 'INSERT OR REPLACE INTO system_settings (label, value, createdAt, lastUpdatedAt) VALUES (' || quote(label) || ', ' || quote(value) || ', ' || quote(createdAt) || ', ' || quote(lastUpdatedAt) || ');'
+               FROM system_settings
+               WHERE label NOT IN (
+                 'JWTSecret', 'AuthToken',
+                 'MultiUserMode', 'HasCompletedSetup'
+               )
+               ORDER BY label;" > "$EXPORT_FILE"
+
+            ROWS=$(wc -l < "$EXPORT_FILE")
+            echo "==> Exported ${ROWS} setting(s) to ${EXPORT_FILE}"
+            cat "$EXPORT_FILE"
+
+      # ── 2. Transfer the export file from test to the runner ──────────────────
+      - name: Download export from test server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host:     ${{ secrets.HETZNER_TEST_HOST }}
+          username: ${{ secrets.HETZNER_SSH_USER }}
+          key:      ${{ secrets.HETZNER_TEST_SSH_KEY }}
+          source:   "/tmp/anythingllm_system_settings_export.sql"
+          target:   "/tmp/"
+          strip_components: 1
+
+      # ── 3. (Dry run) Show what would be applied, then stop ───────────────────
+      - name: Show diff (dry run)
+        if: inputs.dry_run == true
+        run: |
+          echo "### Settings that would be synced to production" >> "$GITHUB_STEP_SUMMARY"
+          echo "\`\`\`sql" >> "$GITHUB_STEP_SUMMARY"
+          cat /tmp/anythingllm_system_settings_export.sql >> "$GITHUB_STEP_SUMMARY"
+          echo "\`\`\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "ℹ️  Dry run — no changes applied."
+
+      # ── 4. Upload export to production and apply ─────────────────────────────
+      - name: Upload export to production
+        if: inputs.dry_run != true
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host:     ${{ secrets.HETZNER_PROD_HOST }}
+          username: ${{ secrets.HETZNER_SSH_USER }}
+          key:      ${{ secrets.HETZNER_PROD_SSH_KEY }}
+          source:   "/tmp/anythingllm_system_settings_export.sql"
+          target:   "/tmp/"
+          strip_components: 1
+
+      - name: Apply settings on production
+        if: inputs.dry_run != true
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host:     ${{ secrets.HETZNER_PROD_HOST }}
+          username: ${{ secrets.HETZNER_SSH_USER }}
+          key:      ${{ secrets.HETZNER_PROD_SSH_KEY }}
+          script: |
+            set -euo pipefail
+
+            COMPOSE_DIR="/opt/dreamanything/production"
+            IMPORT_FILE="/tmp/anythingllm_system_settings_export.sql"
+
+            echo "==> Finding container name…"
+            CONTAINER=$(docker compose -f "$COMPOSE_DIR/docker-compose.yml" ps -q app 2>/dev/null | head -1)
+            if [ -z "$CONTAINER" ]; then
+              echo "ERROR: app container not running on production server" >&2
+              exit 1
+            fi
+
+            echo "==> Backing up current production system_settings…"
+            docker exec "$CONTAINER" sqlite3 /app/server/storage/anythingllm.db \
+              ".dump system_settings" > "/tmp/anythingllm_system_settings_backup_$(date +%Y%m%d%H%M%S).sql"
+
+            echo "==> Copying import file into container…"
+            docker cp "$IMPORT_FILE" "$CONTAINER:/tmp/settings_import.sql"
+
+            echo "==> Applying imported settings…"
+            docker exec "$CONTAINER" sqlite3 /app/server/storage/anythingllm.db \
+              ".read /tmp/settings_import.sql"
+
+            echo "==> Verifying row count…"
+            COUNT=$(docker exec "$CONTAINER" sqlite3 /app/server/storage/anythingllm.db \
+              "SELECT COUNT(*) FROM system_settings;")
+            echo "    system_settings rows: ${COUNT}"
+
+            echo "==> Restarting app to pick up new settings…"
+            docker compose -f "$COMPOSE_DIR/docker-compose.yml" restart app
+
+            echo "==> Waiting for health check (up to 90s)…"
+            timeout 90 bash -c '
+              until docker compose -f "'"$COMPOSE_DIR"'/docker-compose.yml" exec -T app \
+                curl -sf http://localhost:3001/api/ping > /dev/null 2>&1; do
+                echo "  Waiting…"
+                sleep 5
+              done
+            '
+
+            echo "==> Settings sync complete."
+
+      # ── 5. Clean up temp files ───────────────────────────────────────────────
+      - name: Clean up temp files on test
+        if: always()
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host:     ${{ secrets.HETZNER_TEST_HOST }}
+          username: ${{ secrets.HETZNER_SSH_USER }}
+          key:      ${{ secrets.HETZNER_TEST_SSH_KEY }}
+          script: rm -f /tmp/anythingllm_system_settings_export.sql
+
+      - name: Clean up temp files on prod
+        if: always() && inputs.dry_run != true
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host:     ${{ secrets.HETZNER_PROD_HOST }}
+          username: ${{ secrets.HETZNER_SSH_USER }}
+          key:      ${{ secrets.HETZNER_PROD_SSH_KEY }}
+          script: rm -f /tmp/anythingllm_system_settings_export.sql
+
+      - name: Summary
+        if: inputs.dry_run != true
+        run: |
+          echo "✅ system_settings synced from **test** → **production**" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "> Secrets (JWTSecret, AuthToken, MultiUserMode, HasCompletedSetup) were **not** copied." >> "$GITHUB_STEP_SUMMARY"
