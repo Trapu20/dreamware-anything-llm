@@ -120,16 +120,22 @@ jobs:
           echo "ℹ️  Dry run — no changes applied."
 
       # ── 4. Upload export to production and apply ─────────────────────────────
+      # NOTE: appleboy/scp-action runs inside a Docker container where /tmp on
+      #       the runner is NOT mounted.  Use native scp to avoid the issue.
       - name: Upload export to production
         if: inputs.dry_run != true
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host:     ${{ secrets.HETZNER_PROD_HOST }}
-          username: ${{ secrets.HETZNER_SSH_USER }}
-          key:      ${{ secrets.HETZNER_PROD_SSH_KEY }}
-          source:   "/tmp/anythingllm_system_settings_export.sql"
-          target:   "/tmp/"
-          strip_components: 1
+        env:
+          SSH_KEY:  ${{ secrets.HETZNER_PROD_SSH_KEY }}
+          SSH_HOST: ${{ secrets.HETZNER_PROD_HOST }}
+          SSH_USER: ${{ secrets.HETZNER_SSH_USER }}
+        run: |
+          mkdir -p ~/.ssh
+          install -m 600 /dev/null ~/.ssh/id_prod
+          echo "$SSH_KEY" > ~/.ssh/id_prod
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_prod \
+            /tmp/anythingllm_system_settings_export.sql \
+            "${SSH_USER}@${SSH_HOST}:/tmp/anythingllm_system_settings_export.sql"
+          rm -f ~/.ssh/id_prod
 
       - name: Apply settings on production
         if: inputs.dry_run != true
