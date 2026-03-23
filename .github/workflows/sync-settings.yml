@@ -59,13 +59,18 @@ jobs:
           script: |
             set -euo pipefail
 
-            COMPOSE_DIR="/opt/dreamanything/test"
+            # sqlite3 is used on the host to read the database via the mounted volume.
+            # If missing, install it (bootstrap.sh now includes it for new servers).
+            if ! command -v sqlite3 &>/dev/null; then
+              echo "==> sqlite3 not found — installing…"
+              apt-get update -qq && apt-get install -yq sqlite3
+            fi
+
+            DB="/data/dreamanything/test/storage/anythingllm.db"
             EXPORT_FILE="/tmp/anythingllm_system_settings_export.sql"
 
-            echo "==> Finding container name…"
-            CONTAINER=$(docker compose -f "$COMPOSE_DIR/docker-compose.yml" ps -q app 2>/dev/null | head -1)
-            if [ -z "$CONTAINER" ]; then
-              echo "ERROR: app container not running on test server" >&2
+            if [ ! -f "$DB" ]; then
+              echo "ERROR: database not found at $DB" >&2
               exit 1
             fi
 
@@ -74,7 +79,7 @@ jobs:
             #   JWTSecret, AuthToken     — per-environment credentials
             #   MultiUserMode            — environment state (may differ intentionally)
             #   HasCompletedSetup        — onboarding flag; must not be reset on prod
-            docker exec "$CONTAINER" sqlite3 /app/server/storage/anythingllm.db \
+            sqlite3 "$DB" \
               "SELECT 'INSERT OR REPLACE INTO system_settings (label, value, createdAt, lastUpdatedAt) VALUES (' || quote(label) || ', ' || quote(value) || ', ' || quote(createdAt) || ', ' || quote(lastUpdatedAt) || ');'
                FROM system_settings
                WHERE label NOT IN (
@@ -130,29 +135,31 @@ jobs:
           script: |
             set -euo pipefail
 
+            # sqlite3 is used on the host to write the database via the mounted volume.
+            if ! command -v sqlite3 &>/dev/null; then
+              echo "==> sqlite3 not found — installing…"
+              apt-get update -qq && apt-get install -yq sqlite3
+            fi
+
             COMPOSE_DIR="/opt/dreamanything/production"
+            DB="/data/dreamanything/production/storage/anythingllm.db"
             IMPORT_FILE="/tmp/anythingllm_system_settings_export.sql"
 
-            echo "==> Finding container name…"
-            CONTAINER=$(docker compose -f "$COMPOSE_DIR/docker-compose.yml" ps -q app 2>/dev/null | head -1)
-            if [ -z "$CONTAINER" ]; then
-              echo "ERROR: app container not running on production server" >&2
+            if [ ! -f "$DB" ]; then
+              echo "ERROR: database not found at $DB" >&2
               exit 1
             fi
 
             echo "==> Backing up current production system_settings…"
-            docker exec "$CONTAINER" sqlite3 /app/server/storage/anythingllm.db \
+            sqlite3 "$DB" \
               ".dump system_settings" > "/tmp/anythingllm_system_settings_backup_$(date +%Y%m%d%H%M%S).sql"
 
-            echo "==> Copying import file into container…"
-            docker cp "$IMPORT_FILE" "$CONTAINER:/tmp/settings_import.sql"
-
             echo "==> Applying imported settings…"
-            docker exec "$CONTAINER" sqlite3 /app/server/storage/anythingllm.db \
-              ".read /tmp/settings_import.sql"
+            sqlite3 "$DB" \
+              ".read $IMPORT_FILE"
 
             echo "==> Verifying row count…"
-            COUNT=$(docker exec "$CONTAINER" sqlite3 /app/server/storage/anythingllm.db \
+            COUNT=$(sqlite3 "$DB" \
               "SELECT COUNT(*) FROM system_settings;")
             echo "    system_settings rows: ${COUNT}"
 
