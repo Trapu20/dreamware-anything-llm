@@ -17,20 +17,19 @@
 #   docker exec <prod_container> bash /app/sync-settings.sh import \
 #     /app/server/storage/anythingllm.db /tmp/settings.sql
 #
-# Excluded labels (secrets / environment-specific values):
-#   JWTSecret, AuthToken, MultiUserMode, HasCompletedSetup
+# Excluded labels (environment-specific / protected values):
+#   multi_user_mode, onboarding_complete, hub_api_key
 # =============================================================================
 set -euo pipefail
 
 # ── Labels that must NOT be copied across environments ────────────────────────
-# JWTSecret        — per-environment secret; different on test vs prod
-# AuthToken        — per-environment access password; different on test vs prod
-# MultiUserMode    — environment state (may differ intentionally)
-# HasCompletedSetup — onboarding state; should not be reset on prod
+# multi_user_mode    — environment state (may differ intentionally)
+# onboarding_complete — onboarding state; should not be reset on prod
+# hub_api_key        — per-environment Community Hub credential
 #
 # NOTE: this list is also hard-coded in .github/workflows/sync-settings.yml
 # (the inline SSH script cannot source this file).  Keep both in sync.
-EXCLUDED_LABELS="'JWTSecret','AuthToken','MultiUserMode','HasCompletedSetup'"
+EXCLUDED_LABELS="'multi_user_mode','onboarding_complete','hub_api_key'"
 
 usage() {
   echo "Usage:"
