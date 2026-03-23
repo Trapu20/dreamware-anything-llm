@@ -64,6 +64,11 @@ const TRANSLATIONS = {
     search: "Suchen",
     username_requirements:
       "Der Benutzername muss 2-32 Zeichen lang sein, mit einem Kleinbuchstaben beginnen und darf nur Kleinbuchstaben, Zahlen, Unterstriche, Bindestriche und Punkte enthalten.",
+    on: "Über",
+    none: "Keine",
+    stopped: "Gestoppt",
+    loading: "Laden",
+    refresh: "Erfrischen",
   },
   settings: {
     title: "Instanzeinstellungen",
@@ -184,15 +189,18 @@ const TRANSLATIONS = {
       title: "Chat-Modus",
       chat: {
         title: "Chat",
-        "desc-start": "wird Antworten mit dem allgemeinen Wissen des LLM",
-        and: "und",
-        "desc-end": "gefundenem Dokumentenkontext liefern.",
+        description:
+          "wird Antworten basierend auf dem allgemeinen Wissen des LLM und dem relevanten Kontext aus den Dokumenten <b> und </b> liefern. <br /> Sie benötigen den Befehl `@agent`, um die Tools zu nutzen.",
       },
       query: {
         title: "Abfrage",
-        "desc-start": "wird Antworten",
-        only: "nur",
-        "desc-end": "liefern, wenn Dokumentenkontext gefunden wird.",
+        description:
+          'wird nur Antworten <b> und </b> bereitstellen, falls der Kontext des Dokuments gefunden wurde.<br />Sie müssen den Befehl "@agent" verwenden, um die Tools zu nutzen.',
+      },
+      automatic: {
+        title: "Auto",
+        description:
+          'wird automatisch Werkzeuge verwenden, wenn das Modell und der Anbieter native Werkzeugaufrufe unterstützen. <br />Wenn native Werkzeugaufrufe nicht unterstützt werden, müssen Sie den Befehl "@agent" verwenden, um Werkzeuge zu nutzen.',
       },
     },
     history: {
@@ -323,6 +331,46 @@ const TRANSLATIONS = {
     },
     "performance-warning":
       "Die Leistung von LLMs, die keine explizite Unterstützung für das Aufrufen von Tools bieten, hängt stark von den Fähigkeiten und der Genauigkeit des Modells ab. Einige Fähigkeiten können eingeschränkt oder nicht funktionsfähig sein.",
+    mcp: {
+      title: "MCP-Servern",
+      "loading-from-config":
+        "Laden von MCP-Servern aus einer Konfigurationsdatei",
+      "learn-more": "Erfahren Sie mehr über MCP-Server.",
+      "no-servers-found": "Keine MCP-Server gefunden",
+      "tool-warning":
+        "Für die beste Leistung sollten Sie unnötige Werkzeuge deaktivieren, um den Kontext zu schonen.",
+      "stop-server": "MCP-Server stoppen",
+      "start-server": "MCP-Server starten",
+      "delete-server": "MCP-Server löschen",
+      "tool-count-warning":
+        "Dieser MCP-Server hat <b>{{count}} Tools aktiviert, </b> die Kontext verbrauchen werden, wenn eine Chat-Sitzung stattfindet. <br /> Erwägen Sie, unerwünschte Tools zu deaktivieren, um Kontext zu sparen.",
+      "startup-command": "Startbefehl",
+      command: "Befehl",
+      arguments: "Argumente",
+      "not-running-warning":
+        "Dieser MCP-Server ist nicht aktiv – er kann gestoppt sein oder bei der Startsequenz einen Fehler aufweisen.",
+      "tool-call-arguments": "Argumente für die Funktionsaufrufe",
+      "tools-enabled": "Werkzeuge aktiviert",
+    },
+    settings: {
+      title: "Einstellungen für Agenten-Fähigkeiten",
+      "max-tool-calls": {
+        title: "Maximale Anzahl an Tool-Anfragen pro Antwort",
+        description:
+          "Die maximale Anzahl an Werkzeugen, die ein Agent verketten kann, um eine einzelne Antwort zu generieren. Dies verhindert, dass Werkzeuge unkontrolliert aufgerufen werden und zu endlosen Schleifen führen.",
+      },
+      "intelligent-skill-selection": {
+        title: "Intelligente Auswahl von Fähigkeiten",
+        "beta-badge": "Beta-Version",
+        description:
+          "Ermöglichen Sie die uneingeschränkte Nutzung von Werkzeugen und reduzieren Sie die Token-Nutzung pro Anfrage um bis zu 80 % – AnythingLLM wählt automatisch die passenden Fähigkeiten für jede Anfrage aus.",
+        "max-tools": {
+          title: "Max Tools",
+          description:
+            "Die maximale Anzahl der auszuwählenden Werkzeuge für jede Abfrage. Wir empfehlen, diesen Wert für größere Modelle mit größerem Kontext auf einen höheren Wert einzustellen.",
+        },
+      },
+    },
   },
   recorded: {
     title: "Workspace-Chats",

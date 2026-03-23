@@ -60,6 +60,11 @@ const TRANSLATIONS = {
     search: "搜索",
     username_requirements:
       "用户名必须为 2-32 个字符，以小写字母开头，只能包含小写字母、数字、下划线、连字符和句点。",
+    on: "关于",
+    none: "没有",
+    stopped: "停止",
+    loading: "正在加载…",
+    refresh: "重新开始；更新",
   },
   settings: {
     title: "设置",
@@ -177,15 +182,18 @@ const TRANSLATIONS = {
       title: "聊天模式",
       chat: {
         title: "聊天",
-        "desc-start": "将提供 LLM 的一般知识",
-        and: "和",
-        "desc-end": "找到的文档上下文的答案。",
+        description:
+          "将提供答案，利用LLM的通用知识和相关文档的上下文信息。您需要使用 `@agent` 命令来使用工具。",
       },
       query: {
         title: "查询",
-        "desc-start": "将会提供答案",
-        only: "仅当",
-        "desc-end": "找到文档上下文时。",
+        description:
+          "将在找到文档上下文时提供答案 <b>仅限</b>。您需要使用 @agent 命令来使用工具。",
+      },
+      automatic: {
+        title: "自动",
+        description:
+          "如果模型和提供商支持原生工具调用，则会自动使用这些工具。<br />如果不支持原生工具调用，则需要使用 `@agent` 命令来使用工具。",
       },
     },
     history: {
@@ -305,6 +313,44 @@ const TRANSLATIONS = {
       },
       default_skill:
         "默认情况下，这项技能已启用。但是，如果您不想让该技能被代理使用，您可以将其禁用。",
+    },
+    mcp: {
+      title: "MCP 服务器",
+      "loading-from-config": "从配置文件加载 MCP 服务器",
+      "learn-more": "了解更多关于 MCP 服务器的信息。",
+      "no-servers-found": "未找到任何 MCP 服务器",
+      "tool-warning": "为了获得最佳性能，建议禁用不必要的工具，以节省上下文。",
+      "stop-server": "停止 MCP 服务器",
+      "start-server": "启动 MCP 服务器",
+      "delete-server": "删除 MCP 服务器",
+      "tool-count-warning":
+        "这个 MCP 服务器启用了 <b> 工具，这些工具会在每次聊天中使用上下文信息。</b> 建议禁用不需要的工具，以节省上下文。<br />",
+      "startup-command": "启动命令",
+      command: "命令",
+      arguments: "争论",
+      "not-running-warning":
+        "这个 MCP 服务器目前处于停止状态，可能是因为在启动时出现了错误或被手动停止。",
+      "tool-call-arguments": "工具调用的参数",
+      "tools-enabled": "工具已启用",
+    },
+    settings: {
+      title: "代理技能设置",
+      "max-tool-calls": {
+        title: "每个回复的最大请求次数",
+        description:
+          "单个代理可以使用的最大工具数量，用于生成单个响应。 这样可以防止工具调用数量过多，从而避免无限循环。",
+      },
+      "intelligent-skill-selection": {
+        title: "智能技能选择",
+        "beta-badge": "β 版本",
+        description:
+          "实现无限工具和按查询减少高达 80% 的 Token 使用量——AnythingLLM 能够自动选择最合适的技能，以应对每个提示。",
+        "max-tools": {
+          title: "麦克斯工具",
+          description:
+            "可以选取的工具的最大数量，用于每个查询。我们建议将此值设置为较高的值，以便在处理大型上下文模型时。",
+        },
+      },
     },
   },
   recorded: {
