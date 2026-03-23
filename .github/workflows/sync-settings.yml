@@ -74,17 +74,17 @@ jobs:
               exit 1
             fi
 
-            echo "==> Exporting system_settings (excluding secrets)…"
+            echo "==> Exporting system_settings (excluding protected labels)…"
             # Excluded labels (keep in sync with infra/sync-settings.sh):
-            #   JWTSecret, AuthToken     — per-environment credentials
-            #   MultiUserMode            — environment state (may differ intentionally)
-            #   HasCompletedSetup        — onboarding flag; must not be reset on prod
+            #   multi_user_mode    — environment state (may differ intentionally)
+            #   onboarding_complete — onboarding flag; must not be reset on prod
+            #   hub_api_key        — per-environment Community Hub credential
             sqlite3 "$DB" \
               "SELECT 'INSERT OR REPLACE INTO system_settings (label, value, createdAt, lastUpdatedAt) VALUES (' || quote(label) || ', ' || quote(value) || ', ' || quote(createdAt) || ', ' || quote(lastUpdatedAt) || ');'
                FROM system_settings
                WHERE label NOT IN (
-                 'JWTSecret', 'AuthToken',
-                 'MultiUserMode', 'HasCompletedSetup'
+                 'multi_user_mode', 'onboarding_complete',
+                 'hub_api_key'
                )
                ORDER BY label;" > "$EXPORT_FILE"
 
@@ -93,15 +93,21 @@ jobs:
             cat "$EXPORT_FILE"
 
       # ── 2. Transfer the export file from test to the runner ──────────────────
+      # NOTE: appleboy/scp-action only copies FROM the runner TO a remote host
+      #       (upload direction).  We need the reverse, so we use native scp.
       - name: Download export from test server
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host:     ${{ secrets.HETZNER_TEST_HOST }}
-          username: ${{ secrets.HETZNER_SSH_USER }}
-          key:      ${{ secrets.HETZNER_TEST_SSH_KEY }}
-          source:   "/tmp/anythingllm_system_settings_export.sql"
-          target:   "/tmp/"
-          strip_components: 1
+        env:
+          SSH_KEY:  ${{ secrets.HETZNER_TEST_SSH_KEY }}
+          SSH_HOST: ${{ secrets.HETZNER_TEST_HOST }}
+          SSH_USER: ${{ secrets.HETZNER_SSH_USER }}
+        run: |
+          mkdir -p ~/.ssh
+          install -m 600 /dev/null ~/.ssh/id_test
+          echo "$SSH_KEY" > ~/.ssh/id_test
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_test \
+            "${SSH_USER}@${SSH_HOST}:/tmp/anythingllm_system_settings_export.sql" \
+            /tmp/anythingllm_system_settings_export.sql
+          rm -f ~/.ssh/id_test
 
       # ── 3. (Dry run) Show what would be applied, then stop ───────────────────
       - name: Show diff (dry run)
@@ -201,4 +207,4 @@ jobs:
         run: |
           echo "✅ system_settings synced from **test** → **production**" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "> Secrets (JWTSecret, AuthToken, MultiUserMode, HasCompletedSetup) were **not** copied." >> "$GITHUB_STEP_SUMMARY"
+          echo "> Protected labels (multi_user_mode, onboarding_complete, hub_api_key) were **not** copied." >> "$GITHUB_STEP_SUMMARY"
