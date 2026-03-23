@@ -60,6 +60,11 @@ const TRANSLATIONS = {
     search: "搜尋",
     username_requirements:
       "使用者名稱必須為 2-32 個字元，以小寫字母開頭，且只能包含小寫字母、數字、底線、連字號和句點。",
+    on: "關於",
+    none: "沒有",
+    stopped: "停止",
+    loading: "載入",
+    refresh: "重新整理",
   },
   settings: {
     title: "系統設定",
@@ -169,15 +174,18 @@ const TRANSLATIONS = {
       title: "對話模式",
       chat: {
         title: "對話",
-        "desc-start": "會結合 LLM 的一般知識",
-        and: "以及",
-        "desc-end": "已找到的文件內容來回答。",
+        description:
+          "將提供答案，利用 LLM 的一般知識和相關文件內容。您需要使用 `@agent` 命令來使用工具。",
       },
       query: {
         title: "查詢",
-        "desc-start": "會",
-        only: "只",
-        "desc-end": "在找到文件內容時回答。",
+        description:
+          "將提供答案，僅在找到文件上下文時 <b>。您需要使用 @agent 指令來使用工具。",
+      },
+      automatic: {
+        title: "自動",
+        description:
+          "如果模型和供應商支援原生工具調用，則系統會自動使用這些工具。<br />如果原生工具調用不受支援，您需要使用 `@agent` 命令來使用工具。",
       },
     },
     history: {
@@ -294,6 +302,44 @@ const TRANSLATIONS = {
           "讓您的智慧代理人能夠利用 SQL 查詢來回答您的問題，只需連接到不同的 SQL 資料庫提供者即可。",
       },
       default_skill: "這項技能預設為啟用；若不希望智慧代理人使用，也可以停用。",
+    },
+    mcp: {
+      title: "MCP 伺服器",
+      "loading-from-config": "從設定檔中載入 MCP 伺服器",
+      "learn-more": "了解更多關於 MCP 伺服器的資訊。",
+      "no-servers-found": "未找到任何 MCP 伺服器",
+      "tool-warning": "為了獲得最佳效能，建議關閉不必要的工具，以節省資源。",
+      "stop-server": "停止 MCP 伺服器",
+      "start-server": "啟動 MCP 伺服器",
+      "delete-server": "刪除 MCP 伺服器",
+      "tool-count-warning":
+        "這個 MCP 伺服器已啟用 <b> 工具，這些工具會消耗聊天中的語境 </b>。建議停用不需要的工具，以節省語境。",
+      "startup-command": "啟動指令",
+      command: "指令",
+      arguments: "辯論",
+      "not-running-warning":
+        "這個 MCP 伺服器目前處於停止狀態，可能是因為已停止運作，或是啟動時出現錯誤。",
+      "tool-call-arguments": "工具呼叫的參數",
+      "tools-enabled": "已啟用工具",
+    },
+    settings: {
+      title: "代理人技能設定",
+      "max-tool-calls": {
+        title: "每次回應的最大工具呼叫次數",
+        description:
+          "這設定了代理可以串聯使用的最大工具數量，以確保每次回應只會呼叫有限的工具，並避免無限循環。",
+      },
+      "intelligent-skill-selection": {
+        title: "智能技能選擇",
+        "beta-badge": "β 版本",
+        description:
+          "啟用無限多個工具，並將每個查詢的 token 使用量最多降低 80% — AnythingLLM 能夠自動選擇最適合的技能，以處理每一個提示。",
+        "max-tools": {
+          title: "馬克斯工具",
+          description:
+            "可選取的工具的最大數量，適用於每個查詢。我們建議將此值設定為較高的值，以適用於較大的模型。",
+        },
+      },
     },
   },
   recorded: {
@@ -553,6 +599,8 @@ const TRANSLATIONS = {
       remove_selected: "移除選擇的項目",
       costs: "*嵌入僅會計費一次",
       save_embed: "儲存並嵌入",
+      "total-documents_one": "{{count}} 文件",
+      "total-documents_other": "{{count}} 文件",
     },
     upload: {
       "processor-offline": "文件處理器無法使用",

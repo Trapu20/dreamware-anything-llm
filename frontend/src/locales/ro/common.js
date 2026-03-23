@@ -64,6 +64,11 @@ const TRANSLATIONS = {
     search: "Caută",
     username_requirements:
       "Numele de utilizator trebuie să aibă între 2 și 32 de caractere, să înceapă cu o literă mică și să conțină doar litere mici, cifre, liniuțe de subliniere, cratime și puncte.",
+    on: "În",
+    none: "Niciunul",
+    stopped: "Oprit",
+    loading: "Încărcare",
+    refresh: "Reîmprospătează",
   },
   settings: {
     title: "Setările instanței",
@@ -185,16 +190,18 @@ const TRANSLATIONS = {
       title: "Mod chat",
       chat: {
         title: "Chat",
-        "desc-start":
-          "oferă răspunsuri bazate pe cunoștințele generale ale LLM-ului",
-        and: "și",
-        "desc-end": "context document care este găsit.",
+        description:
+          'va oferi răspunsuri folosind cunoștințele generale ale modelului LLM și contextul documentului respectiv.<br />Va trebui să utilizați comanda "@agent" pentru a utiliza instrumentele.',
       },
       query: {
         title: "Interogare",
-        "desc-start": "oferă răspunsuri",
-        only: "doar",
-        "desc-end": "dacă contextul documentului este găsit.",
+        description:
+          'vor oferi răspunsuri **doar** dacă contextul documentului este identificat. Veți avea nevoie să utilizați comanda "@agent" pentru a utiliza instrumentele.',
+      },
+      automatic: {
+        title: "Mașină",
+        description:
+          'va utiliza automat instrumentele, dacă modelul și furnizorul suportă apelarea nativă a instrumentelor.<br />Dacă apelarea nativă a instrumentelor nu este suportată, veți avea nevoie să utilizați comanda "@agent" pentru a utiliza instrumentele.',
       },
     },
     history: {
@@ -448,6 +455,8 @@ const TRANSLATIONS = {
       remove_selected: "Elimină selectate",
       costs: "*Cost unic pentru embeddings",
       save_embed: "Salvează și încorporează",
+      "total-documents_one": "{{count}}",
+      "total-documents_other": "{{count}} documente",
     },
     upload: {
       "processor-offline": "Procesorul de documente este offline",
@@ -765,6 +774,47 @@ const TRANSLATIONS = {
       },
       default_skill:
         "Implicit, această funcție este activată, dar puteți dezactiva-o dacă nu doriți ca agentul să o utilizeze.",
+    },
+    mcp: {
+      title: "Servere MCP",
+      "loading-from-config":
+        "Încărcarea serverelor MCP din fișierul de configurare",
+      "learn-more": "Aflați mai multe despre serverele MCP.",
+      "no-servers-found": "Nu au fost găsite servere MCP.",
+      "tool-warning":
+        "Pentru cele mai bune rezultate, luați în considerare dezactivarea instrumentelor nedorite, pentru a economisi resurse.",
+      "stop-server": "Închideți serverul MCP",
+      "start-server": "Pornește serverul MCP",
+      "delete-server": "Șterge serverul MCP",
+      "tool-count-warning":
+        "Acest server MCP are activate<b> instrumentele menționate</b>, care vor consuma context în fiecare sesiune de chat.<br />Luați în considerare dezactivarea instrumentelor nedorite pentru a economisi context.",
+      "startup-command": "Comanda de pornire",
+      command: "Ordine",
+      arguments: "Argumente",
+      "not-running-warning":
+        "Acest server MCP nu este în funcționare – ar putea fi oprit sau ar putea întâmpina o eroare la pornire.",
+      "tool-call-arguments": "Argumente pentru apelarea unei funcții",
+      "tools-enabled": "instrumentele sunt activate",
+    },
+    settings: {
+      title: "Setări pentru abilitățile agenților",
+      "max-tool-calls": {
+        title:
+          "Numărul maxim de solicitări de instrument (Max Tool Calls Per Response)",
+        description:
+          "Numărul maxim de instrumente pe care un agent le poate utiliza în mod consecutiv pentru a genera un singur răspuns. Această funcție previne apelurile inutile ale instrumentelor și buclele infinite.",
+      },
+      "intelligent-skill-selection": {
+        title: "Selecție inteligentă a abilităților",
+        "beta-badge": "Beta",
+        description:
+          "Permite utilizarea nelimitată a instrumentelor și reduce utilizarea token-urilor cu până la 80% pentru fiecare interogare – AnythingLLM selectează automat abilitățile potrivite pentru fiecare solicitare.",
+        "max-tools": {
+          title: "Max Tools",
+          description:
+            "Numărul maxim de instrumente care pot fi selectate pentru fiecare interogare. Recomandăm stabilirea acestui parametru la valori mai mari pentru modelele cu un context mai amplu.",
+        },
+      },
     },
   },
   recorded: {

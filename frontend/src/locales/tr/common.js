@@ -64,6 +64,11 @@ const TRANSLATIONS = {
     search: "Ara",
     username_requirements:
       "Kullanıcı adı 2-32 karakter uzunluğunda olmalı, küçük harfle başlamalı ve yalnızca küçük harfler, rakamlar, alt çizgiler, tireler ve noktalar içermelidir.",
+    on: "On",
+    none: "Yok",
+    stopped: "Durdu",
+    loading: "Yükleniyor",
+    refresh: "Tazelemek",
   },
   settings: {
     title: "Instance Ayarları",
@@ -176,15 +181,18 @@ const TRANSLATIONS = {
       title: "Sohbet Modu",
       chat: {
         title: "Sohbet",
-        "desc-start": "LLM'nin genel bilgisiyle yanıtlar sunar",
-        and: "ve",
-        "desc-end": "bulunan belge bağlamını ekler.",
+        description:
+          "LLM'nin genel bilgisi ve bulunan doküman bağlamıyla cevaplar sunacaktır. Araçları kullanmak için @agent komutunu kullanmanız gerekecektir.",
       },
       query: {
         title: "Sorgu",
-        "desc-start": "yanıtları",
-        only: "sadece",
-        "desc-end": "belge bağlamı bulunduğunda sunar.",
+        description:
+          "yalnızca doküman bağlamı bulunursa yanıtlar sağlayacaktır.<b>İhtiyaç duyacağınız araçları kullanmak için @agent komutunu kullanmanız gerekecektir.</b>",
+      },
+      automatic: {
+        title: "Oto",
+        description:
+          "<br />Varsa, model ve sağlayıcı tarafından desteklenen yerel araçları otomatik olarak kullanacaktır. Yerel araç kullanımı desteklenmiyorsa, araçları kullanmak için @agent komutunu kullanmanız gerekecektir.",
       },
     },
     history: {
@@ -314,6 +322,45 @@ const TRANSLATIONS = {
       },
       default_skill:
         "Varsayılan olarak bu özellik etkinleştirilmiştir, ancak ajanın kullanmasına izin vermek istemiyorsanız, bu özelliği devre dışı bırakabilirsiniz.",
+    },
+    mcp: {
+      title: "MCP Sunucuları",
+      "loading-from-config": "MCP sunarlarını yapılandırma dosyasından yükleme",
+      "learn-more": "MCP sunucuları hakkında daha fazla bilgi edinin.",
+      "no-servers-found": "Hiçbir MCP sunucusu bulunamadı.",
+      "tool-warning":
+        "En iyi performansı elde etmek için, gereksiz araçları devre dışı bırakarak bağlamı korumayı düşünebilirsiniz.",
+      "stop-server": "MCP sunucusunu durdurun",
+      "start-server": "MCP sunucusunu başlatın",
+      "delete-server": "MCP sunucusunu sil",
+      "tool-count-warning":
+        "Bu MCP sunucusu, <b> özelliklerini etkinleştirmiş durumda ve bu özellikler her etkileşimde bağlamı tüketebilir. </b> Bağlamı korumak için istenmeyen özellikleri devre dışı bırakmayı düşünebilirsiniz.",
+      "startup-command": "Başlangıç Komutu",
+      command: "Emir",
+      arguments: "Tartışmalar",
+      "not-running-warning":
+        "Bu MCP sunucusu çalışmıyor – olabilir ki durdurulmuş veya başlatma sırasında bir hata yaşıyor olabilir.",
+      "tool-call-arguments": "Araç çağrı argümanları",
+      "tools-enabled": "gerektiren araçlar etkinleştirildi",
+    },
+    settings: {
+      title: "Ajant Yetenek Ayarları",
+      "max-tool-calls": {
+        title: "Her yanıt için maksimum araç çağrı sayısı",
+        description:
+          "Bir ajantın, tek bir yanıt oluşturmak için zincirlemesini kullanabileceği maksimum araç sayısı. Bu, araçların kontrolsüz bir şekilde çağrılmasını ve sonsuz döngülerin oluşmasını engeller.",
+      },
+      "intelligent-skill-selection": {
+        title: "Akıllı Becerilerin Seçimi",
+        "beta-badge": "Beta",
+        description:
+          'Her sorgu için sınırsız araç kullanımı ve "cut token" kullanımını %80\'e kadar azaltma imkanı sunar — AnythingLLM, her talep için doğru becerileri otomatik olarak seçer.',
+        "max-tools": {
+          title: "Max Araçları",
+          description:
+            "Her sorgu için seçilebilecek maksimum araç sayısı. Daha büyük bağlam modelleri için bu değeri daha yüksek bir değere ayarlamayı öneririz.",
+        },
+      },
     },
   },
   recorded: {
@@ -594,6 +641,8 @@ const TRANSLATIONS = {
       remove_selected: "Seçilenleri Kaldır",
       costs: "*Gömmeler için tek seferlik maliyet",
       save_embed: "Kaydet ve Göm",
+      "total-documents_one": "{{count}} belgesi",
+      "total-documents_other": "{{count}} belgeleri",
     },
     upload: {
       "processor-offline": "Belge İşleyici Kullanılamıyor",

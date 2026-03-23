@@ -64,6 +64,11 @@ const TRANSLATIONS = {
     search: "Buscar",
     username_requirements:
       "El nombre de usuario debe tener entre 2 y 32 caracteres, comenzar con una letra minúscula y solo contener letras minúsculas, números, guiones bajos, guiones y puntos.",
+    on: "Sobre",
+    none: "Ninguno",
+    stopped: "Parado",
+    loading: "Cargando",
+    refresh: "Renovar; revitalizar",
   },
   settings: {
     title: "Ajustes de la instancia",
@@ -185,16 +190,18 @@ const TRANSLATIONS = {
       title: "Modo de chat",
       chat: {
         title: "Chat",
-        "desc-start":
-          "proporcionará respuestas con el conocimiento general del LLM",
-        and: "y",
-        "desc-end": "el contexto del documento que se encuentre.",
+        description:
+          'proporcionará respuestas basándose en el conocimiento general del LLM y en el contexto del documento que se encuentre disponible. Para utilizar las herramientas, deberá utilizar el comando "@agent".',
       },
       query: {
         title: "Consulta",
-        "desc-start": "proporcionará respuestas",
-        only: "solo",
-        "desc-end": "si se encuentra contexto del documento.",
+        description:
+          'proporcionará respuestas <b>solo</b> si se encuentra el contexto del documento.<br />Deberá utilizar el comando "@agent" para utilizar las herramientas.',
+      },
+      automatic: {
+        title: "Coche",
+        description:
+          'Utilizará automáticamente las herramientas si el modelo y el proveedor admiten la llamada a herramientas nativas. Si no se admiten las herramientas nativas, deberá utilizar el comando "@agent" para utilizar las herramientas.',
       },
     },
     history: {
@@ -327,6 +334,46 @@ const TRANSLATIONS = {
       },
       default_skill:
         "Por defecto, esta función está activada, pero puede desactivarla si no desea que esté disponible para el agente.",
+    },
+    mcp: {
+      title: "Servidores MCP",
+      "loading-from-config":
+        "Cargar servidores MCP desde el archivo de configuración",
+      "learn-more": "Aprenda más sobre los servidores MCP.",
+      "no-servers-found": "No se encontraron servidores MCP.",
+      "tool-warning":
+        "Para obtener el mejor rendimiento, considere desactivar las herramientas innecesarias para conservar el contexto.",
+      "stop-server": "Detener el servidor MCP",
+      "start-server": "Iniciar el servidor MCP",
+      "delete-server": "Eliminar el servidor MCP",
+      "tool-count-warning":
+        "Este servidor de MCP tiene <b> herramientas habilitadas</b> que consumirán contexto en cada conversación.<br /> Considere desactivar las herramientas no deseadas para ahorrar contexto.",
+      "startup-command": "Comando inicial",
+      command: "Órden",
+      arguments: "Argumentos",
+      "not-running-warning":
+        "Este servidor de MCP no está funcionando; podría estar detenido o estar experimentando un error al iniciarse.",
+      "tool-call-arguments": "Argumentos de llamada de función",
+      "tools-enabled": "herramientas habilitadas",
+    },
+    settings: {
+      title: "Configuración de habilidades del agente",
+      "max-tool-calls": {
+        title: "Número máximo de llamadas a funciones Max Tool por respuesta",
+        description:
+          "El número máximo de herramientas que un agente puede encadenar para generar una única respuesta. Esto evita que se realicen llamadas a herramientas de forma descontrolada y que se produzcan bucles infinitos.",
+      },
+      "intelligent-skill-selection": {
+        title: "Selección inteligente de habilidades",
+        "beta-badge": "Versión preliminar",
+        description:
+          "Permite el uso ilimitado de herramientas y reduce el consumo de tokens hasta en un 80% por consulta: AnythingLLM selecciona automáticamente las habilidades adecuadas para cada solicitud.",
+        "max-tools": {
+          title: "Herramientas Max",
+          description:
+            "El número máximo de herramientas que se pueden seleccionar para cada consulta. Recomendamos establecer este valor en un número más alto para modelos con un contexto más amplio.",
+        },
+      },
     },
   },
   recorded: {
@@ -715,6 +762,8 @@ const TRANSLATIONS = {
       remove_selected: "Eliminar seleccionados",
       costs: "*Costo único por incrustaciones",
       save_embed: "Guardar e incrustar",
+      "total-documents_one": "{{count}} documento",
+      "total-documents_other": "{{count}} documentos",
     },
     upload: {
       "processor-offline": "Procesador de documentos no disponible",

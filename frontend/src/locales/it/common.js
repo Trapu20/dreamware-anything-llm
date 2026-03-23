@@ -64,6 +64,11 @@ const TRANSLATIONS = {
     search: "Cerca",
     username_requirements:
       "Il nome utente deve essere compreso tra 2 e 32 caratteri, iniziare con una lettera minuscola e contenere solo lettere minuscole, numeri, trattini bassi, trattini e punti.",
+    on: "Su",
+    none: "Nessuno",
+    stopped: "Arrestato",
+    loading: "Caricamento",
+    refresh: "Rinfresca",
   },
   settings: {
     title: "Impostazioni istanza",
@@ -178,15 +183,18 @@ const TRANSLATIONS = {
       title: "Modalità chat",
       chat: {
         title: "Chat",
-        "desc-start": "fornirà risposte con la conoscenza generale dell'LLM",
-        and: "e",
-        "desc-end": "contesto documentale associato.",
+        description:
+          "fornirà risposte basate sulla conoscenza generale del modello LLM e sul contesto del documento <b>e</b> che è disponibile.<br />Per utilizzare gli strumenti, sarà necessario utilizzare il comando @agent.",
       },
       query: {
         title: "Query",
-        "desc-start": "fornirà risposte",
-        only: "solo",
-        "desc-end": "se sarà presente un contesto documentale",
+        description:
+          'fornirà risposte solo se il contesto del documento viene trovato. Per utilizzare gli strumenti, sarà necessario utilizzare il comando "@agent".',
+      },
+      automatic: {
+        title: "Auto",
+        description:
+          'utilizzerà automaticamente gli strumenti se il modello e il fornitore supportano la chiamata nativa agli strumenti. <br /> Se la chiamata nativa agli strumenti non è supportata, sarà necessario utilizzare il comando "@agent" per utilizzare gli strumenti.',
       },
     },
     history: {
@@ -319,6 +327,46 @@ const TRANSLATIONS = {
       },
       default_skill:
         "Per impostazione predefinita, questa funzionalità è attiva, ma è possibile disabilitarla se non si desidera che sia disponibile per l'agente.",
+    },
+    mcp: {
+      title: "Server MCP",
+      "loading-from-config":
+        "Caricamento dei server MCP da file di configurazione",
+      "learn-more": "Scopri di più sui server MCP.",
+      "no-servers-found": "Nessun server MCP trovato.",
+      "tool-warning":
+        "Per ottenere le migliori prestazioni, si consiglia di disattivare gli strumenti non necessari per preservare il contesto.",
+      "stop-server": "Arrestare il server MCP",
+      "start-server": "Avvia il server MCP",
+      "delete-server": "Elimina il server MCP",
+      "tool-count-warning":
+        "Questo server MCP ha <b> alcune funzionalità abilitate</b> che consumano contesto in ogni chat.<br /> Considera di disabilitare le funzionalità indesiderate per preservare il contesto.",
+      "startup-command": "Comando di avvio",
+      command: "Ordine",
+      arguments: "Argomentazioni",
+      "not-running-warning":
+        "Questo server MCP non è attivo; potrebbe essere stato interrotto o potrebbe essere in fase di avvio con errori.",
+      "tool-call-arguments": "Argomenti delle chiamate di funzioni",
+      "tools-enabled": "strumenti abilitati",
+    },
+    settings: {
+      title: "Impostazioni delle competenze dell'agente",
+      "max-tool-calls": {
+        title: "Numero massimo di chiamate a funzioni Max Tool per risposta",
+        description:
+          "Il numero massimo di strumenti che un agente può concatenare per generare una singola risposta. Questo previene chiamate eccessive agli strumenti e cicli infiniti.",
+      },
+      "intelligent-skill-selection": {
+        title: "Selezione intelligente delle competenze",
+        "beta-badge": "Versione beta",
+        description:
+          "Abilita l'uso illimitato degli strumenti e riduci l'utilizzo dei token fino all'80% per ogni query — AnythingLLM seleziona automaticamente le competenze più appropriate per ogni richiesta.",
+        "max-tools": {
+          title: "Max Tools",
+          description:
+            "Il numero massimo di strumenti da selezionare per ogni query. Si raccomanda di impostare questo valore su un valore più elevato per i modelli con un contesto più ampio.",
+        },
+      },
     },
   },
   recorded: {
@@ -600,6 +648,8 @@ const TRANSLATIONS = {
       remove_selected: "Elimina gli elementi selezionati",
       costs: "*Costo una tantum per le embedding",
       save_embed: "Salva e incorpora",
+      "total-documents_one": "{{count}} documento",
+      "total-documents_other": "{{count}} documenti",
     },
     upload: {
       "processor-offline": "Il processore di documenti non è disponibile.",

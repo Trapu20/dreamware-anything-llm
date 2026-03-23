@@ -64,6 +64,11 @@ const TRANSLATIONS = {
     search: "Søg",
     username_requirements:
       "Brugernavnet skal bestå af 2-32 tegn, starte med et lille bogstav, og kun indeholde små bogstaver, tal, understregninger, bindestreger og punktummer.",
+    on: "Om",
+    none: "Ingen",
+    stopped: "Stoppet",
+    loading: "Indlæsning",
+    refresh: "Opfrisk",
   },
   settings: {
     title: "Instansindstillinger",
@@ -177,15 +182,18 @@ const TRANSLATIONS = {
       title: "Chat-tilstand",
       chat: {
         title: "Chat",
-        "desc-start": "vil give svar baseret på LLM'ens generelle viden",
-        and: "og",
-        "desc-end": "dokumentkontekst der findes.",
+        description:
+          'vil give svar baseret på LLM\'s generelle viden og den relevante kontekst fra dokumentet. Du skal bruge kommandoen "@agent" for at bruge værktøjerne.',
       },
       query: {
         title: "Forespørgsel",
-        "desc-start": "vil give svar",
-        only: "kun",
-        "desc-end": "hvis dokumentkontekst findes.",
+        description:
+          "vil give svar <b>kun</b>, hvis dokumentets kontekst er fundet.<br />Du skal bruge kommandoen @agent for at bruge værktøjerne.",
+      },
+      automatic: {
+        title: "Bil",
+        description:
+          'vil automatisk bruge værktøjer, hvis modellen og leverandøren understøtter native værktøjskald.<br />Hvis native værktøjskald ikke understøttes, skal du bruge kommandoen "@agent" for at bruge værktøjer.',
       },
     },
     history: {
@@ -317,6 +325,45 @@ const TRANSLATIONS = {
       },
       default_skill:
         "Som standard er denne funktion aktiveret, men du kan deaktivere den, hvis du ikke ønsker, at den skal være tilgængelig for agenten.",
+    },
+    mcp: {
+      title: "MCP-servere",
+      "loading-from-config": "Indlæsning af MCP-servere fra konfigurationsfil",
+      "learn-more": "Lær mere om MCP-servere.",
+      "no-servers-found": "Ingen MCP-servere fundet",
+      "tool-warning":
+        "For den bedste ydeevne, overvej at deaktivere unødvendige værktøjer for at bevare konteksten.",
+      "stop-server": "Afbryd MCP-serveren",
+      "start-server": "Start MCP-serveren",
+      "delete-server": "Slet MCP-serveren",
+      "tool-count-warning":
+        "Denne MCP-server har <b>aktiverede</b>værktøjer, som vil forbruge kontekst i hvert chat-session.<br />Overvej at deaktivere uønskede værktøjer for at spare på konteksten.",
+      "startup-command": "Startkommando",
+      command: "Instruktion",
+      arguments: "Argumenter",
+      "not-running-warning":
+        "Denne MCP-server kører ikke – den kan være stoppet, eller den kan opleve fejl ved opstart.",
+      "tool-call-arguments": "Argumenter til værktøjsopkald",
+      "tools-enabled": "værktøjer er aktiveret",
+    },
+    settings: {
+      title: "Indstillinger for agenters færdigheder",
+      "max-tool-calls": {
+        title: "Maksimalt antal anmodninger pr. svar",
+        description:
+          "Det maksimale antal værktøjer, en agent kan kæde sammen for at generere et enkelt svar. Dette forhindrer, at værktøjer kaldes unødvendigt, og undgår uendelige løkker.",
+      },
+      "intelligent-skill-selection": {
+        title: "Intelligent valg af færdigheder",
+        "beta-badge": "Beta",
+        description:
+          "Aktiver ubegrænsede værktøjer og reducer brugen af cut-tokens med op til 80 % pr. forespørgsel – AnythingLLM vælger automatisk de relevante færdigheder til hver forespørgsel.",
+        "max-tools": {
+          title: "Max Tools",
+          description:
+            "Det maksimale antal værktøjer, der kan vælges for hver forespørgsel. Vi anbefaler at indstille dette til højere værdier for større modeller med mere kontekst.",
+        },
+      },
     },
   },
   recorded: {
@@ -597,6 +644,8 @@ const TRANSLATIONS = {
       remove_selected: "Fjern valgte",
       costs: "*Engangsomkostning for indlejringer",
       save_embed: "Gem og indlejr",
+      "total-documents_one": "{{count}} dokument",
+      "total-documents_other": "{{count}} dokumenter",
     },
     upload: {
       "processor-offline": "Dokumentbehandler utilgængelig",

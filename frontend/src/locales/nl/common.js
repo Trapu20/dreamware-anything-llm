@@ -64,6 +64,11 @@ const TRANSLATIONS = {
     search: "Zoeken",
     username_requirements:
       "De gebruikersnaam moet 2-32 tekens bevatten, beginnen met een kleine letter en mag alleen kleine letters, cijfers, underscores, koppeltekens en punten bevatten.",
+    on: "Over",
+    none: "Geen",
+    stopped: "Gestopt",
+    loading: "Laad",
+    refresh: "Verfrissen",
   },
   settings: {
     title: "Instelling Instanties",
@@ -176,15 +181,18 @@ const TRANSLATIONS = {
       title: "Chatmodus",
       chat: {
         title: "Chat",
-        "desc-start": "zal antwoorden geven met de algemene kennis van de LLM",
-        and: "en",
-        "desc-end": "documentcontext die wordt gevonden.",
+        description:
+          "zal antwoorden geven met de algemene kennis van het LLM en de relevante context uit het document. U moet het `@agent`-commando gebruiken om tools te gebruiken.",
       },
       query: {
         title: "Query",
-        "desc-start": "zal antwoorden geven",
-        only: "alleen",
-        "desc-end": "als documentcontext wordt gevonden.",
+        description:
+          "zal antwoorden <b>alleen</b> geven, indien de context van het document wordt gevonden.<br />U moet het commando @agent gebruiken om tools te gebruiken.",
+      },
+      automatic: {
+        title: "Auto",
+        description:
+          "zal automatisch tools gebruiken als het model en de provider native tool-aanroepen ondersteunen.<br />Als native tooling niet wordt ondersteund, moet u het `@agent`-commando gebruiken om tools te gebruiken.",
       },
     },
     history: {
@@ -315,6 +323,45 @@ const TRANSLATIONS = {
       },
       default_skill:
         "Standaard is deze functie ingeschakeld, maar u kunt deze uitschakelen als u niet wilt dat de agent er gebruik van kan maken.",
+    },
+    mcp: {
+      title: "MCP-servers",
+      "loading-from-config": "MCP-servers laden vanuit een configuratiebestand",
+      "learn-more": "Meer informatie over MCP-servers.",
+      "no-servers-found": "Geen MCP-servers gevonden.",
+      "tool-warning":
+        "Om de beste prestaties te garanderen, overweeg dan om ongewenste tools uit te schakelen om de context te behouden.",
+      "stop-server": "Stoppen met de MCP-server",
+      "start-server": "Start de MCP-server",
+      "delete-server": "Verwijder de MCP-server",
+      "tool-count-warning":
+        "Deze MCP-server heeft <b> bepaalde tools ingeschakeld</b> die context gebruiken in elke chat. <br /> Overweeg om ongewenste tools uit te schakelen om context te besparen.",
+      "startup-command": "Startcommando",
+      command: "Instructie",
+      arguments: "Argumenten",
+      "not-running-warning":
+        "Deze MCP-server is niet actief – deze kan zijn uitgeschakeld of een fout ervaren tijdens het opstarten.",
+      "tool-call-arguments": "Argumenten voor het aanroepen van een tool",
+      "tools-enabled": "hulpmiddelen zijn geactiveerd",
+    },
+    settings: {
+      title: "Instellingen voor vaardigheden van agenten",
+      "max-tool-calls": {
+        title: "Maximaal aantal tool-aanroepen per antwoord",
+        description:
+          "Het maximale aantal tools dat een agent kan gebruiken om een enkele reactie te genereren. Dit voorkomt dat tools onbeperkt worden aangeroepen en dat er oneindige loops ontstaan.",
+      },
+      "intelligent-skill-selection": {
+        title: "Intelligente selectie van vaardigheden",
+        "beta-badge": "Betaling",
+        description:
+          'Maak gebruik van een onbeperkt aantal tools en verminder het gebruik van "cut tokens" met tot wel 80% per query – AnythingLLM selecteert automatisch de juiste vaardigheden voor elke vraag.',
+        "max-tools": {
+          title: "Max Tools",
+          description:
+            "Het maximale aantal tools dat kan worden geselecteerd voor elke query. Wij raden aan om deze waarde hoger in te stellen voor modellen met een grotere context.",
+        },
+      },
     },
   },
   recorded: {
@@ -596,6 +643,8 @@ const TRANSLATIONS = {
       remove_selected: "Verwijderen Geselecteerd",
       costs: "*Eenmalige kosten voor embedden",
       save_embed: "Opslaan en embedden",
+      "total-documents_one": "{{count}} document",
+      "total-documents_other": "{{count}} documenten",
     },
     upload: {
       "processor-offline": "Documentverwerker niet beschikbaar",

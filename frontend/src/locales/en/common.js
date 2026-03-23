@@ -59,9 +59,14 @@ const TRANSLATIONS = {
     optional: "Optional",
     yes: "Yes",
     no: "No",
+    on: "On",
+    none: "None",
+    stopped: "Stopped",
     search: "Search",
     username_requirements:
       "Username must be 2-32 characters, start with a lowercase letter, and only contain lowercase letters, numbers, underscores, hyphens, and periods.",
+    loading: "Loading",
+    refresh: "Refresh",
   },
   home: {
     welcome: "Welcome",
@@ -188,17 +193,20 @@ const TRANSLATIONS = {
     },
     mode: {
       title: "Chat mode",
+      automatic: {
+        title: "Auto",
+        description:
+          "will automatically use tools if the model and provider support native tool calling.<br />If native tooling is not supported, you will need to use the @agent command to use tools.",
+      },
       chat: {
         title: "Chat",
-        "desc-start": "will provide answers with the LLM's general knowledge",
-        and: "and",
-        "desc-end": "document context that is found.",
+        description:
+          "will provide answers with the LLM's general knowledge <b>and</b> document context that is found.<br />You will need to use the @agent command to use tools.",
       },
       query: {
         title: "Query",
-        "desc-start": "will provide answers",
-        only: "only",
-        "desc-end": "if document context is found.",
+        description:
+          "will provide answers <b>only</b> if document context is found.<br />You will need to use the @agent command to use tools.",
       },
     },
     history: {
@@ -328,6 +336,45 @@ const TRANSLATIONS = {
       },
       default_skill:
         "By default, this skill is enabled, but you can disable it if you don't want it to be available to the agent.",
+    },
+    mcp: {
+      title: "MCP Servers",
+      "loading-from-config": "Loading MCP Servers from configuration file",
+      "learn-more": "Learn more about MCP Servers.",
+      "no-servers-found": "No MCP servers found",
+      "tool-warning":
+        "For the best performance, consider disabling unwanted tools to conserve context.",
+      "tools-enabled": "tools enabled",
+      "stop-server": "Stop MCP Server",
+      "start-server": "Start MCP Server",
+      "delete-server": "Delete MCP Server",
+      "tool-count-warning":
+        "This MCP server has <b>{{count}} tools enabled</b> that will consume context in every chat.<br />Consider disabling unwanted tools to conserve context.",
+      "startup-command": "Startup Command",
+      command: "Command",
+      arguments: "Arguments",
+      "not-running-warning":
+        "This MCP server is not running - it may be stopped or experiencing an error on startup.",
+      "tool-call-arguments": "Tool call arguments",
+    },
+    settings: {
+      title: "Agent Skill Settings",
+      "max-tool-calls": {
+        title: "Max Tool Calls Per Response",
+        description:
+          "The maximum number of tools an agent can chain to generate a single response. This prevents runaway tool calls and infinite loops.",
+      },
+      "intelligent-skill-selection": {
+        title: "Intelligent Skill Selection",
+        "beta-badge": "Beta",
+        description:
+          "Enable unlimited tools and cut token usage by up to 80% per query — AnythingLLM automatically selects the right skills for every prompt.",
+        "max-tools": {
+          title: "Max Tools",
+          description:
+            "The maximum number of tools to select for each query. We recommend setting this to higher values for larger context models.",
+        },
+      },
     },
   },
   recorded: {
@@ -715,6 +762,8 @@ const TRANSLATIONS = {
     directory: {
       "my-documents": "My Documents",
       "new-folder": "New Folder",
+      "total-documents_one": "{{count}} document",
+      "total-documents_other": "{{count}} documents",
       "search-document": "Search for document",
       "no-documents": "No Documents",
       "move-workspace": "Move to Workspace",
