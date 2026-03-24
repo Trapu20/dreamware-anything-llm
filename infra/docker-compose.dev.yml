@@ -7,10 +7,11 @@
 #   docker compose -f docker-compose.dev.yml up -d
 #
 # Then seed the MCP config (one-time):
-#   RIS_MCP_URL=http://localhost:3000/mcp ./seed-mcp-config.sh ../server/storage
+#   RIS_MCP_URL=http://localhost:3100/mcp ./seed-mcp-config.sh ../server/storage
 #
-# The RIS MCP sidecar will be available at http://localhost:3000
-# Health check: curl http://localhost:3000/health
+# The RIS MCP sidecar will be available at http://localhost:3100
+# Health check: curl http://localhost:3100/health
+# NOTE: Port 3000 is reserved for the Vite dev server (frontend).
 
 services:
   ris-mcp:
@@ -19,9 +20,9 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "3100:3100"
     environment:
-      - PORT=3000
+      - PORT=3100
       - NODE_ENV=production
     healthcheck:
       test: ["CMD", "node", "/usr/local/lib/healthcheck.js"]

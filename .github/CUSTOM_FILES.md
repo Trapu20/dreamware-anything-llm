@@ -56,6 +56,7 @@ Upstream files with modifications are listed under **Modified Files**.
 | `infra/ris-mcp/README.md` | Documentation for the RIS MCP server integration | 2026-03-24 |
 | `infra/seed-mcp-config.sh` | Helper script: seed AnythingLLM's MCP config with the RIS server | 2026-03-24 |
 | `infra/docker-compose.dev.yml` | Local dev compose: RIS MCP sidecar on localhost:3000 | 2026-03-24 |
+| `Makefile` | Local dev orchestration: setup, up/down, seed-mcp, dev, clean | 2026-03-24 |
 
 ## Modified Files (upstream files with Dreamware changes)
 
