@@ -36,8 +36,12 @@ jobs:
 
             cd /opt/dreamanything/test
 
-            echo "==> Pulling latest image..."
-            docker compose pull app ris-mcp
+            echo "==> Updating compose file..."
+            curl -fsSL "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/infra/docker-compose.test.yml" \
+              -o docker-compose.yml
+
+            echo "==> Pulling latest images..."
+            docker compose pull
 
             echo "==> Starting updated container..."
             docker compose up -d --no-build --remove-orphans
