@@ -7,6 +7,9 @@ FROM node:20-slim
 # Install the RIS MCP server globally
 RUN npm install -g ris-mcp-ts@1.1.3 && npm cache clean --force
 
+# Copy healthcheck script
+COPY healthcheck.js /usr/local/lib/healthcheck.js
+
 ENV PORT=3000
 ENV NODE_ENV=production
 EXPOSE 3000

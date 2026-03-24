@@ -29,7 +29,7 @@ services:
       - PORT=3000
       - NODE_ENV=production
     healthcheck:
-      test: ["CMD-SHELL", "node -e \"fetch('http://localhost:3000/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))\""]
+      test: ["CMD", "node", "/usr/local/lib/healthcheck.js"]
       interval: 30s
       timeout: 10s
       retries: 3

@@ -49,20 +49,22 @@ if command -v jq &>/dev/null; then
     }' "${CONFIG_FILE}" > "${CONFIG_FILE}.tmp" && mv "${CONFIG_FILE}.tmp" "${CONFIG_FILE}"
 
 elif command -v node &>/dev/null; then
-  node -e "
+  CONFIG_FILE="${CONFIG_FILE}" RIS_MCP_URL="${RIS_MCP_URL}" node -e "
     const fs = require('fs');
-    const cfg = JSON.parse(fs.readFileSync('${CONFIG_FILE}', 'utf8'));
+    const configFile = process.env.CONFIG_FILE;
+    const risMcpUrl = process.env.RIS_MCP_URL;
+    const cfg = JSON.parse(fs.readFileSync(configFile, 'utf8'));
     if (cfg.mcpServers && cfg.mcpServers.ris) {
       console.log('    RIS MCP server already configured — skipping.');
       process.exit(0);
     }
     cfg.mcpServers = cfg.mcpServers || {};
     cfg.mcpServers.ris = {
-      url: '${RIS_MCP_URL}',
+      url: risMcpUrl,
       type: 'streamable',
       anythingllm: { autoStart: true }
     };
-    fs.writeFileSync('${CONFIG_FILE}', JSON.stringify(cfg, null, 2));
+    fs.writeFileSync(configFile, JSON.stringify(cfg, null, 2));
     console.log('    Added RIS MCP server to config.');
   "
 else
