@@ -68,7 +68,7 @@ elif command -v node &>/dev/null; then
     console.log('    Added RIS MCP server to config.');
   "
 else
-  echo "ERROR: Neither jq nor node found. Cannot seed MCP config." >&2
+  echo "ERROR: Neither jq nor node found. Install jq (apt-get install jq) or node to seed MCP config." >&2
   exit 1
 fi
 

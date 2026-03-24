@@ -7,5 +7,6 @@ const port = process.env.PORT || 3000;
 fetch(`http://localhost:${port}/health`)
   .then((r) => {
     if (!r.ok) process.exit(1);
+    process.exit(0);
   })
   .catch(() => process.exit(1));
