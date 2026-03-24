@@ -1,0 +1,32 @@
+# Local development stack — RIS MCP sidecar only.
+#
+# Use this alongside `yarn dev:all` to test MCP integration locally.
+#
+# Usage:
+#   cd infra
+#   docker compose -f docker-compose.dev.yml up -d
+#
+# Then seed the MCP config (one-time):
+#   RIS_MCP_URL=http://localhost:3100/mcp ./seed-mcp-config.sh ../server/storage
+#
+# The RIS MCP sidecar will be available at http://localhost:3100
+# Health check: curl http://localhost:3100/health
+# NOTE: Port 3000 is reserved for the Vite dev server (frontend).
+
+services:
+  ris-mcp:
+    build:
+      context: ./ris-mcp
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    environment:
+      - PORT=3100
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "node", "/usr/local/lib/healthcheck.js"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s

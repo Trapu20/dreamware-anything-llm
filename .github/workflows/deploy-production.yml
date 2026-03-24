@@ -40,7 +40,7 @@ jobs:
             cp .env ".env.backup.$(date +%Y%m%d%H%M%S)"
 
             echo "==> Pulling latest image..."
-            docker compose pull app
+            docker compose pull app ris-mcp
 
             echo "==> Starting updated container..."
             docker compose up -d --no-build --remove-orphans
