@@ -19,12 +19,16 @@ fi
 echo "==> Bootstrapping $ENV server..."
 
 # ── System tools ──────────────────────────────────────────────────────────────
-echo "==> Installing sqlite3 (needed by sync-settings workflow)..."
-if ! command -v sqlite3 &>/dev/null; then
-  apt-get update && apt-get install -y sqlite3
-else
-  echo "  sqlite3 already installed — skipping."
-fi
+echo "==> Installing system tools..."
+apt-get update
+for tool in sqlite3 jq; do
+  if ! command -v "$tool" &>/dev/null; then
+    apt-get install -y "$tool"
+    echo "  Installed $tool."
+  else
+    echo "  $tool already installed — skipping."
+  fi
+done
 
 # ── Docker ────────────────────────────────────────────────────────────────────
 echo "==> Installing Docker..."

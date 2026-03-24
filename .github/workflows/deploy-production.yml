@@ -47,27 +47,9 @@ jobs:
             docker compose pull
 
             echo "==> Seeding RIS MCP config..."
-            python3 -c "
-import json, os
-config_path = '/data/dreamanything/production/storage/plugins/anythingllm_mcp_servers.json'
-os.makedirs(os.path.dirname(config_path), exist_ok=True)
-try:
-    with open(config_path) as f:
-        cfg = json.load(f)
-except (FileNotFoundError, json.JSONDecodeError, ValueError):
-    cfg = {'mcpServers': {}}
-if 'ris' in cfg.get('mcpServers', {}):
-    print('    RIS MCP already configured — skipping.')
-else:
-    cfg.setdefault('mcpServers', {})['ris'] = {
-        'url': 'http://ris-mcp:3000/mcp',
-        'type': 'streamable',
-        'anythingllm': {'autoStart': True}
-    }
-    with open(config_path, 'w') as f:
-        json.dump(cfg, f, indent=2)
-    print('    Added RIS MCP server to config.')
-"
+            curl -fsSL "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/infra/seed-mcp-config.sh" \
+              -o /tmp/seed-mcp-config.sh
+            bash /tmp/seed-mcp-config.sh /data/dreamanything/production/storage
             chown -R 1000:1000 /data/dreamanything/production/storage/plugins
 
             echo "==> Starting updated container..."
