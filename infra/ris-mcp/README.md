@@ -38,7 +38,111 @@ Once configured, your AnythingLLM agents can:
 Both containers share a Docker network. The RIS MCP sidecar is **not exposed**
 to the public internet — only AnythingLLM can reach it.
 
-## Quick Start
+## Local Development
+
+Test the RIS MCP integration on your local machine before deploying.
+
+### Prerequisites
+
+- Docker installed and running
+- Repository cloned and bootstrapped (`yarn setup`)
+
+### Step 1 — Start the RIS MCP sidecar
+
+```bash
+cd infra
+docker compose -f docker-compose.dev.yml up -d
+```
+
+This builds and starts the RIS MCP container locally, exposed on **http://localhost:3000**.
+
+Verify it's running:
+
+```bash
+curl http://localhost:3000/health
+# → {"status":"ok","service":"ris-mcp","activeSessions":0}
+```
+
+### Step 2 — Seed the MCP config
+
+Run the seed script once to register the RIS MCP server in AnythingLLM's
+local storage. Note the `localhost` URL (not `ris-mcp`):
+
+```bash
+cd infra
+RIS_MCP_URL=http://localhost:3000/mcp ./seed-mcp-config.sh ../server/storage
+```
+
+This creates `server/storage/plugins/anythingllm_mcp_servers.json` with:
+
+```json
+{
+  "mcpServers": {
+    "ris": {
+      "url": "http://localhost:3000/mcp",
+      "type": "streamable",
+      "anythingllm": {
+        "autoStart": true
+      }
+    }
+  }
+}
+```
+
+### Step 3 — Start AnythingLLM
+
+In a separate terminal, start the development servers:
+
+```bash
+yarn dev:all
+```
+
+Or in three separate terminals:
+
+```bash
+yarn dev:server      # http://localhost:3001
+yarn dev:collector   # http://localhost:8888
+yarn dev:frontend    # http://localhost:5173
+```
+
+### Step 4 — Verify in the UI
+
+1. Open **http://localhost:5173** in your browser
+2. Go to **Settings → Agents → MCP Servers**
+3. Click **Refresh** — the `ris` server should appear as connected with 12 tools
+4. Create or open a workspace with an agent enabled
+5. Try asking: _"What does Austrian law say about tenancy rights?"_
+
+### Step 5 — Stop the sidecar
+
+```bash
+cd infra
+docker compose -f docker-compose.dev.yml down
+```
+
+### Quick test: MCP protocol check
+
+You can verify the MCP protocol directly without starting AnythingLLM:
+
+```bash
+curl -s -X POST http://localhost:3000/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "initialize",
+    "params": {
+      "protocolVersion": "2024-11-05",
+      "capabilities": {},
+      "clientInfo": { "name": "test", "version": "1.0.0" }
+    }
+  }'
+# → event: message
+# → data: {"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{"listChanged":true}},"serverInfo":{"name":"ris-mcp","version":"1.0.0"}},...}
+```
+
+## Quick Start (Server Deployment)
 
 ### 1. Deploy the sidecar (already in docker-compose)
 
