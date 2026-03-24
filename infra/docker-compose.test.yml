@@ -7,12 +7,33 @@ services:
       - "3001"
     volumes:
       - /data/dreamanything/test/storage:/app/server/storage
+    depends_on:
+      ris-mcp:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "bash", "/usr/local/bin/docker-healthcheck.sh"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 60s
+
+  # Austrian Legal Information System (RIS) — MCP sidecar
+  # Provides 12 legal search tools via Streamable HTTP transport.
+  # https://github.com/philrox/ris-mcp-ts
+  ris-mcp:
+    image: ghcr.io/trapu20/dreamware-anything-llm:ris-mcp
+    restart: unless-stopped
+    expose:
+      - "3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://localhost:3000/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))\""]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
 
   caddy:
     image: caddy:alpine

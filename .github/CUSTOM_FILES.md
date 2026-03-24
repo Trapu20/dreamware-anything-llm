@@ -51,6 +51,9 @@ Upstream files with modifications are listed under **Modified Files**.
 | `.github/workflows/promote-to-production.yml` | Manual workflow to fast-forward main to develop, triggering prod deploy | 2026-03-18 |
 | `.github/workflows/sync-settings.yml` | Sync AnythingLLM system_settings from test → prod via SSH/sqlite3 | 2026-03-18 |
 | `infra/sync-settings.sh` | Helper script: export/import/diff system_settings in a running container | 2026-03-18 |
+| `infra/ris-mcp/Dockerfile` | Dockerfile for the Austrian RIS MCP sidecar (Streamable HTTP transport) | 2026-03-24 |
+| `infra/ris-mcp/README.md` | Documentation for the RIS MCP server integration | 2026-03-24 |
+| `infra/seed-mcp-config.sh` | Helper script: seed AnythingLLM's MCP config with the RIS server | 2026-03-24 |
 
 ## Modified Files (upstream files with Dreamware changes)
 

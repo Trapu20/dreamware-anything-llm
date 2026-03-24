@@ -59,3 +59,16 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      # ===== DREAMWARE CUSTOM BEGIN =====
+      # Build and push the RIS MCP sidecar image (Austrian legal database)
+      - name: Build and push RIS MCP sidecar
+        uses: docker/build-push-action@v5
+        with:
+          context: ./infra/ris-mcp
+          file: ./infra/ris-mcp/Dockerfile
+          push: ${{ inputs.push }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:ris-mcp
+          cache-from: type=gha,scope=ris-mcp
+          cache-to: type=gha,mode=max,scope=ris-mcp
+      # ===== DREAMWARE CUSTOM END =====

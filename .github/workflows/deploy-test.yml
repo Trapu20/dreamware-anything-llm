@@ -37,7 +37,7 @@ jobs:
             cd /opt/dreamanything/test
 
             echo "==> Pulling latest image..."
-            docker compose pull app
+            docker compose pull app ris-mcp
 
             echo "==> Starting updated container..."
             docker compose up -d --no-build --remove-orphans
