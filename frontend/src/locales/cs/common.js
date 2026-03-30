@@ -4,6 +4,7 @@ const TRANSLATIONS = {
     home: {
       title: "Vítejte v",
       getStarted: "Začít",
+      welcome: "Vítejte",
     },
     llm: {
       title: "Preferovaný LLM",
@@ -52,7 +53,6 @@ const TRANSLATIONS = {
   },
   common: {
     "workspaces-name": "Název pracovního prostoru",
-    user: "Uživatel",
     selection: "Výběr modelu",
     saving: "Ukládání...",
     save: "Uložit změny",
@@ -112,6 +112,10 @@ const TRANSLATIONS = {
       trending: "Prozkoumejte aktuální trendy",
       "your-account": "Váš účet",
       "import-item": "Importovat položku",
+    },
+    channels: "Kanály",
+    "available-channels": {
+      telegram: "Telegram",
     },
   },
   login: {
@@ -197,17 +201,17 @@ const TRANSLATIONS = {
       chat: {
         title: "Chat",
         description:
-          "poskytne odpovědi založené na obecných znalostech LLM a kontextu dokumentu, který je k dispozici.<br />Pro použití nástrojů budete muset použít příkaz @agent.",
+          "bude poskytovat odpovědi založené na obecných znalostech LLM a kontextu dokumentu, který je k dispozici. Budete muset použít příkaz `@agent` pro použití nástrojů.",
       },
       query: {
         title: "Dotaz",
         description:
-          "budou poskytovat odpovědi <b>pouze</b>, pokud je nalezen kontext dokumentu.<br />Pro použití nástrojů budete muset použít příkaz @agent.",
+          "budou poskytovat odpovědi <b>pouze__, pokud je nalezen kontext dokumentu.</b>Budete muset použít příkaz @agent pro použití nástrojů.",
       },
       automatic: {
         title: "Auto",
         description:
-          "automaticky použije nástroje, pokud to podporují jak model, tak poskytovatel. Pokud není podporováno nativní volání nástrojů, budete muset použít příkaz `@agent` pro použití nástrojů.",
+          "automaticky použije nástroje, pokud to podporují model a poskytovatel. <br />Pokud není podporováno nativní volání nástrojů, budete muset použít příkaz `@agent` pro použití nástrojů.",
       },
     },
     history: {
@@ -337,6 +341,62 @@ const TRANSLATIONS = {
       },
       default_skill:
         "Výchozí nastavení je, že tato schopnost je aktivní, ale můžete ji vypnout, pokud nechcete, aby ji mohl využít zástupce.",
+      filesystem: {
+        title: "Přístup k souborovému systému",
+        description:
+          "Umožněte svému zástupci, aby četl, zapisoval, vyhledával a spravoval soubory v určeném adresáři. Podporuje úpravu souborů, navigaci v adresářích a vyhledávání obsahu.",
+        learnMore: "Zjistěte více o tom, jak tuto dovednost používat.",
+        configuration: "Konfigurace",
+        readActions: "Činnosti",
+        writeActions: "Akce",
+        warning:
+          "Přístup k souborovému systému může být nebezpečný, protože může upravovat nebo mazat soubory. Před zapnutím funkce prosím nahlédněte do dokumentace <link>dokumentace</link>.",
+        skills: {
+          "read-text-file": {
+            title: "Otevřít soubor",
+            description:
+              "Přečtěte obsah souborů (text, kód, PDF, obrázky atd.)",
+          },
+          "read-multiple-files": {
+            title: "Přečtěte více souborů",
+            description: "Přečtěte více souborů najednou",
+          },
+          "list-directory": {
+            title: "Seznam adres",
+            description: "Zobraz seznam souborů a adresářů v daném adresáři.",
+          },
+          "search-files": {
+            title: "Hledat soubory",
+            description: "Vyhledejte soubory podle názvu nebo obsahu",
+          },
+          "get-file-info": {
+            title: "Získejte informace o souboru",
+            description: "Získejte podrobné metadatumy o souborech.",
+          },
+          "write-file": {
+            title: "Vytvoř soubor",
+            description:
+              "Vytvořte nové soubory nebo přepsat stávající soubory.",
+          },
+          "edit-file": {
+            title: "Upravit soubor",
+            description:
+              "Proveďte úpravy v textových souborech na základě řádků.",
+          },
+          "create-directory": {
+            title: "Vytvořit adresář",
+            description: "Vytvořte nové adresáře",
+          },
+          "move-file": {
+            title: "Přejmenovat/přesunout soubor",
+            description: "Přesun nebo přejmenování souborů a adresářů",
+          },
+          "copy-file": {
+            title: "Zkopírovat soubor",
+            description: "Zkopírujte soubory a adresáře",
+          },
+        },
+      },
     },
     mcp: {
       title: "Servery společnosti MCP",
@@ -863,7 +923,6 @@ const TRANSLATIONS = {
     see_less: "Zobrazit méně",
     see_more: "Více",
     tools: "Nářadí",
-    browse: "Prohlédněte si",
     text_size_label: "Velikost písma",
     select_model: "Vyberte model",
     sources: "Zdroje",
@@ -876,8 +935,6 @@ const TRANSLATIONS = {
     edit: "Upravit",
     publish: "Publikovat",
     stop_generating: "Zastavte generování odpovědi",
-    pause_tts_speech_message:
-      "Zastavte čtení textu pomocí syntetické řeči z tohoto zprávy.",
     slash_commands: "Příkazy v řádku",
     agent_skills: "Dovednosti agenta",
     manage_agent_skills: "Řízení dovedností agentů",
@@ -886,6 +943,14 @@ const TRANSLATIONS = {
     start_agent_session: "Spustit relaci s agentem",
     use_agent_session_to_use_tools:
       "Můžete využít nástroje v chatu spuštěním sezení s agentem pomocí příkazu '@agent' na začátku vašeho vstupu.",
+    agent_invocation: {
+      model_wants_to_call: "Model chce zavolat",
+      approve: "Schválit",
+      reject: "Zamítnout",
+      always_allow: "Vždy dbejte na to, aby {{skillName}}",
+      tool_call_was_approved: "Žádost o použití nástroje byla schválena.",
+      tool_call_was_rejected: "Žádost o použití nástroje byla zamítnuta.",
+    },
   },
   profile_settings: {
     edit_account: "Upravit účet",
@@ -1011,6 +1076,86 @@ const TRANSLATIONS = {
           button: "Připojit se ke komunitnímu centru",
         },
       },
+    },
+  },
+  telegram: {
+    title: "Bot pro Telegram",
+    description:
+      "Propojte svůj instance AnythingLLM s aplikací Telegram, abyste mohli komunikovat se svými pracovními prostory odkudkoli.",
+    setup: {
+      step1: {
+        title: "Krok 1: Vytvořte svého Telegramového robota",
+        description:
+          "Otevřete aplikaci @BotFather na Telegramu, odešlete příkaz `/newbot` na adresu <code>@BotFather</code>, postupujte podle pokynů a zkopírujte API token.",
+        "open-botfather": "Spusťte BotFather",
+        "instruction-1": "1. Otevřete odkaz nebo naskenujte QR kód",
+        "instruction-2":
+          "2. Pošlete <code>/newbot</code> na adresu <code>@BotFather</code>",
+        "instruction-3":
+          "3. Vyberte jméno a uživatelské jméno pro svého robota.",
+        "instruction-4": "4. Zkopírujte API token, který obdržíte.",
+      },
+      step2: {
+        title: "Krok 2: Připojte svého robota",
+        description:
+          "Vložte API token, který jste obdrželi od účtu @BotFather, a vyberte výchozí pracovní prostor, se kterým bude váš bot komunikovat.",
+        "bot-token": "Token Bot",
+        "default-workspace": "Výchozí pracovní prostor",
+        "no-workspace":
+          "Nejsou k dispozici žádné pracovní prostory. Bude vytvořeno nové.",
+        connecting: "Připojování...",
+        "connect-bot": "Bot pro připojení",
+      },
+      security: {
+        title: "Doporučené bezpečnostní nastavení",
+        description:
+          "Pro zvýšení bezpečnosti, nakonfigurujte tyto nastavení v účtu @BotFather.",
+        "disable-groups": "— Zabránit přidávání bot do skupin",
+        "disable-inline":
+          "— Zabraňte použití robota při vyhledávání v reálném čase.",
+        "obscure-username":
+          "Použijte neobvyklé uživatelské jméno pro robota, abyste snížili jeho snadnou identifikovatelnost.",
+      },
+      "toast-enter-token": "Prosím, zadejte token pro robota.",
+      "toast-connect-failed": "Nedaří se připojit k botovi.",
+    },
+    connected: {
+      status: "Spojené",
+      "status-disconnected": "Neaktivní – token může být prošlý nebo neplatný",
+      "placeholder-token": "Vložte nový token pro robota...",
+      reconnect: "Znovu se spojit",
+      workspace: "Pracovní prostor",
+      "bot-link": "Odkaz na robota",
+      "voice-response": "Reakce na hlasový vstup",
+      disconnecting: "Odpojování...",
+      disconnect: "Odpojit",
+      "voice-text-only": "Pouze text",
+      "voice-mirror":
+        "Zrcadlo (odpovězte hlasem, když uživatel pošle hlasovou zprávu)",
+      "voice-always":
+        "Vždy uveďte zvukový záznam (odesílejte zvukový záznam ke každé odpovědi)",
+      "toast-disconnect-failed": "Nepodařilo se odpojit automat.",
+      "toast-reconnect-failed": "Nedaří se znovu navázat spojení s botem.",
+      "toast-voice-failed": "Nepodařilo se aktualizovat hlasový režim.",
+      "toast-approve-failed": "Neúspěšné schválení uživatele.",
+      "toast-deny-failed": "Nezucceededo v odmítnutí uživatele.",
+      "toast-revoke-failed": "Nezdařilo se zrušit uživatelskou účet.",
+    },
+    users: {
+      "pending-title": "Čeká na schválení",
+      "pending-description":
+        "Uživatelé, kteří čekají na ověření. Porovnejte kód pro spárování, který je zde uveden, s tím, který je zobrazen v jejich chatu na Telegramu.",
+      "approved-title": "Schválení uživatelů",
+      "approved-description":
+        "Uživatelé, kteří byli schváleni pro komunikaci s vaším botem.",
+      user: "Uživatel",
+      "pairing-code": "Kód pro párování",
+      "no-pending": "Žádné čekající požadavky",
+      "no-approved": "Žádní registrovaní uživatelé",
+      unknown: "Neznámé",
+      approve: "Schválit",
+      deny: "Odmítnout",
+      revoke: "Zrušit",
     },
   },
 };

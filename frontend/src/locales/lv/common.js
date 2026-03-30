@@ -4,6 +4,7 @@ const TRANSLATIONS = {
     home: {
       title: "Laipni lūgti",
       getStarted: "Sākt darbu",
+      welcome: "Laipni lūdzam",
     },
     llm: {
       title: "LLM preferences",
@@ -51,7 +52,6 @@ const TRANSLATIONS = {
   },
   common: {
     "workspaces-name": "Darba telpas nosaukums",
-    user: "Lietotājs",
     selection: "Modeļa izvēle",
     saving: "Saglabā...",
     save: "Saglabāt izmaiņas",
@@ -104,6 +104,10 @@ const TRANSLATIONS = {
       trending: "Izpētiet populārākās",
       "your-account": "Jūsu konts",
       "import-item": "Importētā prece",
+    },
+    channels: "Kanāli",
+    "available-channels": {
+      telegram: "Telegram",
     },
   },
   login: {
@@ -189,17 +193,17 @@ const TRANSLATIONS = {
       chat: {
         title: "Saruna",
         description:
-          'sniedz atbildes, izmantojot LLM vispārīgo zināšanu un dokumenta kontekstu, kas ir pieejams.<br />Lai izmantotu rīkus, jums jāizmantojat komandu "@agent".',
+          'sniedz atbildes, izmantojot LLM vispārīgo zināšanu <b> un </b> dokumenta kontekstu, kas ir pieejams. Lai izmantotu rīkus, jums jāizmantojat komandu "@agent".',
       },
       query: {
         title: "Vaicājums",
         description:
-          'sniedz atbildes <b> tikai </b>, ja dokumenta konteksts ir atrasts. <br />Lai izmantotu rīkus, jums būs jāizmanto komanda "@agent".',
+          'sniedz atbildes <b>tikai__, </b>ja dokumenta konteksts ir atrasts.<br />Lai izmantotu rīkus, jums būs jāizmanto komanda "@agent".',
       },
       automatic: {
         title: "Automobiļs",
         description:
-          'automātiski izmantos rīkus, ja modelis un sniedzējs atbalsta vietējo rīku izmantošanu. <br />Ja vietējā rīku izmantošana netiek atbalstīta, jums būs jāizmantojas "@agent" komanda, lai izmantotu rīkus.',
+          'automātiski izmantos rīkus, ja modelis un sniedzējs atbalsta vietējo rīku izmantošanu. <br />Ja vietējā rīku izmantošana nav atbalstīta, jums būs jāizmantojat "@agent" komandu, lai izmantotu rīkus.',
       },
     },
     history: {
@@ -328,6 +332,62 @@ const TRANSLATIONS = {
       },
       default_skill:
         "Par iestatījumu, šī spēja ir aktivizēta, taču jūs varat to izslēgt, ja nevēlaties, lai tā būtu pieejama aģentam.",
+      filesystem: {
+        title: "Failu sistēmas piekļuves tiesības",
+        description:
+          "Iespējiet, lai jūsu pārstāvis varētu lasīt, rakstīt, meklēt un pārvaldīt failus noteiktā direktorijā. Atbalsta failu rediģēšanu, direktoriju navigāciju un satura meklēšanu.",
+        learnMore: "Uzziniet vairāk par to, kā izmantot šo prasmi",
+        configuration: "Konfigurācija",
+        readActions: "Lasīt",
+        writeActions: "Rīcības",
+        warning:
+          "Pieejums failu sistēmai var būt bīstams, jo tas var mainīt vai dzēst failus. Lūdzu, konsultējieties ar <link>dokumentāciju</link> pirms aktivizēšanas.",
+        skills: {
+          "read-text-file": {
+            title: "Atvērt failu",
+            description:
+              "Izlasiet failu saturu (tekstus, kodu, PDF failus, attēlus utt.)",
+          },
+          "read-multiple-files": {
+            title: "Izlasīt vairākus failus",
+            description: "Lasi vairākus failus vienlaikus.",
+          },
+          "list-directory": {
+            title: "Saraksta direktorijs",
+            description:
+              "Izveidot failu un direktoru sarakstu ievietotajā mapē",
+          },
+          "search-files": {
+            title: "Meklēt failus",
+            description: "Meklē failus pēc nosaukuma vai satura",
+          },
+          "get-file-info": {
+            title: "Iegūst faila informāciju",
+            description: "Iesaļojiet detalizētus failu metadatus",
+          },
+          "write-file": {
+            title: "Izveidot failu",
+            description: "Izveidot jaunas failus vai pārrakstīt esošus failus",
+          },
+          "edit-file": {
+            title: "Rediģēt failu",
+            description:
+              "Veiciet teksta failu rediģēšanu, izmantojot rindu bāzes metodi.",
+          },
+          "create-directory": {
+            title: "Izveidot direktoriju",
+            description: "Izveidot jaunas direktorijas",
+          },
+          "move-file": {
+            title: "Pārvietot/Vārdēt failu",
+            description: "Vāc vai pārdzen failus un direktorijus",
+          },
+          "copy-file": {
+            title: "Kopēt failu",
+            description: "Kopēt failus un direktorus",
+          },
+        },
+      },
     },
     mcp: {
       title: "MCP serveri",
@@ -840,7 +900,6 @@ const TRANSLATIONS = {
     see_less: "Skatīt mazāk",
     see_more: "Skatīt vairāk",
     tools: "Rīki",
-    browse: "Izpētiet",
     text_size_label: "Teksta izmērs",
     select_model: "Izvēlieties modeli",
     sources: "Avotus",
@@ -853,8 +912,6 @@ const TRANSLATIONS = {
     edit: "Rediģēt",
     publish: "Publicēt",
     stop_generating: "Atsauciet atbildes ģenerēšanu",
-    pause_tts_speech_message:
-      "Pārtrauciet TTS (teksta-izrunas) žēstā vēstījuma izrunu.",
     slash_commands: "Īs termini komandās",
     agent_skills: "Aģenta prasmes",
     manage_agent_skills: "Iesaista aģenta prasmes",
@@ -863,6 +920,15 @@ const TRANSLATIONS = {
     start_agent_session: "Sākt aģenta sesiju",
     use_agent_session_to_use_tools:
       'Jūs varat izmantot rīkus čatā, sākot aģenta sesiju, ievietojot "@agent" jūsu iniciālajā tekstā.',
+    agent_invocation: {
+      model_wants_to_call: "Modeļa vēlējas izrunāt",
+      approve: "Aizmaksā, apstiprināts",
+      reject: "Atgrūst",
+      always_allow: "Vienmēr nodrošiniet {{skillName}}",
+      tool_call_was_approved: "Instrumentu pieprasījums tika apstiprināts.",
+      tool_call_was_rejected:
+        "Pieprasījums par instrumenta izmantošanu tika atgrūstīts.",
+    },
   },
   profile_settings: {
     edit_account: "Rediģēt kontu",
@@ -1019,6 +1085,86 @@ const TRANSLATIONS = {
     notAssigned:
       "Jūs nav piešķirts nevienai darba vietai.\nLūdzu, sazinieties ar savu administratoru, lai pieprasītu piekļuvi darba vietai.",
     goToWorkspace: 'Pāriet uz darba vietu "{{workspace}}"',
+  },
+  telegram: {
+    title: "Telegram bot",
+    description:
+      "Iespējiet savu AnythingLLM instanci, lai varētu tikt savienots ar Telegram, un tāpēc varēsat runāt ar saviem darba grupām no jebkura ierīces.",
+    setup: {
+      step1: {
+        title: "1. darbība: Izveidot savu Telegram botu",
+        description:
+          "Atveriet `@BotFather` Telegramā, nosūtiet `/newbot` un ievietojiet to adresē <code>@BotFather</code>, sekojiet norādījumiem un kopējiet API atslēgu.",
+        "open-botfather": "Atvērt BotFather",
+        "instruction-1": "1. Atveriet saiti vai skenējiet QR kodu",
+        "instruction-2":
+          "2. Nosūtiet <code>/newbot</code> uz <code>@BotFather</code>",
+        "instruction-3":
+          "3. Izvēlieties nosaukumu un lietotājvārdu savam botam",
+        "instruction-4": "4. Kopējiet API atslēgu, ko saņemat",
+      },
+      step2: {
+        title: "2. darbība: Pievienojiet savu botu",
+        description:
+          "Ievietojiet API atslēgu, ko saņēsit no @BotFather, un izvēlieties nokārtotā darba telpu, kuras jūsu bots varēs veikt sazi.",
+        "bot-token": "Bots tokens",
+        "default-workspace": "Pamatojas darba videne",
+        "no-workspace": "Nav pieejamas darba vietas. Tiks izveidota jauna.",
+        connecting: "Savienojums...",
+        "connect-bot": "Saistītais bot",
+      },
+      security: {
+        title: "Ieteicamās drošības iestatījumi",
+        description:
+          "Lai nodrošinātu papildu drošību, konfigurējiet šos iestatījumus, izmantojot @BotFather.",
+        "disable-groups": "— Novērst, lai boti tiktu pievienoti grupām",
+        "disable-inline":
+          "— Novērst, lai bots tiktu izmantoti tiešajā meklēšanā.",
+        "obscure-username":
+          "Izmantojiet neparādu botu lietotāju vārdu, lai samazinātu atklājamo iespēju.",
+      },
+      "toast-enter-token": "Lūdzu, ievadiet bot tokenu.",
+      "toast-connect-failed": "Neizdevās pievienot botu.",
+    },
+    connected: {
+      status: "Saistīts",
+      "status-disconnected":
+        "Atvienots — tokens var būt nolaidēts vai nederīgs",
+      "placeholder-token": "Ievietojiet jaunu bot tokenu...",
+      reconnect: "Atjaunot sazi",
+      workspace: "Darba telpa",
+      "bot-link": "Bots saite",
+      "voice-response": "Balss atbildes",
+      disconnecting: "Atvienojot...",
+      disconnect: "Izslēgt",
+      "voice-text-only": "Tikai teksts",
+      "voice-mirror":
+        "Atspoguļošana (atbildēt ar balsi, kad lietotājs nosauc balsi)",
+      "voice-always":
+        "Vienmēr pievienojiet audio (sūtiet audio ar katru atbildi).",
+      "toast-disconnect-failed": "Neizdevās izslēgt botu.",
+      "toast-reconnect-failed": "Neizdevās atjaunot saikni ar botu.",
+      "toast-voice-failed": "Neizdevās atjaunināt balsī noteiktās režimas.",
+      "toast-approve-failed": "Nespēja apstiprināt lietotāju.",
+      "toast-deny-failed": "Nespēja atspējot lietotāju.",
+      "toast-revoke-failed": "Neizdevās atcelt lietotāja tiesības.",
+    },
+    users: {
+      "pending-title": "Atkarībā no apstākļiem",
+      "pending-description":
+        "Izmantotāji, kas gaida apstiprinājumu. Salīdziniet šeit norādīto koda numuru ar to, kas redzams viņu Telegram sarunā.",
+      "approved-title": "Atļautie lietotāji",
+      "approved-description":
+        "Izmantotāji, kuriem ir atļauts veikt saziņai ar jūsu botu.",
+      user: "Izmantotājs",
+      "pairing-code": "Kopējā koda numura kombinācija",
+      "no-pending": "Neizpildīti pieprasījumi",
+      "no-approved": "No apstiprinātiem lietotājiem",
+      unknown: "Nezināms",
+      approve: "Aptver",
+      deny: "Atbrīsties; atgrūst",
+      revoke: "Atcel",
+    },
   },
 };
 

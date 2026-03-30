@@ -4,6 +4,7 @@ const TRANSLATIONS = {
     home: {
       title: "ようこそ",
       getStarted: "はじめる",
+      welcome: "ようこそ",
     },
     llm: {
       title: "LLMの設定",
@@ -51,7 +52,6 @@ const TRANSLATIONS = {
   },
   common: {
     "workspaces-name": "ワークスペース名",
-    user: "ユーザー",
     selection: "モデル選択",
     saving: "保存中...",
     save: "変更を保存",
@@ -104,6 +104,10 @@ const TRANSLATIONS = {
       trending: "人気のあるものを探す",
       "your-account": "あなたのアカウント",
       "import-item": "輸入品",
+    },
+    channels: "チャンネル",
+    "available-channels": {
+      telegram: "テレグラム",
     },
   },
   login: {
@@ -186,12 +190,12 @@ const TRANSLATIONS = {
       query: {
         title: "クエリ",
         description:
-          "該当する情報が見つかった場合、回答を<b>のみ</b>提供します。ツールを使用するには、@agentコマンドを使用する必要があります。",
+          "必要な情報が見つかった場合にのみ、回答を提供します。ツールを使用するには、`@agent`コマンドを使用する必要があります。",
       },
       automatic: {
         title: "自動車",
         description:
-          "ネイティブなツール呼び出しをサポートしている場合、モデルとプロバイダーが自動的にツールを使用します。<br />ネイティブなツール呼び出しがサポートされていない場合は、@agentコマンドを使用してツールを使用する必要があります。",
+          "ネイティブなツール呼び出しをサポートしている場合、モデルとプロバイダーが自動的にツールを使用します。ネイティブなツール呼び出しがサポートされていない場合は、@agentコマンドを使用してツールを使用する必要があります。",
       },
     },
     history: {
@@ -319,6 +323,61 @@ const TRANSLATIONS = {
       },
       default_skill:
         "デフォルトでは、この機能は有効になっていますが、エージェントに利用させたくない場合は、無効にすることができます。",
+      filesystem: {
+        title: "ファイルシステムのアクセス",
+        description:
+          "エージェントが、指定されたディレクトリ内のファイルを読む、書き、検索、および管理できるようにします。ファイル編集、ディレクトリのナビゲーション、およびコンテンツ検索をサポートします。",
+        learnMore: "このスキルの使い方について、さらに詳しく知る",
+        configuration: "設定",
+        readActions: "行動",
+        writeActions: "行動",
+        warning:
+          "ファイルシステムへのアクセスは危険であり、ファイルの内容を変更または削除する可能性があります。設定する前に、必ず<link>のドキュメント</link>を参照してください。",
+        skills: {
+          "read-text-file": {
+            title: "ファイルを開く",
+            description:
+              "ファイル（テキスト、コード、PDF、画像など）の内容を読み込む。",
+          },
+          "read-multiple-files": {
+            title: "複数のファイルを読み込む",
+            description: "複数のファイルを同時に読み込む",
+          },
+          "list-directory": {
+            title: "ディレクトリ一覧",
+            description: "フォルダ内のファイルとディレクトリの一覧を表示する",
+          },
+          "search-files": {
+            title: "ファイル検索",
+            description: "ファイル名または内容で検索する",
+          },
+          "get-file-info": {
+            title: "ファイルの情報を取得する",
+            description: "ファイルに関する詳細なメタデータを取得する",
+          },
+          "write-file": {
+            title: "ファイルを作成",
+            description:
+              "新しいファイルを作成するか、既存のファイルを上書きする",
+          },
+          "edit-file": {
+            title: "ファイル編集",
+            description: "テキストファイルの行単位での編集を行う",
+          },
+          "create-directory": {
+            title: "ディレクトリを作成する",
+            description: "新しいディレクトリを作成する",
+          },
+          "move-file": {
+            title: "ファイル/ファイル名の変更",
+            description: "ファイルやディレクトリを移動または名前を変更する",
+          },
+          "copy-file": {
+            title: "ファイルのコピー",
+            description: "ファイルとディレクトリをコピーする",
+          },
+        },
+      },
     },
     mcp: {
       title: "MCP サーバー",
@@ -736,7 +795,6 @@ const TRANSLATIONS = {
     see_less: "詳細を見る",
     see_more: "詳細を見る",
     tools: "道具",
-    browse: "閲覧",
     text_size_label: "文字サイズ",
     select_model: "モデルを選択",
     sources: "出典",
@@ -749,7 +807,6 @@ const TRANSLATIONS = {
     edit: "編集",
     publish: "出版",
     stop_generating: "応答の生成を停止する",
-    pause_tts_speech_message: "メッセージのテキスト読み上げ機能を一時停止する",
     slash_commands: "スラッシュコマンド",
     agent_skills: "エージェントのスキル",
     manage_agent_skills: "エージェントのスキル管理",
@@ -758,6 +815,14 @@ const TRANSLATIONS = {
     start_agent_session: "エージェントセッションを開始",
     use_agent_session_to_use_tools:
       "チャットでツールを使用するには、プロンプトの冒頭に'@agent'を使用してエージェントセッションを開始してください。",
+    agent_invocation: {
+      model_wants_to_call: "モデルは電話をかけたい。",
+      approve: "承認",
+      reject: "拒否",
+      always_allow: "常に、{{skillName}}を確保してください。",
+      tool_call_was_approved: "ツールの使用許可が承認されました",
+      tool_call_was_rejected: "ツール呼び出しは拒否されました",
+    },
   },
   profile_settings: {
     edit_account: "アカウントを編集",
@@ -1016,6 +1081,83 @@ const TRANSLATIONS = {
     notAssigned:
       "現在、あなたはどのワークスペースにも割り当てられていません。\nワークスペースへのアクセスを要求するには、管理者にお問い合わせください。",
     goToWorkspace: 'ワークスペースに移動 "{{workspace}}"',
+  },
+  telegram: {
+    title: "テレグラムボット",
+    description:
+      "AnyLLM のインスタンスを Telegram に接続することで、あらゆるデバイスからワークスペースとのチャットが可能になります。",
+    setup: {
+      step1: {
+        title: "ステップ1：Telegramボットを作成する",
+        description:
+          "Telegramの@BotFatherを開き、「/newbot」と入力して<code>@BotFather</code>に送信します。指示に従い、APIトークンをコピーしてください。",
+        "open-botfather": "BotFather を起動する",
+        "instruction-1": "1. リンクを開くか、QRコードをスキャンする",
+        "instruction-2":
+          "2. 「<code>」/「newbot」を「</code>」で、「<code>」@「BotFather」に送信してください。",
+        "instruction-3": "3. 独自の名前とユーザー名をボットに設定してください",
+        "instruction-4": "4. 受け取ったAPIトークンをコピーしてください",
+      },
+      step2: {
+        title: "ステップ2：ボットとの接続",
+        description:
+          "@BotFatherから受け取ったAPIトークンを貼り付け、ボットとのチャットに使用するデフォルトのワークスペースを選択してください。",
+        "bot-token": "ボット トークン",
+        "default-workspace": "デフォルトのワークスペース",
+        "no-workspace":
+          "利用可能な作業スペースがありません。新しい作業スペースが作成されます。",
+        connecting: "接続中...",
+        "connect-bot": "コネクトボット",
+      },
+      security: {
+        title: "推奨されるセキュリティ設定",
+        description:
+          "追加のセキュリティのため、@BotFatherでこれらの設定を設定してください。",
+        "disable-groups": "— グループへのボットの追加を防止",
+        "disable-inline": "— インライン検索でのボットの使用を防止",
+        "obscure-username":
+          "目立たないユーザー名をbotに使用することで、発見されにくくする。",
+      },
+      "toast-enter-token": "ボットのトークンを入力してください。",
+      "toast-connect-failed": "ボットとの接続に失敗しました。",
+    },
+    connected: {
+      status: "接続されている",
+      "status-disconnected":
+        "通信エラー - トークンが無効または期限切れになっている可能性があります",
+      "placeholder-token": "新しいボットのトークンを貼り付け...",
+      reconnect: "再接続",
+      workspace: "作業スペース",
+      "bot-link": "ボットへのリンク",
+      "voice-response": "音声応答",
+      disconnecting: "接続を解除...",
+      disconnect: "接続を解除する",
+      "voice-text-only": "テキストのみ",
+      "voice-mirror": "（ユーザーが音声で送信した場合、音声で返信）",
+      "voice-always": "常に音声メッセージ（返信ごとに音声データを送信）",
+      "toast-disconnect-failed": "ボットとの接続を解除できませんでした。",
+      "toast-reconnect-failed": "ボットとの再接続に失敗しました。",
+      "toast-voice-failed": "音声モードの更新に失敗しました。",
+      "toast-approve-failed": "ユーザーの承認に失敗しました。",
+      "toast-deny-failed": "ユーザーからの拒否を拒否できませんでした。",
+      "toast-revoke-failed": "ユーザーの権限停止に失敗。",
+    },
+    users: {
+      "pending-title": "承認待ち",
+      "pending-description":
+        "本人情報の確認待ちのユーザー。ここに表示されているペアリングコードを、彼らがTelegramで表示しているコードと照合してください。",
+      "approved-title": "承認されたユーザー",
+      "approved-description":
+        "あなたのボットとのチャットを許可されたユーザー。",
+      user: "利用者",
+      "pairing-code": "組み合わせコード",
+      "no-pending": "処理中のリクエストはありません",
+      "no-approved": "承認されたユーザーはいません",
+      unknown: "不明",
+      approve: "承認",
+      deny: "否定",
+      revoke: "無効化する",
+    },
   },
 };
 
