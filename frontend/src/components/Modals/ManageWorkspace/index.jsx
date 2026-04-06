@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import Workspace from "../../../models/workspace";
 import System from "../../../models/system";
-import { isMobile } from "react-device-detect";
+import { isMobileOnly } from "react-device-detect";
 import useUser from "../../../hooks/useUser";
 import DocumentSettings from "./Documents";
 import DataConnectors from "./DataConnectors";
@@ -37,7 +37,7 @@ const ManageWorkspace = ({ hideModal = noop, providedSlug = null }) => {
 
   if (!workspace) return null;
 
-  if (isMobile) {
+  if (isMobileOnly) {
     return (
       <ModalWrapper isOpen={true}>
         <div className="w-full max-w-2xl bg-theme-bg-secondary rounded-lg shadow border-2 border-theme-modal-border overflow-hidden">
@@ -102,7 +102,7 @@ const ManageWorkspace = ({ hideModal = noop, providedSlug = null }) => {
           )}
 
           {selectedTab === "documents" ? (
-            <DocumentSettings workspace={workspace} systemSettings={settings} />
+            <DocumentSettings workspace={workspace} />
           ) : (
             <DataConnectors workspace={workspace} systemSettings={settings} />
           )}

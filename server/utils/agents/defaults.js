@@ -72,6 +72,24 @@ async function agentSkillsFromSystemSettings() {
       systemFunctions.push(AgentPlugins[skill].name);
   });
 
+  // Load disabled filesystem sub-skills
+  const _disabledFilesystemSkills = safeJsonParse(
+    await SystemSettings.getValueOrFallback(
+      { label: "disabled_filesystem_skills" },
+      "[]"
+    ),
+    []
+  );
+
+  // Load disabled create-files sub-skills
+  const _disabledCreateFilesSkills = safeJsonParse(
+    await SystemSettings.getValueOrFallback(
+      { label: "disabled_create_files_skills" },
+      "[]"
+    ),
+    []
+  );
+
   // Load non-imported built-in skills that are configurable.
   const _setting = safeJsonParse(
     await SystemSettings.getValueOrFallback(
@@ -87,6 +105,26 @@ async function agentSkillsFromSystemSettings() {
     // need to be named via `${parent}#${child}` naming convention
     if (Array.isArray(AgentPlugins[skillName].plugin)) {
       for (const subPlugin of AgentPlugins[skillName].plugin) {
+        /**
+         * If the filesystem tool is not available, or the sub-skill is explicitly disabled, skip it
+         * This is a docker specific skill so it cannot be used in other environments.
+         */
+        if (skillName === "filesystem-agent") {
+          const filesystemTool = require("./aibitat/plugins/filesystem/lib");
+          if (!filesystemTool.isToolAvailable()) continue;
+          if (_disabledFilesystemSkills.includes(subPlugin.name)) continue;
+        }
+
+        /**
+         * If the create-files tool is not available, or the sub-skill is explicitly disabled, skip it
+         * This is a docker specific skill so it cannot be used in other environments.
+         */
+        if (skillName === "create-files-agent") {
+          const createFilesTool = require("./aibitat/plugins/create-files/lib");
+          if (!createFilesTool.isToolAvailable()) continue;
+          if (_disabledCreateFilesSkills.includes(subPlugin.name)) continue;
+        }
+
         systemFunctions.push(
           `${AgentPlugins[skillName].name}#${subPlugin.name}`
         );
