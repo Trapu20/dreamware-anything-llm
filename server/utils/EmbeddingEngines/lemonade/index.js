@@ -13,7 +13,7 @@ class LemonadeEmbedder {
         process.env.EMBEDDING_BASE_PATH,
         "openai"
       ),
-      apiKey: null,
+      apiKey: process.env.LEMONADE_LLM_API_KEY ?? null,
     });
     this.model = process.env.EMBEDDING_MODEL_PREF;
 
@@ -34,8 +34,8 @@ class LemonadeEmbedder {
       });
       return response?.data[0]?.embedding || [];
     } catch (error) {
-      console.error("Failed to get embedding from Lemonade.", error.message);
-      return [];
+      this.log("Failed to get embedding from Lemonade.", error.message);
+      throw error;
     }
   }
 
@@ -48,8 +48,8 @@ class LemonadeEmbedder {
       });
       return response?.data?.map((emb) => emb.embedding) || [];
     } catch (error) {
-      console.error("Failed to get embeddings from Lemonade.", error.message);
-      return new Array(textChunks.length).fill([]);
+      this.log("Failed to get embeddings from Lemonade.", error.message);
+      throw error;
     }
   }
 }

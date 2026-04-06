@@ -58,8 +58,16 @@ export default function AdminAgents() {
   const [mcpServers, setMcpServers] = useState([]);
   const [selectedMcpServer, setSelectedMcpServer] = useState(null);
 
+  const [fileSystemAgentAvailable, setFileSystemAgentAvailable] =
+    useState(false);
+  const [createFilesAgentAvailable, setCreateFilesAgentAvailable] =
+    useState(false);
+
   const defaultSkills = getDefaultSkills(t);
-  const configurableSkills = getConfigurableSkills(t);
+  const configurableSkills = getConfigurableSkills(t, {
+    fileSystemAgentAvailable,
+    createFilesAgentAvailable,
+  });
 
   // Alert user if they try to leave the page with unsaved changes
   useEffect(() => {
@@ -77,23 +85,36 @@ export default function AdminAgents() {
 
   useEffect(() => {
     async function fetchSettings() {
-      const _settings = await System.keys();
-      const _preferences = await Admin.systemPreferencesByFields([
-        "disabled_agent_skills",
-        "default_agent_skills",
-        "imported_agent_skills",
-        "active_agent_flows",
+      const [
+        _settings,
+        _preferences,
+        flowsRes,
+        fsAgentAvailable,
+        createFilesAvailable,
+      ] = await Promise.all([
+        System.keys(),
+        Admin.systemPreferencesByFields([
+          "disabled_agent_skills",
+          "default_agent_skills",
+          "imported_agent_skills",
+          "active_agent_flows",
+        ]),
+        AgentFlows.listFlows(),
+        System.isFileSystemAgentAvailable(),
+        System.isCreateFilesAgentAvailable(),
       ]);
-      const { flows = [] } = await AgentFlows.listFlows();
 
+      const { flows = [] } = flowsRes;
       setSettings({ ..._settings, preferences: _preferences.settings } ?? {});
       setAgentSkills(_preferences.settings?.default_agent_skills ?? []);
       setDisabledAgentSkills(
         _preferences.settings?.disabled_agent_skills ?? []
       );
       setImportedSkills(_preferences.settings?.imported_agent_skills ?? []);
-      setActiveFlowIds(_preferences.settings?.active_agent_flows ?? []);
+      setActiveFlowIds(flows.filter((f) => f.active).map((f) => f.uuid));
       setAgentFlows(flows);
+      setFileSystemAgentAvailable(fsAgentAvailable);
+      setCreateFilesAgentAvailable(createFilesAvailable);
       setLoading(false);
     }
     fetchSettings();
@@ -364,6 +385,7 @@ export default function AdminAgents() {
               flows={agentFlows}
               selectedFlow={selectedFlow}
               handleClick={handleFlowClick}
+              activeFlowIds={activeFlowIds}
             />
             <input
               type="hidden"
@@ -408,7 +430,7 @@ export default function AdminAgents() {
                   </button>
                 </div>
                 <div className="flex-1 overflow-y-auto p-4">
-                  <div className=" bg-theme-bg-secondary text-white rounded-xl p-4 overflow-y-scroll no-scroll">
+                  <div className=" bg-theme-bg-secondary text-white rounded-xl p-4 overflow-y-scroll overflow-x-visible no-scroll">
                     {SelectedSkillComponent ? (
                       <>
                         {selectedMcpServer ? (
@@ -580,6 +602,7 @@ export default function AdminAgents() {
                 flows={agentFlows}
                 selectedFlow={selectedFlow}
                 handleClick={handleFlowClick}
+                activeFlowIds={activeFlowIds}
               />
 
               <MCPServerHeader
@@ -603,7 +626,7 @@ export default function AdminAgents() {
 
         {/* Selected agent skill setting panel */}
         <div className="flex-[2] flex flex-col gap-y-[18px] mt-10">
-          <div className="bg-theme-bg-secondary text-white rounded-xl flex-1 p-4 overflow-y-scroll no-scroll">
+          <div className="bg-theme-bg-secondary text-white rounded-xl flex-1 p-4 overflow-y-scroll overflow-x-visible no-scroll">
             {SelectedSkillComponent ? (
               <>
                 {selectedMcpServer ? (

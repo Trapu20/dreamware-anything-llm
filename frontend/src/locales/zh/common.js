@@ -2,8 +2,8 @@
 const TRANSLATIONS = {
   onboarding: {
     home: {
-      title: "欢迎使用",
       getStarted: "开始",
+      welcome: "欢迎",
     },
     llm: {
       title: "LLM 偏好",
@@ -48,7 +48,6 @@ const TRANSLATIONS = {
   },
   common: {
     "workspaces-name": "工作区名称",
-    user: "用户",
     selection: "模型选择",
     save: "保存更改",
     saving: "保存中...",
@@ -101,6 +100,10 @@ const TRANSLATIONS = {
       trending: "探索热门",
       "your-account": "您的账户",
       "import-item": "进口商品",
+    },
+    channels: "频道",
+    "available-channels": {
+      telegram: "电报",
     },
   },
   login: {
@@ -183,17 +186,17 @@ const TRANSLATIONS = {
       chat: {
         title: "聊天",
         description:
-          "将提供答案，利用LLM的通用知识和相关文档的上下文信息。您需要使用 `@agent` 命令来使用工具。",
+          "将提供答案，利用LLM的通用知识和提供的文档内容<b>和</b>。您需要使用@agent命令来使用工具。",
       },
       query: {
         title: "查询",
         description:
-          "将在找到文档上下文时提供答案 <b>仅限</b>。您需要使用 @agent 命令来使用工具。",
+          "将在找到文档上下文时，仅提供答案 <b>。您需要使用 @agent 命令来使用工具。",
       },
       automatic: {
         title: "自动",
         description:
-          "如果模型和提供商支持原生工具调用，则会自动使用这些工具。<br />如果不支持原生工具调用，则需要使用 `@agent` 命令来使用工具。",
+          "如果模型和提供者都支持原生工具调用，则会自动使用这些工具。<br />如果不支持原生工具调用，您需要使用 `@agent` 命令来使用工具。",
       },
     },
     history: {
@@ -296,11 +299,6 @@ const TRANSLATIONS = {
         title: "生成图表",
         description: "使默认代理能够从提供的数据或聊天中生成各种类型的图表。",
       },
-      save: {
-        title: "生成并保存文件到浏览器",
-        description:
-          "使默认代理能够生成并写入文件，这些文件可以保存并在你的浏览器中下载。",
-      },
       web: {
         title: "实时网络搜索和浏览",
         description:
@@ -313,6 +311,89 @@ const TRANSLATIONS = {
       },
       default_skill:
         "默认情况下，这项技能已启用。但是，如果您不想让该技能被代理使用，您可以将其禁用。",
+      filesystem: {
+        title: "文件系统访问",
+        description:
+          "允许您的代理能够读取、写入、搜索和管理指定目录中的文件。 支持文件编辑、目录导航和内容搜索功能。",
+        learnMore: "了解更多关于如何使用这项技能的信息。",
+        configuration: "配置",
+        readActions: "阅读操作",
+        writeActions: "编写操作",
+        warning:
+          "访问文件系统可能存在风险，因为它可能修改或删除文件。在启用之前，请务必查阅<link>文档</link>。",
+        skills: {
+          "read-text-file": {
+            title: "读取文件",
+            description: "读取文件内容（包括文本、代码、PDF、图像等）",
+          },
+          "read-multiple-files": {
+            title: "读取多个文件",
+            description: "同时读取多个文件",
+          },
+          "list-directory": {
+            title: "目录",
+            description: "列出文件夹中的文件和目录",
+          },
+          "search-files": {
+            title: "搜索文件",
+            description: "按文件名或内容搜索文件",
+          },
+          "get-file-info": {
+            title: "获取文件信息",
+            description: "获取有关文件的详细元数据",
+          },
+          "edit-file": {
+            title: "编辑文件",
+            description: "对文本文件进行基于行的编辑。",
+          },
+          "create-directory": {
+            title: "创建目录",
+            description: "创建新的目录",
+          },
+          "move-file": {
+            title: "移动/重命名文件",
+            description: "移动或重命名文件和目录",
+          },
+          "copy-file": {
+            title: "复制文件",
+            description: "复制文件和目录",
+          },
+          "write-text-file": {
+            title: "创建文本文件",
+            description: "创建新的文本文件，或覆盖现有的文本文件。",
+          },
+        },
+      },
+      createFiles: {
+        title: "文档创建",
+        description:
+          "允许您的代理创建二进制文档格式，例如PowerPoint演示文稿、Excel电子表格、Word文档和PDF文件。文件可以直接从聊天窗口下载。",
+        configuration: "可用的文件类型",
+        skills: {
+          "create-text-file": {
+            title: "文本文件",
+            description:
+              "创建包含任何内容和扩展名的文本文件（如 .txt、.md、.json、.csv 等）。",
+          },
+          "create-pptx": {
+            title: "PowerPoint 演示文稿",
+            description: "创建新的幻灯片演示文稿，包括幻灯片、标题和项目符号。",
+          },
+          "create-pdf": {
+            title: "PDF 文档",
+            description:
+              "使用 Markdown 或纯文本，并进行基本的排版，创建 PDF 文档。",
+          },
+          "create-xlsx": {
+            title: "Excel电子表格",
+            description: "创建包含表格数据、工作表和样式的 Excel 文档。",
+          },
+          "create-docx": {
+            title: "Word 文档",
+            description: "创建包含基本样式和格式的 Word 文档",
+          },
+        },
+      },
     },
     mcp: {
       title: "MCP 服务器",
@@ -687,7 +768,6 @@ const TRANSLATIONS = {
       select_all: "全选",
       deselect_all: "取消全选",
       remove_selected: "移除所选",
-      costs: "*嵌入时一次性费用",
       save_embed: "保存并嵌入",
       "total-documents_one": "{{count}} 文件",
       "total-documents_other": "{{count}} 类型的文件",
@@ -782,7 +862,6 @@ const TRANSLATIONS = {
     see_less: "查看更多",
     see_more: "查看更多",
     tools: "工具",
-    browse: "浏览",
     text_size_label: "字体大小",
     select_model: "选择型号",
     sources: "来源",
@@ -795,7 +874,6 @@ const TRANSLATIONS = {
     edit: "编辑",
     publish: "出版",
     stop_generating: "停止生成回复",
-    pause_tts_speech_message: "暂停消息的语音合成（TTS）功能",
     slash_commands: "快捷命令",
     agent_skills: "代理人技能",
     manage_agent_skills: "管理代理人技能",
@@ -804,6 +882,14 @@ const TRANSLATIONS = {
     start_agent_session: "开始代理会",
     use_agent_session_to_use_tools:
       "您可以通过在提示词的开头使用'@agent'来启动与代理的聊天，从而使用聊天工具。",
+    agent_invocation: {
+      model_wants_to_call: "该型号希望进行通话。",
+      approve: "批准",
+      reject: "拒绝",
+      always_allow: "请务必留出 {{skillName}}",
+      tool_call_was_approved: "工具使用申请已获得批准。",
+      tool_call_was_rejected: "请求获取工具已被拒绝。",
+    },
   },
   profile_settings: {
     edit_account: "编辑帐户",
@@ -950,6 +1036,79 @@ const TRANSLATIONS = {
     notAssigned:
       "你目前还没有分配到任何工作区。\n请联系你的管理员请求访问一个工作区。",
     goToWorkspace: '前往 "{{workspace}}"',
+  },
+  telegram: {
+    title: "Telegram 机器人",
+    description:
+      "将您的 AnythingLLM 实例与 Telegram 连接起来，这样您就可以从任何设备与您的工作空间进行聊天。",
+    setup: {
+      step1: {
+        title: "第一步：创建您的 Telegram 机器人",
+        description:
+          "打开 Telegram 上的 @BotFather，发送 `/newbot` 到 <code>@BotFather</code>，按照提示操作，并复制 API 令牌。",
+        "open-botfather": "启动 BotFather",
+        "instruction-1": "1. 打开链接或扫描二维码",
+        "instruction-2":
+          "2. 将 <code>/newbot</code> 发送给 <code>@BotFather</code>",
+        "instruction-3": "3. 为您的机器人选择一个名称和用户名",
+        "instruction-4": "4. 复制您收到的 API 令牌",
+      },
+      step2: {
+        title: "步骤 2：连接您的机器人",
+        description:
+          "将您从 @BotFather 获得的 API 令牌粘贴到指定位置，并选择一个默认的工作区，以便您的机器人可以进行对话。",
+        "bot-token": "机器人代币",
+        "default-workspace": "默认工作区",
+        "no-workspace": "目前没有可用的工作空间。将会创建一个新的工作空间。",
+        connecting: "正在连接...",
+        "connect-bot": "连接机器人",
+      },
+      security: {
+        title: "推荐的安全设置",
+        description: "为了进一步增强安全性，请在 @BotFather 中配置这些设置。",
+        "disable-groups": "— 阻止机器人加入群组",
+        "disable-inline": "— 阻止机器人被用于内联搜索",
+        "obscure-username":
+          "使用一个不显眼的机器人用户名，以降低其被发现的可能性。",
+      },
+      "toast-enter-token": "请您输入一个机器人令牌。",
+      "toast-connect-failed": "未能连接机器人。",
+    },
+    connected: {
+      status: "连接",
+      "status-disconnected": "未连接—— 令牌可能已过期或无效",
+      "placeholder-token": "粘贴新的机器人令牌...",
+      reconnect: "重新连接",
+      workspace: "工作空间",
+      "bot-link": "机器人链接",
+      "voice-response": "语音响应",
+      disconnecting: "断开连接...",
+      disconnect: "断开",
+      "voice-text-only": "仅提供文字",
+      "voice-mirror": "回声（当用户发送语音时，会以语音形式回复）",
+      "voice-always": "请务必在回复中添加语音（发送音频）。",
+      "toast-disconnect-failed": "未能成功断开机器人。",
+      "toast-reconnect-failed": "机器人连接失败。",
+      "toast-voice-failed": "无法更新语音模式。",
+      "toast-approve-failed": "未能批准用户。",
+      "toast-deny-failed": "未能拒绝用户请求。",
+      "toast-revoke-failed": "未能撤销用户权限。",
+    },
+    users: {
+      "pending-title": "待审批",
+      "pending-description":
+        "等待验证的用户。请将此处显示的配对代码与他们在 Telegram 聊天中显示的配对代码进行匹配。",
+      "approved-title": "已批准的用户",
+      "approved-description": "已获得批准，可以与您的机器人进行对话的用户。",
+      user: "用户",
+      "pairing-code": "配对代码",
+      "no-pending": "目前没有待处理的请求",
+      "no-approved": "未批准的用户",
+      unknown: "未知",
+      approve: "批准",
+      deny: "否认",
+      revoke: "撤销",
+    },
   },
 };
 
