@@ -2,8 +2,8 @@
 const TRANSLATIONS = {
   onboarding: {
     home: {
-      title: "Willkommen bei",
       getStarted: "Jetzt starten",
+      welcome: "Herzlich willkommen",
     },
     llm: {
       title: "LLM-Einstellung",
@@ -52,7 +52,6 @@ const TRANSLATIONS = {
   },
   common: {
     "workspaces-name": "Namen der Workspaces",
-    user: "Benutzer",
     selection: "Modellauswahl",
     saving: "Speichern...",
     save: "Änderungen speichern",
@@ -101,15 +100,19 @@ const TRANSLATIONS = {
     "system-prompt-variables": "Systempromptvariablen",
     "mobile-app": "AnythingLLM Mobile",
     "community-hub": {
-      title: "Gemeindezentrum",
-      trending: "Entdecken Sie die aktuell beliebtesten Themen",
-      "your-account": "Ihr Konto",
-      "import-item": "Artikel importieren",
+      title: "Community Hub",
+      trending: "Neuigkeiten",
+      "your-account": "Community Hub Account",
+      "import-item": "Community Import",
+    },
+    channels: "Kanäle",
+    "available-channels": {
+      telegram: "Telegram",
     },
   },
   login: {
     "multi-user": {
-      welcome: "Willkommen bei",
+      welcome: "Willkommen",
       "placeholder-username": "Benutzername",
       "placeholder-password": "Passwort",
       login: "Anmelden",
@@ -190,17 +193,17 @@ const TRANSLATIONS = {
       chat: {
         title: "Chat",
         description:
-          "wird Antworten basierend auf dem allgemeinen Wissen des LLM und dem relevanten Kontext aus den Dokumenten <b> und </b> liefern. <br /> Sie benötigen den Befehl `@agent`, um die Tools zu nutzen.",
+          "wird Antworten basierend auf dem allgemeinen Wissen des LLM und dem gegebenen Dokumentkontext liefern.<br />Um die Tools zu nutzen, müssen Sie den Befehl `@agent` verwenden.",
       },
       query: {
         title: "Abfrage",
         description:
-          'wird nur Antworten <b> und </b> bereitstellen, falls der Kontext des Dokuments gefunden wurde.<br />Sie müssen den Befehl "@agent" verwenden, um die Tools zu nutzen.',
+          'werden Antworten nur bei <b> und </b> bereitstellen, falls der Dokumentkontext gefunden wurde. Um die Tools zu nutzen, müssen Sie den Befehl "@agent" verwenden.',
       },
       automatic: {
         title: "Auto",
         description:
-          'wird automatisch Werkzeuge verwenden, wenn das Modell und der Anbieter native Werkzeugaufrufe unterstützen. <br />Wenn native Werkzeugaufrufe nicht unterstützt werden, müssen Sie den Befehl "@agent" verwenden, um Werkzeuge zu nutzen.',
+          "wird automatisch Werkzeuge verwenden, wenn das Modell und der Anbieter native Werkzeugaufrufe unterstützen. <br />Wenn native Werkzeugaufrufe nicht unterstützt werden, müssen Sie den Befehl `@agent` verwenden, um Werkzeuge zu nutzen.",
       },
     },
     history: {
@@ -311,11 +314,6 @@ const TRANSLATIONS = {
         description:
           "Aktivieren Sie den Standard-Agenten, um verschiedene Arten von Diagrammen aus bereitgestellten oder im Chat gegebenen Daten zu generieren.",
       },
-      save: {
-        title: "Dateien generieren & im Browser speichern",
-        description:
-          "Aktivieren Sie den Standard-Agenten, um Dateien zu generieren und zu schreiben, die gespeichert und in Ihrem Browser heruntergeladen werden können.",
-      },
       web: {
         title: "Live-Websuche und -Browsing",
         description:
@@ -328,6 +326,222 @@ const TRANSLATIONS = {
       },
       default_skill:
         "Standardmäßig ist diese Funktion aktiviert, aber Sie können sie deaktivieren, wenn Sie nicht möchten, dass sie für den Agenten verfügbar ist.",
+      filesystem: {
+        title: "Zugriff auf das Dateisystem",
+        description:
+          "Ermöglichen Sie Ihrem Agenten, Dateien innerhalb eines bestimmten Verzeichnisses zu lesen, zu schreiben, zu suchen und zu verwalten. Unterstützt die Bearbeitung von Dateien, die Navigation durch Verzeichnisse und die Suche nach Inhalten.",
+        learnMore:
+          "Erfahren Sie mehr darüber, wie Sie diese Fähigkeit effektiv einsetzen können.",
+        configuration: "Konfiguration",
+        readActions: "Lesen von Aktionen",
+        writeActions: "Aktionen",
+        warning:
+          "Der Zugriff auf das Dateisystem kann gefährlich sein, da er Dateien ändern oder löschen kann. Bitte konsultieren Sie vor der Aktivierung die <link>Dokumentation</link>.",
+        skills: {
+          "read-text-file": {
+            title: "Datei öffnen/lesen",
+            description:
+              "Inhalte von Dateien (Text, Code, PDF, Bilder usw.) lesen",
+          },
+          "read-multiple-files": {
+            title: "Mehrere Dateien lesen",
+            description: "Mehrere Dateien gleichzeitig lesen",
+          },
+          "list-directory": {
+            title: "Verzeichnis",
+            description: "Dateien und Verzeichnisse in einem Ordner auflisten",
+          },
+          "search-files": {
+            title: "Dateien suchen",
+            description: "Dateien nach Name oder Inhalt suchen",
+          },
+          "get-file-info": {
+            title: "Dateieninformationen abrufen",
+            description: "Erhalten Sie detaillierte Metadaten über Dateien.",
+          },
+          "edit-file": {
+            title: "Datei bearbeiten",
+            description:
+              "Führen Sie Änderungen in Textdateien zeilenweise durch.",
+          },
+          "create-directory": {
+            title: "Ordner erstellen",
+            description: "Neue Verzeichnisse erstellen",
+          },
+          "move-file": {
+            title: "Datei verschieben/umbenennen",
+            description:
+              "Dateien und Verzeichnisse verschieben oder umbenennen.",
+          },
+          "copy-file": {
+            title: "Datei kopieren",
+            description: "Dateien und Verzeichnisse kopieren",
+          },
+          "write-text-file": {
+            title: "Textdatei erstellen",
+            description:
+              "Erstellen Sie neue Textdateien oder überschreiben Sie vorhandene Textdateien.",
+          },
+        },
+      },
+      createFiles: {
+        title: "Dokumentenerstellung",
+        description:
+          "Ermöglichen Sie Ihrem Agenten, binäre Dokumentformate wie PowerPoint-Präsentationen, Excel-Tabellen, Word-Dokumente und PDFs zu erstellen. Die Dateien können direkt aus dem Chat-Fenster heruntergeladen werden.",
+        configuration: "Verfügbare Dokumenttypen",
+        skills: {
+          "create-text-file": {
+            title: "Textdateien",
+            description:
+              "Erstellen Sie Textdateien mit beliebigen Inhalten und Dateiendungen (.txt, .md, .json, .csv usw.)",
+          },
+          "create-pptx": {
+            title: "Präsentationen mit PowerPoint",
+            description:
+              "Erstellen Sie neue PowerPoint-Präsentationen mit Folien, Überschriften und Stichpunkten.",
+          },
+          "create-pdf": {
+            title: "PDF-Dokumente",
+            description:
+              "Erstellen Sie PDF-Dokumente aus Markdown- oder reinen Textdateien mit grundlegender Formatierung.",
+          },
+          "create-xlsx": {
+            title: "Excel-Tabellen",
+            description:
+              "Erstellen Sie Excel-Dokumente für tabellarische Daten mit Tabellen und Formatierungen.",
+          },
+          "create-docx": {
+            title: "Word-Dokumente",
+            description:
+              "Erstellen Sie Word-Dokumente mit grundlegender Formatierung und Gestaltung.",
+          },
+        },
+      },
+      gmail: {
+        title: "Gmail-Verbindung",
+        description:
+          "Ermöglichen Sie Ihrem Agenten, mit Gmail zu interagieren: E-Mails durchsuchen, E-Mail-Threads lesen, Entwürfe erstellen, E-Mails senden und Ihren Posteingang verwalten. <a>Lesen Sie die Dokumentation</a>.",
+        multiUserWarning:
+          "Die Integration mit Gmail ist aus Sicherheitsgründen nicht im Mehrbenutzermodus verfügbar. Bitte deaktivieren Sie den Mehrbenutzermodus, um diese Funktion zu nutzen.",
+        configuration: "Gmail-Konfiguration",
+        deploymentId: "Deployment-ID",
+        deploymentIdHelp:
+          "Die Bereitstellungs-ID Ihrer Google Apps Script Webanwendung",
+        apiKey: "API-Schlüssel",
+        apiKeyHelp:
+          "Der API-Schlüssel, den Sie in Ihrer Google Apps Script-Bereitstellung konfiguriert haben",
+        configurationRequired:
+          "Bitte konfigurieren Sie die Deployment-ID und den API-Schlüssel, um die Gmail-Funktionen zu aktivieren.",
+        configured: "Konfiguriert",
+        searchSkills: "Suchfähigkeiten...",
+        noSkillsFound: "Keine Ergebnisse zu Ihrer Suche.",
+        categories: {
+          search: {
+            title: "Nachrichten suchen und lesen",
+            description:
+              "Suchen und lesen Sie E-Mails aus Ihrem Gmail-Posteingang.",
+          },
+          drafts: {
+            title: "Entwurf-E-Mails",
+            description:
+              "Erstellen, bearbeiten und verwalten von E-Mail-Entwürfen",
+          },
+          send: {
+            title: "E-Mails senden und beantworten",
+            description:
+              "Senden Sie E-Mails und antworten Sie sofort auf Nachrichten.",
+          },
+          threads: {
+            title: "E-Mail-Verläufe verwalten",
+            description:
+              "E-Mail-Threads verwalten – als gelesen/unleserlich markieren, archivieren, in den Papierkorb verschieben",
+          },
+          account: {
+            title: "Statistiken zur Integration",
+            description:
+              "Anzeigen von Postfachstatistiken und Kontoinformationen",
+          },
+        },
+        skills: {
+          search: {
+            title: "E-Mails durchsuchen",
+            description: "E-Mails mit der Gmail-Suchsyntax durchsuchen",
+          },
+          readThread: {
+            title: "Den Thread lesen",
+            description:
+              "Lesen Sie den vollständigen E-Mail-Thread anhand der ID",
+          },
+          createDraft: {
+            title: "Entwurf erstellen",
+            description: "Erstelle eine neue Entwurf-E-Mail",
+          },
+          createDraftReply: {
+            title: "Entwurf für Antwort erstellen",
+            description:
+              "Erstellen Sie eine Entwurfsantwort an ein bestehendes Thema.",
+          },
+          updateDraft: {
+            title: "Entwurf aktualisieren",
+            description: "Eine bestehende Entwurf-E-Mail aktualisieren",
+          },
+          getDraft: {
+            title: "Entwurf anfordern",
+            description:
+              "Eine bestimmte Entwurfversion anhand ihrer ID abrufen.",
+          },
+          listDrafts: {
+            title: "Entwürfe",
+            description: "Liste alle Entwurf-E-Mails auf",
+          },
+          deleteDraft: {
+            title: "Entwurf löschen",
+            description: "Einen Entwurf für eine E-Mail löschen",
+          },
+          sendDraft: {
+            title: "Entwurf senden",
+            description: "Senden Sie eine bestehende Entwurf-E-Mail",
+          },
+          sendEmail: {
+            title: "E-Mail senden",
+            description: "Senden Sie sofort eine E-Mail.",
+          },
+          replyToThread: {
+            title: "Antwort auf den Thread",
+            description: "Antworten Sie umgehend auf einen E-Mail-Thread.",
+          },
+          markRead: {
+            title: "Mark Read",
+            description: "Markiere einen Thread als gelesen.",
+          },
+          markUnread: {
+            title: "Als nicht gelesen markieren",
+            description: "Markiere einen Thread als nicht gelesen.",
+          },
+          moveToTrash: {
+            title: "In den Papierkorb verschieben",
+            description: "Ein Thema in den Papierkorb verschieben",
+          },
+          moveToArchive: {
+            title: "Archiv",
+            description: "Thread archivieren",
+          },
+          moveToInbox: {
+            title: "Zum Posteingang verschieben",
+            description: "Einen Thread in den Posteingang verschieben",
+          },
+          getMailboxStats: {
+            title: "Statistiken für E-Mail-Postfach",
+            description:
+              "Erhalten Sie Informationen über die Anzahl nicht gelesener E-Mails und Statistiken für Ihr Postfach.",
+          },
+          getInbox: {
+            title: "E-Mail-Postfach öffnen",
+            description:
+              "Ein einfacher und effizienter Weg, um E-Mails aus dem Gmail-Posteingang zu erhalten.",
+          },
+        },
+      },
     },
     "performance-warning":
       "Die Leistung von LLMs, die keine explizite Unterstützung für das Aufrufen von Tools bieten, hängt stark von den Fähigkeiten und der Genauigkeit des Modells ab. Einige Fähigkeiten können eingeschränkt oder nicht funktionsfähig sein.",
@@ -481,7 +695,34 @@ const TRANSLATIONS = {
       "API-Schlüssel ermöglichen es dem Besitzer, programmatisch auf diese AnythingLLM-Instanz zuzugreifen und sie zu verwalten.",
     link: "Lesen Sie die API-Dokumentation",
     generate: "Neuen API-Schlüssel generieren",
+    empty: "Keine API-Schlüssel gefunden",
+    actions: "Aktionen",
+    messages: {
+      error: "Fehler: {{error}}",
+    },
+    modal: {
+      title: "Neuen API-Schlüssel erstellen",
+      cancel: "Abbrechen",
+      close: "Schließen",
+      create: "API-Schlüssel erstellen",
+      helper:
+        "Nach der Erstellung kann der API-Schlüssel verwendet werden, um programmgesteuert auf diese AnythingLLM-Instanz zuzugreifen und sie zu konfigurieren.",
+      name: {
+        label: "Name",
+        placeholder: "Produktionsintegration",
+        helper:
+          "Optional. Verwenden Sie einen leicht verständlichen Namen, damit Sie diesen Schlüssel später wiedererkennen.",
+      },
+    },
+    row: {
+      copy: "API-Schlüssel kopieren",
+      copied: "Kopiert",
+      unnamed: "--",
+      deleteConfirm:
+        "Möchten Sie diesen API-Schlüssel wirklich deaktivieren?\nDanach kann er nicht mehr verwendet werden.\n\nDiese Aktion kann nicht rückgängig gemacht werden.",
+    },
     table: {
+      name: "Name",
       key: "API-Schlüssel",
       by: "Erstellt von",
       created: "Erstellt",
@@ -751,7 +992,6 @@ const TRANSLATIONS = {
       deselect_all: "Auswahl abbrechen",
       no_docs: "Keine Dokumente vorhanden.",
       remove_selected: "Ausgewähltes entfernen",
-      costs: "*Einmalige Kosten für das Einbetten",
       save_embed: "Speichern und Einbetten",
       "total-documents_one": "{{count}} Dokument",
       "total-documents_other": "{{count}} Dokumente",
@@ -842,7 +1082,6 @@ const TRANSLATIONS = {
     see_less: "Weniger anzeigen",
     see_more: "Mehr anzeigen",
     tools: "Werkzeuge",
-    browse: "Durchsuchen",
     text_size_label: "Schriftgröße",
     select_model: "Modell auswählen",
     sources: "Quellen",
@@ -855,7 +1094,6 @@ const TRANSLATIONS = {
     edit: "Bearbeiten",
     publish: "Veröffentlichen",
     stop_generating: "Stoppen Sie die Generierung von Antworten",
-    pause_tts_speech_message: "Pause die Text-to-Speech-Funktion der Nachricht",
     slash_commands: "Befehlszeilen",
     agent_skills: "Fähigkeiten von Agenten",
     manage_agent_skills: "Verwalten Sie die Fähigkeiten von Agenten",
@@ -864,6 +1102,15 @@ const TRANSLATIONS = {
     start_agent_session: "Starte eine Agent-Sitzung",
     use_agent_session_to_use_tools:
       'Sie können Tools im Chat nutzen, indem Sie eine Agentensitzung mit "@agent" am Anfang Ihrer Anfrage starten.',
+    agent_invocation: {
+      model_wants_to_call: "Das Modell möchte anrufen.",
+      approve: "Genehmigen",
+      reject: "Ablehnen",
+      always_allow: "Bitte stellen Sie immer {{skillName}} sicher.",
+      tool_call_was_approved:
+        "Die Genehmigung für die Bestellung der Werkzeuge wurde erteilt.",
+      tool_call_was_rejected: "Die Anfrage nach dem Werkzeug wurde abgelehnt.",
+    },
   },
   profile_settings: {
     edit_account: "Account bearbeiten",
@@ -1023,6 +1270,79 @@ const TRANSLATIONS = {
     notAssigned:
       "Sie sind nicht zugewiesen zu einem Arbeitsbereich.\nBitte kontaktieren Sie Ihren Administrator, um Zugriff auf einen Arbeitsbereich zu erhalten.",
     goToWorkspace: 'Zurück zum Arbeitsbereich "{{workspace}}"',
+  },
+  telegram: {
+    title: "Telegram-Bot",
+    description:
+      "Verbinden Sie Ihre AnyLLM-Instanz mit Telegram, damit Sie von jedem Gerät mit Ihren Arbeitsbereichen chatten können.",
+    setup: {
+      step1: {
+        title: "Schritt 1: Erstellen Sie Ihren Telegram-Bot",
+        description:
+          "Öffnen Sie @BotFather in Telegram, senden Sie <code>/newbot</code> an <code>@BotFather</code>, befolgen Sie die Anweisungen und kopieren Sie den API-Token.",
+        "open-botfather": "Öffnen Sie BotFather",
+        "instruction-1": "1. Öffnen Sie den Link oder scannen Sie den QR-Code",
+        "instruction-2":
+          "2. Senden Sie <code>/newbot</code> an <code>@BotFather</code>",
+        "instruction-3":
+          "3. Wählen Sie einen Namen und einen Benutzernamen für Ihren Bot aus.",
+        "instruction-4": "4. Kopieren Sie den API-Token, den Sie erhalten.",
+      },
+      step2: {
+        title: "Schritt 2: Verbinden Sie Ihren Bot",
+        description:
+          "Fügen Sie den API-Token ein, den Sie von @BotFather erhalten haben, und wählen Sie einen Standard-Arbeitsbereich für Ihren Bot aus, mit dem er kommunizieren soll.",
+        "bot-token": "Bot-Token",
+        connecting: "Verbinde...",
+        "connect-bot": "Connect-Bot",
+      },
+      security: {
+        title: "Empfohlene Sicherheitseinstellungen",
+        description:
+          "Für zusätzliche Sicherheit, konfigurieren Sie diese Einstellungen über @BotFather.",
+        "disable-groups":
+          "– Verhinderung der automatisierten Anmeldung von Bots in Gruppen",
+        "disable-inline":
+          "– Verhindern Sie die Verwendung von Bots in der Inline-Suche",
+        "obscure-username":
+          "Verwenden Sie einen Benutzernamen für den Bot, der nicht offensichtlich ist, um die Auffindbarkeit zu reduzieren.",
+      },
+      "toast-enter-token": "Bitte geben Sie einen Bot-Token ein.",
+      "toast-connect-failed":
+        "Verbindung zum Bot konnte nicht hergestellt werden.",
+    },
+    connected: {
+      status: "Verbunden",
+      "status-disconnected":
+        "Abgekoppelt – Token möglicherweise abgelaufen oder ungültig",
+      "placeholder-token": "Neuen Bot-Token einfügen...",
+      reconnect: "Wiederherstellen",
+      workspace: "Arbeitsbereich",
+      "bot-link": "Link",
+      "voice-response": "Sprachantwort",
+      disconnecting: "Abmelden...",
+      disconnect: "Abkoppeln",
+      "voice-text-only": "Nur Text",
+      "voice-mirror":
+        "Echo (Antworten mit Sprache, wenn der Benutzer Sprache sendet)",
+      "voice-always":
+        "Bitte immer Sprachnachrichten senden (Audio mit jeder Antwort hinzufügen)",
+      "toast-disconnect-failed":
+        "Es konnte nicht erfolgreich die Verbindung zum Bot trennen.",
+      "toast-reconnect-failed":
+        "Verbindung zum Bot konnte nicht hergestellt werden.",
+      "toast-voice-failed":
+        "Fehlgeschlagen bei der Aktualisierung des Sprachmodus.",
+      "toast-approve-failed": "Benutzer konnte nicht autorisiert werden.",
+      "toast-deny-failed": "Nicht in der Lage, den Benutzer abzuweisen.",
+      "toast-revoke-failed":
+        "Fehlgeschlagener Versuch, das Benutzerkonto zu deaktivieren.",
+    },
+    users: {
+      "pending-description":
+        "Benutzer, die noch verifiziert werden müssen. Vergleichen Sie den hier angezeigten Pairing-Code mit dem, der in ihrem Telegram-Chat angezeigt wird.",
+      unknown: "Unbekannt",
+    },
   },
 };
 
