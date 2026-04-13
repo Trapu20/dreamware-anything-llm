@@ -1,7 +1,7 @@
 const TRANSLATIONS = {
   onboarding: {
     home: {
-      title: "Welcome to",
+      welcome: "Welcome",
       getStarted: "Get Started",
     },
     llm: {
@@ -50,7 +50,6 @@ const TRANSLATIONS = {
   },
   common: {
     "workspaces-name": "Workspace Name",
-    user: "User",
     selection: "Model Selection",
     saving: "Saving...",
     save: "Save changes",
@@ -111,6 +110,10 @@ const TRANSLATIONS = {
     contact: "Contact Support",
     "browser-extension": "Browser Extension",
     "mobile-app": "AnythingLLM Mobile",
+    channels: "Channels",
+    "available-channels": {
+      telegram: "Telegram",
+    },
   },
   login: {
     "multi-user": {
@@ -319,11 +322,6 @@ const TRANSLATIONS = {
         description:
           "Enable the default agent to generate various types of charts from data provided or given in chat.",
       },
-      save: {
-        title: "Generate & save files",
-        description:
-          "Enable the default agent to generate and write to files that can be saved to your computer.",
-      },
       web: {
         title: "Web Search",
         description:
@@ -333,6 +331,210 @@ const TRANSLATIONS = {
         title: "SQL Connector",
         description:
           "Enable your agent to be able to leverage SQL to answer you questions by connecting to various SQL database providers.",
+      },
+      filesystem: {
+        title: "File System Access",
+        description:
+          "Enable your agent to read, write, search, and manage files within a designated directory. Supports file editing, directory navigation, and content search.",
+        learnMore: "Learn more about this how to use this skill",
+        configuration: "Configuration",
+        readActions: "Read Actions",
+        writeActions: "Write Actions",
+        warning:
+          "Filesystem access can be dangerous as it can modify or delete files. Please consult the <link>documentation</link> before enabling.",
+        skills: {
+          "read-text-file": {
+            title: "Read File",
+            description:
+              "Read contents of files (text, code, PDF, images, etc.)",
+          },
+          "read-multiple-files": {
+            title: "Read Multiple Files",
+            description: "Read multiple files at once",
+          },
+          "list-directory": {
+            title: "List Directory",
+            description: "List files and directories in a folder",
+          },
+          "search-files": {
+            title: "Search Files",
+            description: "Search for files by name or content",
+          },
+          "get-file-info": {
+            title: "Get File Info",
+            description: "Get detailed metadata about files",
+          },
+          "write-text-file": {
+            title: "Write Text File",
+            description:
+              "Create new text files or overwrite existing text files",
+          },
+          "edit-file": {
+            title: "Edit File",
+            description: "Make line-based edits to text files",
+          },
+          "create-directory": {
+            title: "Create Directory",
+            description: "Create new directories",
+          },
+          "copy-file": {
+            title: "Copy File",
+            description: "Copy files and directories",
+          },
+          "move-file": {
+            title: "Move/Rename File",
+            description: "Move or rename files and directories",
+          },
+        },
+      },
+      createFiles: {
+        title: "Document Creation",
+        description:
+          "Enable your agent to create binary document formats like PowerPoint presentations, Excel spreadsheets, Word documents, and PDFs. Files can be downloaded directly from the chat window.",
+        configuration: "Available Document Types",
+        skills: {
+          "create-text-file": {
+            title: "Text Files",
+            description:
+              "Create text files with any content and extension (.txt, .md, .json, .csv, etc.)",
+          },
+          "create-pptx": {
+            title: "PowerPoint Presentations",
+            description:
+              "Create new PowerPoint presentations with slides, titles, and bullet points",
+          },
+          "create-pdf": {
+            title: "PDF Documents",
+            description:
+              "Create PDF documents from markdown or plain text with basic styling",
+          },
+          "create-xlsx": {
+            title: "Excel Spreadsheets",
+            description:
+              "Create Excel documents for tabular data with sheets and styling",
+          },
+          "create-docx": {
+            title: "Word Documents",
+            description:
+              "Create Word documents with basic styling and formatting",
+          },
+        },
+      },
+      gmail: {
+        title: "GMail Connector",
+        description:
+          "Enable your agent to interact with Gmail - search emails, read threads, compose drafts, send emails, and manage your inbox. <a>Read the documentation</a>.",
+        multiUserWarning:
+          "Gmail integration is not available in multi-user mode for security reasons. Please disable multi-user mode to use this feature.",
+        configuration: "Gmail Configuration",
+        deploymentId: "Deployment ID",
+        deploymentIdHelp:
+          "The deployment ID from your Google Apps Script web app",
+        apiKey: "API Key",
+        apiKeyHelp:
+          "The API key you configured in your Google Apps Script deployment",
+        configurationRequired:
+          "Please configure the Deployment ID and API Key to enable Gmail skills.",
+        configured: "Configured",
+        searchSkills: "Search skills...",
+        noSkillsFound: "No skills match your search.",
+        categories: {
+          search: {
+            title: "Search & Read Emails",
+            description: "Search and read emails from your Gmail inbox",
+          },
+          drafts: {
+            title: "Draft Emails",
+            description: "Create, edit, and manage email drafts",
+          },
+          send: {
+            title: "Send & Reply to Emails",
+            description: "Send emails and reply to threads immediately",
+          },
+          threads: {
+            title: "Manage Email Threads",
+            description:
+              "Manage email threads - mark read/unread, archive, trash",
+          },
+          account: {
+            title: "Integration Statistics",
+            description: "View mailbox statistics and account information",
+          },
+        },
+        skills: {
+          getInbox: {
+            title: "Get Inbox",
+            description: "Streamlined way to get the inbox emails from Gmail",
+          },
+          search: {
+            title: "Search Emails",
+            description: "Search emails using Gmail query syntax",
+          },
+          readThread: {
+            title: "Read Thread",
+            description: "Read a full email thread by ID",
+          },
+          createDraft: {
+            title: "Create Draft",
+            description: "Create a new draft email",
+          },
+          createDraftReply: {
+            title: "Create Draft Reply",
+            description: "Create a draft reply to an existing thread",
+          },
+          updateDraft: {
+            title: "Update Draft",
+            description: "Update an existing draft email",
+          },
+          getDraft: {
+            title: "Get Draft",
+            description: "Retrieve a specific draft by ID",
+          },
+          listDrafts: {
+            title: "List Drafts",
+            description: "List all draft emails",
+          },
+          deleteDraft: {
+            title: "Delete Draft",
+            description: "Delete a draft email",
+          },
+          sendDraft: {
+            title: "Send Draft",
+            description: "Send an existing draft email",
+          },
+          sendEmail: {
+            title: "Send Email",
+            description: "Send an email immediately",
+          },
+          replyToThread: {
+            title: "Reply to Thread",
+            description: "Reply to an email thread immediately",
+          },
+          markRead: {
+            title: "Mark Read",
+            description: "Mark a thread as read",
+          },
+          markUnread: {
+            title: "Mark Unread",
+            description: "Mark a thread as unread",
+          },
+          moveToTrash: {
+            title: "Move to Trash",
+            description: "Move a thread to trash",
+          },
+          moveToArchive: {
+            title: "Archive",
+            description: "Archive a thread",
+          },
+          moveToInbox: {
+            title: "Move to Inbox",
+            description: "Move a thread to inbox",
+          },
+          getMailboxStats: {
+            title: "Mailbox Stats",
+            description: "Get unread counts and mailbox statistics",
+          },
+        },
       },
       default_skill:
         "By default, this skill is enabled, but you can disable it if you don't want it to be available to the agent.",
@@ -484,7 +686,34 @@ const TRANSLATIONS = {
       "API keys allow the holder to programmatically access and manage this AnythingLLM instance.",
     link: "Read the API documentation",
     generate: "Generate New API Key",
+    empty: "No API keys found",
+    actions: "Actions",
+    messages: {
+      error: "Error: {{error}}",
+    },
+    modal: {
+      title: "Create new API key",
+      cancel: "Cancel",
+      close: "Close",
+      create: "Create API Key",
+      helper:
+        "Once created the API key can be used to programmatically access and configure this AnythingLLM instance.",
+      name: {
+        label: "Name",
+        placeholder: "Production integration",
+        helper:
+          "Optional. Use a friendly name so you can identify this key later.",
+      },
+    },
+    row: {
+      copy: "Copy API Key",
+      copied: "Copied",
+      unnamed: "--",
+      deleteConfirm:
+        "Are you sure you want to deactivate this api key?\nAfter you do this it will not longer be useable.\n\nThis action is irreversible.",
+    },
     table: {
+      name: "Name",
       key: "API Key",
       by: "Created By",
       created: "Created",
@@ -581,6 +810,68 @@ const TRANSLATIONS = {
       message: "Message",
       response: "Response",
       at: "Sent At",
+    },
+  },
+  telegram: {
+    title: "Telegram Bot",
+    description:
+      "Connect your AnythingLLM instance to Telegram so you can chat with your workspaces from any device.",
+    setup: {
+      step1: {
+        title: "Step 1: Create your Telegram bot",
+        description:
+          "Open @BotFather in Telegram, send <code>/newbot</code> to <code>@BotFather</code>, follow the prompts, and copy the API token.",
+        "open-botfather": "Open BotFather",
+        "instruction-1": "1. Open the link or scan the QR code",
+        "instruction-2":
+          "2. Send <code>/newbot</code> to <code>@BotFather</code>",
+        "instruction-3": "3. Choose a name and username for your bot",
+        "instruction-4": "4. Copy the API token you receive",
+      },
+      step2: {
+        title: "Step 2: Connect your bot",
+        description:
+          "Paste the API token you received from @BotFather to connect your bot.",
+        "bot-token": "Bot Token",
+        connecting: "Connecting...",
+        "connect-bot": "Connect Bot",
+      },
+      security: {
+        title: "Recommended Security Settings",
+        description:
+          "For additional security, configure these settings in @BotFather.",
+        "disable-groups": "— Prevent adding bot to groups",
+        "disable-inline": "— Prevent bot from being used in inline search",
+        "obscure-username":
+          "Use a non-obvious bot handle username to reduce discoverability",
+      },
+      "toast-enter-token": "Please enter a bot token.",
+      "toast-connect-failed": "Failed to connect bot.",
+    },
+    connected: {
+      status: "Connected",
+      "status-disconnected": "Disconnected — token may be expired or invalid",
+      "placeholder-token": "Paste new bot token...",
+      reconnect: "Reconnect",
+      workspace: "Workspace",
+      "bot-link": "Bot Link",
+      "voice-response": "Voice Response",
+      disconnecting: "Disconnecting...",
+      disconnect: "Disconnect",
+      "voice-text-only": "Text only",
+      "voice-mirror": "Mirror (reply with voice when user sends voice)",
+      "voice-always": "Always voice (send audio with every reply)",
+      "toast-disconnect-failed": "Failed to disconnect bot.",
+      "toast-reconnect-failed": "Failed to reconnect bot.",
+      "toast-voice-failed": "Failed to update voice mode.",
+      "toast-approve-failed": "Failed to approve user.",
+      "toast-deny-failed": "Failed to deny user.",
+      "toast-revoke-failed": "Failed to revoke user.",
+    },
+    users: {
+      "pending-description":
+        "Users waiting to be verified. Match the pairing code shown here with the one displayed in their Telegram chat.",
+      unknown: "Unknown",
     },
   },
   security: {
@@ -776,7 +1067,6 @@ const TRANSLATIONS = {
       select_all: "Select All",
       deselect_all: "Deselect All",
       remove_selected: "Remove Selected",
-      costs: "*One time cost for embeddings",
       save_embed: "Save and Embed",
     },
     upload: {
@@ -834,7 +1124,6 @@ const TRANSLATIONS = {
     source_count_other: "{{count}} references",
     document: "Document",
     similarity_match: "match",
-    pause_tts_speech_message: "Pause TTS speech of message",
     fork: "Fork",
     delete: "Delete",
     cancel: "Cancel",
@@ -865,7 +1154,6 @@ const TRANSLATIONS = {
     normal: "Normal",
     large: "Large",
     tools: "Tools",
-    browse: "Browse",
     text_size_label: "Text Size",
     select_model: "Select Model",
     slash_commands: "Slash Commands",
@@ -885,6 +1173,14 @@ const TRANSLATIONS = {
       saving: "Setting model as workspace default...",
       missing_credentials: "This provider is missing credentials!",
       missing_credentials_description: "Set up now",
+    },
+    agent_invocation: {
+      model_wants_to_call: "Model wants to call",
+      approve: "Approve",
+      reject: "Reject",
+      always_allow: "Always allow {{skillName}}",
+      tool_call_was_approved: "Tool call was approved",
+      tool_call_was_rejected: "Tool call was rejected",
     },
   },
   profile_settings: {

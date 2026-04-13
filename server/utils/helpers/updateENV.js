@@ -829,6 +829,10 @@ const KEY_MAPPING = {
     envKey: "LEMONADE_LLM_BASE_PATH",
     checks: [isValidURL],
   },
+  LemonadeLLMApiKey: {
+    envKey: "LEMONADE_LLM_API_KEY",
+    checks: [],
+  },
   LemonadeLLMModelPref: {
     envKey: "LEMONADE_LLM_MODEL_PREF",
     checks: [isNotEmpty],
@@ -1332,6 +1336,9 @@ function dumpENV() {
 
     // Allow native tool calling for specific providers.
     "PROVIDER_SUPPORTS_NATIVE_TOOL_CALLING",
+
+    // Allow auto-approval of skills
+    "AGENT_AUTO_APPROVED_SKILLS",
   ];
 
   // Simple sanitization of each value to prevent ENV injection via newline or quote escaping.
