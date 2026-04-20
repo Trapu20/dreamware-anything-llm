@@ -16,8 +16,8 @@ const TRANSLATIONS = {
         "Aidez-nous à améliorer AnythingLLM en répondant à quelques questions.",
     },
     home: {
-      title: "Bienvenue",
       getStarted: "Commencer",
+      welcome: "Bienvenue",
     },
     llm: {
       title: "Préférence LLM",
@@ -51,7 +51,6 @@ const TRANSLATIONS = {
   },
   common: {
     "workspaces-name": "Nom des espaces de travail",
-    user: "Utilisateur",
     selection: "Sélection du modèle",
     saving: "Enregistrement...",
     save: "Enregistrer les modifications",
@@ -104,6 +103,10 @@ const TRANSLATIONS = {
       trending: "Découvrez les tendances",
       "your-account": "Votre compte",
       "import-item": "Importer",
+    },
+    channels: "Canaux",
+    "available-channels": {
+      telegram: "Telegram",
     },
   },
   login: {
@@ -183,17 +186,17 @@ const TRANSLATIONS = {
       chat: {
         title: "Chat",
         description:
-          'fournira des réponses en utilisant les connaissances générales du LLM et le contexte du document correspondant. <br />Vous devrez utiliser la commande "@agent" pour utiliser les outils.',
+          'fournira des réponses en utilisant les connaissances générales de l\'LLM et le contexte du document, <b>et</b>. Vous devrez utiliser la commande "@agent" pour utiliser les outils.',
       },
       query: {
         title: "Requête",
         description:
-          "fournira des réponses <b>uniquement</b> si le contexte du document est trouvé.<br />Vous devrez utiliser la commande @agent pour utiliser les outils.",
+          'fournira des réponses <b>uniquement</b> si le contexte du document est trouvé.<br />Vous devrez utiliser la commande "@agent" pour utiliser les outils.',
       },
       automatic: {
         title: "Voiture",
         description:
-          "utilisera automatiquement les outils si le modèle et le fournisseur prennent en charge l'appel de outils natifs. <br />Si l'utilisation d'outils natifs n'est pas prise en charge, vous devrez utiliser la commande \"@agent\" pour utiliser les outils.",
+          "utilisera automatiquement les outils si le modèle et le fournisseur prennent en charge l'appel de fonctions natives. <br />Si l'utilisation de fonctions natives n'est pas prise en charge, vous devrez utiliser la commande \"@agent\" pour utiliser les outils.",
       },
     },
     history: {
@@ -307,11 +310,6 @@ const TRANSLATIONS = {
         description:
           "Activez l'agent par défaut pour générer différents types de graphiques à partir des données fournies ou données dans le chat.",
       },
-      save: {
-        title: "Générer et sauvegarder des fichiers dans le navigateur",
-        description:
-          "Activez l'agent par défaut pour générer et écrire des fichiers qui peuvent être sauvegardés et téléchargés dans votre navigateur.",
-      },
       web: {
         title: "Recherche web en direct et navigation",
         description:
@@ -324,6 +322,418 @@ const TRANSLATIONS = {
       },
       default_skill:
         "Par défaut, cette fonctionnalité est activée, mais vous pouvez la désactiver si vous ne souhaitez pas qu'elle soit disponible pour l'agent.",
+      filesystem: {
+        title: "Accès au système de fichiers",
+        description:
+          "Permettez à votre agent de lire, écrire, rechercher et gérer des fichiers dans un répertoire spécifié. Prend en charge la modification de fichiers, la navigation dans les répertoires et la recherche de contenu.",
+        learnMore: "En savoir plus sur la manière d'utiliser cette compétence.",
+        configuration: "Configuration",
+        readActions: "Lire les actions",
+        writeActions: "Actions à effectuer",
+        warning:
+          "L'accès au système de fichiers peut être dangereux, car il peut modifier ou supprimer des fichiers. Veuillez consulter la <link>documentation</link> avant de l'activer.",
+        skills: {
+          "read-text-file": {
+            title: "Ouvrir le fichier",
+            description:
+              "Lire le contenu des fichiers (texte, code, PDF, images, etc.)",
+          },
+          "read-multiple-files": {
+            title: "Lire plusieurs fichiers",
+            description: "Lire plusieurs fichiers simultanément.",
+          },
+          "list-directory": {
+            title: "Annuaire",
+            description:
+              "Énumérer les fichiers et les répertoires d'un dossier.",
+          },
+          "search-files": {
+            title: "Rechercher des fichiers",
+            description: "Rechercher des fichiers par nom ou par contenu",
+          },
+          "get-file-info": {
+            title: "Obtenir des informations sur le fichier",
+            description: "Obtenez des métadonnées détaillées sur les fichiers.",
+          },
+          "edit-file": {
+            title: "Modifier le fichier",
+            description:
+              "Effectuez des modifications basées sur des lignes dans les fichiers de texte.",
+          },
+          "create-directory": {
+            title: "Créer un répertoire",
+            description: "Créer de nouveaux répertoires",
+          },
+          "move-file": {
+            title: "Déplacer/Renommer le fichier",
+            description:
+              "Déplacez ou renommez des fichiers et des répertoires.",
+          },
+          "copy-file": {
+            title: "Copier le fichier",
+            description: "Copier des fichiers et des répertoires",
+          },
+          "write-text-file": {
+            title: "Créer un fichier texte",
+            description:
+              "Créer de nouveaux fichiers texte ou remplacer des fichiers texte existants.",
+          },
+        },
+      },
+      createFiles: {
+        title: "Création de documents",
+        description:
+          "Permettez à votre agent de créer des documents au format binaire, tels que des présentations PowerPoint, des feuilles de calcul Excel, des documents Word et des fichiers PDF. Les fichiers peuvent être téléchargés directement depuis la fenêtre de chat.",
+        configuration: "Types de documents disponibles",
+        skills: {
+          "create-text-file": {
+            title: "Fichiers de texte",
+            description:
+              "Créez des fichiers texte avec n'importe quel contenu et extension (par exemple, .txt, .md, .json, .csv, etc.)",
+          },
+          "create-pptx": {
+            title: "Présentations PowerPoint",
+            description:
+              "Créez de nouvelles présentations PowerPoint avec des diapositives, des titres et des puces.",
+          },
+          "create-pdf": {
+            title: "Documents au format PDF",
+            description:
+              "Créez des documents PDF à partir de fichiers Markdown ou de texte brut, avec un style de base.",
+          },
+          "create-xlsx": {
+            title: "Feuilles de calcul Excel",
+            description:
+              "Créez des documents Excel pour les données tabulaires, avec des feuilles et un style.",
+          },
+          "create-docx": {
+            title: "Documents au format Word",
+            description:
+              "Créez des documents Word avec un style et une mise en page de base.",
+          },
+        },
+      },
+      gmail: {
+        title: "Connecteur GMail",
+        description:
+          "Permettez à votre agent d'interagir avec Gmail : rechercher des e-mails, lire les conversations, rédiger des brouillons, envoyer des e-mails et gérer votre boîte de réception. <a>Consultez la documentation</a>.",
+        multiUserWarning:
+          "L'intégration avec Gmail n'est pas disponible en mode multi-utilisateurs pour des raisons de sécurité. Veuillez désactiver le mode multi-utilisateurs pour utiliser cette fonctionnalité.",
+        configuration: "Configuration de Gmail",
+        deploymentId: "Identifiant de déploiement",
+        deploymentIdHelp:
+          "L'identifiant de déploiement de votre application web Google Apps Script",
+        apiKey: "Clé API",
+        apiKeyHelp:
+          "La clé API que vous avez configurée lors de votre déploiement de Google Apps Script",
+        configurationRequired:
+          "Veuillez configurer l'ID de déploiement et la clé API pour activer les fonctionnalités de Gmail.",
+        configured: "Configuré",
+        searchSkills: "Compétences de recherche...",
+        noSkillsFound: "Aucune compétence ne correspond à votre recherche.",
+        categories: {
+          search: {
+            title: "Rechercher et lire des e-mails",
+            description:
+              "Recherchez et lisez vos e-mails dans votre boîte de réception Gmail.",
+          },
+          drafts: {
+            title: "Modèles de courriels",
+            description: "Créer, modifier et gérer des brouillons d'e-mails.",
+          },
+          send: {
+            title: "Envoyer et répondre aux e-mails",
+            description:
+              "Envoyez des e-mails et répondez immédiatement aux discussions.",
+          },
+          threads: {
+            title: "Gérer les conversations par e-mail",
+            description:
+              "Gérer les conversations par e-mail : marquer comme lu/non lu, archiver, supprimer",
+          },
+          account: {
+            title: "Statistiques d'intégration",
+            description:
+              "Consultez les statistiques de votre boîte de réception et les informations de votre compte.",
+          },
+        },
+        skills: {
+          search: {
+            title: "Rechercher dans les e-mails",
+            description:
+              "Rechercher des e-mails en utilisant la syntaxe de recherche de Gmail",
+          },
+          readThread: {
+            title: "Lire le fil de discussion",
+            description: "Lire l'intégralité d'une conversation par ID",
+          },
+          createDraft: {
+            title: "Créer une version préliminaire",
+            description: "Créez une nouvelle version de l'e-mail.",
+          },
+          createDraftReply: {
+            title: "Créer une réponse brouillon",
+            description:
+              "Rédiger une réponse préliminaire à un fil de discussion existant.",
+          },
+          updateDraft: {
+            title: "Mise à jour de la version préliminaire",
+            description: "Mettre à jour un brouillon de courriel existant",
+          },
+          getDraft: {
+            title: "Obtenir la version préliminaire",
+            description:
+              "Récupérer une version spécifique par son identifiant.",
+          },
+          listDrafts: {
+            title: "Propositions/Brouillons",
+            description: "Énumérer tous les courriels en brouillon.",
+          },
+          deleteDraft: {
+            title: "Supprimer la version brouillon",
+            description: "Supprimer une brouillon de courriel",
+          },
+          sendDraft: {
+            title: "Envoyer une version préliminaire",
+            description: "Envoyer une version existante d'un courriel",
+          },
+          sendEmail: {
+            title: "Envoyer un e-mail",
+            description: "Envoyez un courriel immédiatement.",
+          },
+          replyToThread: {
+            title: "Répondre à la discussion",
+            description:
+              "Répondre immédiatement à une conversation par e-mail.",
+          },
+          markRead: {
+            title: "Mark Read",
+            description: "Indiquer qu'un fil de discussion a été lu",
+          },
+          markUnread: {
+            title: "Signaler comme non lu",
+            description: "Indiquer qu'un fil de discussion est non lu",
+          },
+          moveToTrash: {
+            title: "Envoyer à la poubelle",
+            description: "Déplacer un fil dans la corbeille d'ordures",
+          },
+          moveToArchive: {
+            title: "Archives",
+            description: "Archiver une discussion",
+          },
+          moveToInbox: {
+            title: "Envoyer vers la boîte de réception",
+            description:
+              "Déplacer un fil de discussion dans la boîte de réception",
+          },
+          getMailboxStats: {
+            title: "Statistiques de la boîte de réception",
+            description:
+              "Obtenez le nombre d'emails non lus et les statistiques de votre boîte de réception.",
+          },
+          getInbox: {
+            title: "Accéder à la boîte de réception",
+            description:
+              "Une méthode simple et efficace pour récupérer les e-mails de votre boîte de réception Gmail.",
+          },
+        },
+      },
+      outlook: {
+        title: "Connecteur Outlook",
+        description:
+          "Permettez à votre agent d'interagir avec Microsoft Outlook : rechercher des e-mails, lire les fils de discussion, rédiger des brouillons, envoyer des e-mails et gérer votre boîte de réception via l'API Microsoft Graph. <a>Consultez la documentation</a>.",
+        multiUserWarning:
+          "L'intégration avec Outlook n'est pas disponible en mode multi-utilisateurs pour des raisons de sécurité. Veuillez désactiver le mode multi-utilisateurs afin d'utiliser cette fonctionnalité.",
+        configuration: "Configuration de Outlook",
+        authType: "Type de compte",
+        authTypeHelp:
+          "Choisissez quels types de comptes Microsoft peuvent être utilisés pour l'authentification. « Tous les comptes » prend en charge à la fois les comptes personnels et les comptes professionnels/scolaires. « Seulement les comptes personnels » limite l'utilisation aux comptes Microsoft personnels. « Seulement les comptes professionnels/scolaires » limite l'utilisation aux comptes provenant d'un tenant Azure AD spécifique.",
+        authTypeCommon:
+          "Tous les comptes (personnels et professionnels/scolaires)",
+        authTypeConsumers: "Seuls les comptes Microsoft personnels",
+        authTypeOrganization:
+          "Comptes d'organisations uniquement (nécessite l'identifiant du locataire)",
+        clientId: "Identifiant (Client)",
+        clientIdHelp:
+          "L'identifiant de l'application (client) provenant de votre enregistrement d'application dans Azure AD.",
+        tenantId: "Identifiant (locataire)",
+        tenantIdHelp:
+          "L'ID du répertoire (utilisateur) provenant de votre inscription d'application dans Azure AD. Nécessaire uniquement pour l'authentification au sein d'une seule organisation.",
+        clientSecret: "Clé secrète",
+        clientSecretHelp:
+          "La valeur secrète du client provenant de l'enregistrement de votre application Azure AD.",
+        configurationRequired:
+          "Veuillez configurer l'ID client et le secret client afin d'activer les fonctionnalités Outlook.",
+        authRequired:
+          "Enregistrez d'abord vos informations d'identification, puis authentifiez-vous auprès de Microsoft pour finaliser la configuration.",
+        authenticateWithMicrosoft: "S'authentifier auprès de Microsoft",
+        authenticated: "Connexion réussie avec Microsoft Outlook.",
+        revokeAccess: "Retirer l'accès",
+        configured: "Configuré",
+        searchSkills: "Compétences de recherche...",
+        noSkillsFound: "Aucun résultat correspondant à votre recherche.",
+        categories: {
+          search: {
+            title: "Rechercher et lire des e-mails",
+            description:
+              "Recherchez et lisez vos e-mails dans votre boîte de réception Outlook.",
+          },
+          drafts: {
+            title: "Modèles de courriels",
+            description:
+              "Créer, modifier et gérer des brouillons de courriels.",
+          },
+          send: {
+            title: "Envoyer des e-mails",
+            description:
+              "Envoyer de nouveaux courriels ou répondre immédiatement aux messages.",
+          },
+          account: {
+            title: "Statistiques d'intégration",
+            description:
+              "Consultez les statistiques de votre boîte de réception et les informations de votre compte.",
+          },
+        },
+        skills: {
+          getInbox: {
+            title: "Accéder à la boîte de réception",
+            description:
+              "Récupérez les e-mails récents de votre boîte de réception Outlook.",
+          },
+          search: {
+            title: "Rechercher des e-mails",
+            description:
+              "Recherchez des e-mails à l'aide de la syntaxe de recherche de Microsoft.",
+          },
+          readThread: {
+            title: "Lire la conversation",
+            description: "Lire l'intégralité d'une conversation par e-mail.",
+          },
+          createDraft: {
+            title: "Créer une version préliminaire",
+            description:
+              "Créez une nouvelle version d'un courriel ou une réponse à un courriel existant.",
+          },
+          updateDraft: {
+            title: "Version actuelle",
+            description: "Mettre à jour un brouillon de courriel existant",
+          },
+          listDrafts: {
+            title: "Propositions préliminaires",
+            description: "Énumérez tous les courriels en brouillon.",
+          },
+          deleteDraft: {
+            title: "Supprimer la version brouillon",
+            description: "Supprimer une brouillon de courriel",
+          },
+          sendDraft: {
+            title: "Envoyer une version préliminaire",
+            description: "Envoyer une version existante d'un e-mail",
+          },
+          sendEmail: {
+            title: "Envoyer un e-mail",
+            description:
+              "Envoyez un nouvel e-mail ou répondez immédiatement à un message existant.",
+          },
+          getMailboxStats: {
+            title: "Statistiques de la boîte de réception",
+            description:
+              "Obtenez le nombre de dossiers et les statistiques des boîtes aux lettres.",
+          },
+        },
+      },
+      googleCalendar: {
+        title: "Connecteur Google Calendar",
+        description:
+          "Permettez à votre agent d'interagir avec Google Calendar : consulter les calendriers, afficher les événements, créer et modifier des événements, et gérer les confirmations de présence. <a>Consultez la documentation</a>.",
+        multiUserWarning:
+          "L'intégration avec Google Calendar n'est pas disponible en mode multi-utilisateurs pour des raisons de sécurité. Veuillez désactiver le mode multi-utilisateurs pour utiliser cette fonctionnalité.",
+        configuration: "Configuration de Google Calendar",
+        deploymentId: "ID de déploiement",
+        deploymentIdHelp:
+          "L'identifiant de déploiement de votre application web Google Apps Script",
+        apiKey: "Clé API",
+        apiKeyHelp:
+          "La clé API que vous avez configurée dans votre déploiement de Google Apps Script",
+        configurationRequired:
+          "Veuillez configurer l'ID de déploiement et la clé API pour activer les fonctionnalités Google Calendar.",
+        configured: "Configuré",
+        searchSkills: "Compétences de recherche...",
+        noSkillsFound: "Aucun résultat correspondant à votre recherche.",
+        categories: {
+          calendars: {
+            title: "Calendriers",
+            description: "Visualisez et gérez vos calendriers Google.",
+          },
+          readEvents: {
+            title: "Lire les événements",
+            description:
+              "Visualiser et rechercher les événements du calendrier",
+          },
+          writeEvents: {
+            title: "Créer et mettre à jour des événements",
+            description:
+              "Créer de nouveaux événements et modifier les événements existants.",
+          },
+          rsvp: {
+            title: "Gestion des réponses",
+            description: "Gérez votre statut de réponse pour les événements.",
+          },
+        },
+        skills: {
+          listCalendars: {
+            title: "Calendriers",
+            description:
+              "Énumérez tous les calendriers que vous possédez ou auxquels vous êtes abonné.",
+          },
+          getCalendar: {
+            title: "Obtenir les détails du calendrier",
+            description:
+              "Obtenez des informations détaillées sur un calendrier spécifique.",
+          },
+          getEvent: {
+            title: "Obtenir l'événement",
+            description:
+              "Obtenez des informations détaillées sur un événement spécifique.",
+          },
+          getEventsForDay: {
+            title: "Obtenir les événements pour la journée",
+            description:
+              "Consultez tous les événements prévus pour une date spécifique.",
+          },
+          getEvents: {
+            title: "Événements (période)",
+            description:
+              "Récupérer des événements dans une plage de dates personnalisée",
+          },
+          getUpcomingEvents: {
+            title: "Consulter les événements à venir",
+            description:
+              "Trouvez des événements pour aujourd'hui, cette semaine ou ce mois en utilisant des mots-clés simples.",
+          },
+          quickAdd: {
+            title: "Ajouter un événement rapidement",
+            description:
+              "Créer un événement à partir d'une description en langage naturel (par exemple, « Réunion demain à 15h »)",
+          },
+          createEvent: {
+            title: "Créer un événement",
+            description:
+              "Créez un nouvel événement avec un contrôle total sur toutes les propriétés.",
+          },
+          updateEvent: {
+            title: "Mise à jour de l'événement",
+            description:
+              "Mettre à jour un événement existant dans le calendrier",
+          },
+          setMyStatus: {
+            title: "Définir le statut de réponse",
+            description:
+              "Accepter, refuser ou accepter provisoirement un événement.",
+          },
+        },
+      },
     },
     mcp: {
       title: "Serveurs MCP",
@@ -386,7 +796,34 @@ const TRANSLATIONS = {
       "Les clés API permettent au titulaire d'accéder et de gérer de manière programmatique cette instance AnythingLLM.",
     link: "Lisez la documentation de l'API",
     generate: "Générer une nouvelle clé API",
+    empty: "Aucune clé API trouvée",
+    actions: "Actions",
+    messages: {
+      error: "Erreur : {{error}}",
+    },
+    modal: {
+      title: "Créer une nouvelle clé API",
+      cancel: "Annuler",
+      close: "Fermer",
+      create: "Créer une clé API",
+      helper:
+        "Une fois créée, la clé API peut être utilisée pour accéder à cette instance AnythingLLM et la configurer de manière programmatique.",
+      name: {
+        label: "Nom",
+        placeholder: "Intégration de production",
+        helper:
+          "Facultatif. Utilisez un nom explicite pour pouvoir retrouver facilement cette clé plus tard.",
+      },
+    },
+    row: {
+      copy: "Copier la clé API",
+      copied: "Copiée",
+      unnamed: "--",
+      deleteConfirm:
+        "Voulez-vous vraiment désactiver cette clé API ?\nAprès cela, elle ne pourra plus être utilisée.\n\nCette action est irréversible.",
+    },
     table: {
+      name: "Nom",
       key: "Clé API",
       by: "Créé par",
       created: "Créé",
@@ -641,7 +1078,6 @@ const TRANSLATIONS = {
       select_all: "Tout sélectionner",
       deselect_all: "Tout désélectionner",
       remove_selected: "Supprimer la sélection",
-      costs: "Coûts",
       save_embed: "Sauvegarder et intégrer",
       "total-documents_one": "{{count}}",
       "total-documents_other": "{{count}} documents",
@@ -747,7 +1183,6 @@ const TRANSLATIONS = {
     see_less: "Voir moins",
     see_more: "Voir plus",
     tools: "Outils",
-    browse: "Parcourir",
     text_size_label: "Taille du texte",
     select_model: "Sélectionner le modèle",
     sources: "Sources",
@@ -760,8 +1195,6 @@ const TRANSLATIONS = {
     edit: "Modifier",
     publish: "Publier",
     stop_generating: "Arrêtez de générer des réponses",
-    pause_tts_speech_message:
-      "Mettre en pause la lecture de la voix synthétique du message",
     slash_commands: "Commandes abrégées",
     agent_skills: "Compétences des agents",
     manage_agent_skills: "Gérer les compétences des agents",
@@ -770,6 +1203,15 @@ const TRANSLATIONS = {
     start_agent_session: "Démarrer la session de l'agent",
     use_agent_session_to_use_tools:
       'Vous pouvez utiliser des outils via le chat en lançant une session avec un agent en utilisant le préfixe "@agent" au début de votre requête.',
+    agent_invocation: {
+      model_wants_to_call: "Le modèle souhaite passer un appel.",
+      approve: "Approuver",
+      reject: "Refuser",
+      always_allow: "Il est toujours important de {{skillName}}",
+      tool_call_was_approved: "La demande d'outils a été approuvée.",
+      tool_call_was_rejected:
+        "La demande d'utilisation de l'outil a été rejetée.",
+    },
   },
   profile_settings: {
     edit_account: "Modifier le compte",
@@ -1015,6 +1457,73 @@ const TRANSLATIONS = {
     notAssigned:
       "Vous n'êtes actuellement pas affecté à aucun espace de travail.\nPour accéder à un espace de travail, veuillez contacter votre administrateur.",
     goToWorkspace: 'Aller à "{{workspace}}"',
+  },
+  telegram: {
+    title: "Bot Telegram",
+    description:
+      "Connectez votre instance de AnythingLLM à Telegram afin de pouvoir communiquer avec vos espaces de travail depuis n'importe quel appareil.",
+    setup: {
+      step1: {
+        title: "Étape 1 : Créez votre bot Telegram",
+        description:
+          "Ouvrez @BotFather sur Telegram, envoyez `/newbot` à <code>@BotFather</code>, suivez les instructions, et copiez le jeton API.",
+        "open-botfather": "Ouvrir BotFather",
+        "instruction-1": "1. Ouvrez le lien ou numérisez le code QR.",
+        "instruction-2":
+          "2. Envoyer <code>/newbot</code> à <code>@BotFather</code>",
+        "instruction-3":
+          "3. Choisissez un nom et un nom d'utilisateur pour votre bot.",
+        "instruction-4": "4. Copiez le jeton API que vous recevez.",
+      },
+      step2: {
+        title: "Étape 2 : Connectez votre bot",
+        description:
+          "Collez le jeton API que vous avez reçu de @BotFather et sélectionnez un espace de travail par défaut pour que votre bot puisse communiquer.",
+        "bot-token": "Token Bot",
+        connecting: "Connexion...",
+        "connect-bot": "Bot de connexion",
+      },
+      security: {
+        title: "Paramètres de sécurité recommandés",
+        description:
+          "Pour une sécurité supplémentaire, configurez ces paramètres via @BotFather.",
+        "disable-groups": "— Empêcher l'ajout de bots aux groupes",
+        "disable-inline":
+          "— Empêcher l'utilisation de bots dans les recherches en ligne.",
+        "obscure-username":
+          "Utilisez un nom d'utilisateur de bot non évident pour réduire sa visibilité.",
+      },
+      "toast-enter-token": "Veuillez saisir un jeton de bot.",
+      "toast-connect-failed": "Échec de la connexion du bot.",
+    },
+    connected: {
+      status: "Connecté",
+      "status-disconnected":
+        "Non connecté – le jeton pourrait être expiré ou invalide.",
+      "placeholder-token": "Coller le nouveau jeton de bot...",
+      reconnect: "Reconnexion",
+      workspace: "Espace de travail",
+      "bot-link": "Lien vers le bot",
+      "voice-response": "Réponse vocale",
+      disconnecting: "Déconnexion...",
+      disconnect: "Déconnecter",
+      "voice-text-only": "Texte uniquement",
+      "voice-mirror":
+        "Écho (répondre par la voix lorsque l'utilisateur envoie une voix)",
+      "voice-always":
+        "Toujours inclure une voix (envoyer un enregistrement audio avec chaque réponse)",
+      "toast-disconnect-failed": "Échec de la déconnexion du robot.",
+      "toast-reconnect-failed": "Échec de la reconnexion du bot.",
+      "toast-voice-failed": "Impossible de mettre à jour le mode vocal.",
+      "toast-approve-failed": "Échec de la validation de l'utilisateur.",
+      "toast-deny-failed": "Impossible de refuser l'accès à l'utilisateur.",
+      "toast-revoke-failed": "Impossible de supprimer l'utilisateur.",
+    },
+    users: {
+      "pending-description":
+        "Utilisateurs en attente de vérification. Correspondez le code de correspondance affiché ici avec celui qui apparaît dans leur conversation Telegram.",
+      unknown: "Inconnu",
+    },
   },
 };
 
