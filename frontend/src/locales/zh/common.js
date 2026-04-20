@@ -2,8 +2,8 @@
 const TRANSLATIONS = {
   onboarding: {
     home: {
-      title: "欢迎使用",
       getStarted: "开始",
+      welcome: "欢迎",
     },
     llm: {
       title: "LLM 偏好",
@@ -48,7 +48,6 @@ const TRANSLATIONS = {
   },
   common: {
     "workspaces-name": "工作区名称",
-    user: "用户",
     selection: "模型选择",
     save: "保存更改",
     saving: "保存中...",
@@ -101,6 +100,10 @@ const TRANSLATIONS = {
       trending: "探索热门",
       "your-account": "您的账户",
       "import-item": "进口商品",
+    },
+    channels: "频道",
+    "available-channels": {
+      telegram: "电报",
     },
   },
   login: {
@@ -183,17 +186,17 @@ const TRANSLATIONS = {
       chat: {
         title: "聊天",
         description:
-          "将提供答案，利用LLM的通用知识和相关文档的上下文信息。您需要使用 `@agent` 命令来使用工具。",
+          "将提供答案，利用LLM的通用知识和提供的文档内容<b>和</b>。您需要使用@agent命令来使用工具。",
       },
       query: {
         title: "查询",
         description:
-          "将在找到文档上下文时提供答案 <b>仅限</b>。您需要使用 @agent 命令来使用工具。",
+          "将在找到文档上下文时，仅提供答案 <b>。您需要使用 @agent 命令来使用工具。",
       },
       automatic: {
         title: "自动",
         description:
-          "如果模型和提供商支持原生工具调用，则会自动使用这些工具。<br />如果不支持原生工具调用，则需要使用 `@agent` 命令来使用工具。",
+          "如果模型和提供者都支持原生工具调用，则会自动使用这些工具。<br />如果不支持原生工具调用，您需要使用 `@agent` 命令来使用工具。",
       },
     },
     history: {
@@ -296,11 +299,6 @@ const TRANSLATIONS = {
         title: "生成图表",
         description: "使默认代理能够从提供的数据或聊天中生成各种类型的图表。",
       },
-      save: {
-        title: "生成并保存文件到浏览器",
-        description:
-          "使默认代理能够生成并写入文件，这些文件可以保存并在你的浏览器中下载。",
-      },
       web: {
         title: "实时网络搜索和浏览",
         description:
@@ -313,6 +311,369 @@ const TRANSLATIONS = {
       },
       default_skill:
         "默认情况下，这项技能已启用。但是，如果您不想让该技能被代理使用，您可以将其禁用。",
+      filesystem: {
+        title: "文件系统访问",
+        description:
+          "允许您的代理能够读取、写入、搜索和管理指定目录中的文件。 支持文件编辑、目录导航和内容搜索功能。",
+        learnMore: "了解更多关于如何使用这项技能的信息。",
+        configuration: "配置",
+        readActions: "阅读操作",
+        writeActions: "编写操作",
+        warning:
+          "访问文件系统可能存在风险，因为它可能修改或删除文件。在启用之前，请务必查阅<link>文档</link>。",
+        skills: {
+          "read-text-file": {
+            title: "读取文件",
+            description: "读取文件内容（包括文本、代码、PDF、图像等）",
+          },
+          "read-multiple-files": {
+            title: "读取多个文件",
+            description: "同时读取多个文件",
+          },
+          "list-directory": {
+            title: "目录",
+            description: "列出文件夹中的文件和目录",
+          },
+          "search-files": {
+            title: "搜索文件",
+            description: "按文件名或内容搜索文件",
+          },
+          "get-file-info": {
+            title: "获取文件信息",
+            description: "获取有关文件的详细元数据",
+          },
+          "edit-file": {
+            title: "编辑文件",
+            description: "对文本文件进行基于行的编辑。",
+          },
+          "create-directory": {
+            title: "创建目录",
+            description: "创建新的目录",
+          },
+          "move-file": {
+            title: "移动/重命名文件",
+            description: "移动或重命名文件和目录",
+          },
+          "copy-file": {
+            title: "复制文件",
+            description: "复制文件和目录",
+          },
+          "write-text-file": {
+            title: "创建文本文件",
+            description: "创建新的文本文件，或覆盖现有的文本文件。",
+          },
+        },
+      },
+      createFiles: {
+        title: "文档创建",
+        description:
+          "允许您的代理创建二进制文档格式，例如PowerPoint演示文稿、Excel电子表格、Word文档和PDF文件。文件可以直接从聊天窗口下载。",
+        configuration: "可用的文件类型",
+        skills: {
+          "create-text-file": {
+            title: "文本文件",
+            description:
+              "创建包含任何内容和扩展名的文本文件（如 .txt、.md、.json、.csv 等）。",
+          },
+          "create-pptx": {
+            title: "PowerPoint 演示文稿",
+            description: "创建新的幻灯片演示文稿，包括幻灯片、标题和项目符号。",
+          },
+          "create-pdf": {
+            title: "PDF 文档",
+            description:
+              "使用 Markdown 或纯文本，并进行基本的排版，创建 PDF 文档。",
+          },
+          "create-xlsx": {
+            title: "Excel电子表格",
+            description: "创建包含表格数据、工作表和样式的 Excel 文档。",
+          },
+          "create-docx": {
+            title: "Word 文档",
+            description: "创建包含基本样式和格式的 Word 文档",
+          },
+        },
+      },
+      gmail: {
+        title: "Gmail 连接器",
+        description:
+          "让您的代理能够与Gmail互动：搜索邮件、阅读邮件线程、撰写草稿、发送邮件以及管理您的收件箱。请参考相关文档。",
+        multiUserWarning:
+          "为了安全原因，在多用户模式下无法使用 Gmail 集成功能。请先禁用多用户模式，然后才能使用此功能。",
+        configuration: "Gmail 设置",
+        deploymentId: "部署 ID",
+        deploymentIdHelp: "您的 Google Apps Script 网页应用的部署 ID",
+        apiKey: "API 密钥",
+        apiKeyHelp: "您在 Google Apps Script 部署中配置的 API 密钥。",
+        configurationRequired: "请配置部署 ID 和 API 密钥，以启用 Gmail 功能。",
+        configured: "已配置",
+        searchSkills: "搜索技巧...",
+        noSkillsFound: "未找到与您的搜索条件匹配的技能。",
+        categories: {
+          search: {
+            title: "搜索和阅读电子邮件",
+            description: "搜索并阅读您 Gmail 收件箱中的邮件。",
+          },
+          drafts: {
+            title: "草稿邮件",
+            description: "创建、编辑和管理电子邮件草稿",
+          },
+          send: {
+            title: "发送和回复电子邮件",
+            description: "立即发送电子邮件并回复讨论串",
+          },
+          threads: {
+            title: "管理电子邮件线程",
+            description: "管理邮件线程 - 标记为已读/未读，归档，删除",
+          },
+          account: {
+            title: "集成统计",
+            description: "查看邮件收件箱统计数据和账户信息",
+          },
+        },
+        skills: {
+          search: {
+            title: "搜索邮件",
+            description: "使用 Gmail 的查询语法搜索电子邮件",
+          },
+          readThread: {
+            title: "阅读此主题",
+            description: "阅读由ID发起的完整邮件往来",
+          },
+          createDraft: {
+            title: "创建草稿",
+            description: "创建一个新的电子邮件草稿",
+          },
+          createDraftReply: {
+            title: "创建草稿回复",
+            description: "创建一个针对现有主题的回应草稿",
+          },
+          updateDraft: {
+            title: "更新草稿",
+            description: "更新已有的电子邮件草稿",
+          },
+          getDraft: {
+            title: "获取草稿",
+            description: "通过ID检索特定草稿",
+          },
+          listDrafts: {
+            title: "草稿清单",
+            description: "列出所有草稿邮件",
+          },
+          deleteDraft: {
+            title: "删除草稿",
+            description: "删除草稿邮件",
+          },
+          sendDraft: {
+            title: "发送草稿",
+            description: "发送已有的电子邮件草稿",
+          },
+          sendEmail: {
+            title: "发送电子邮件",
+            description: "立即发送一封电子邮件",
+          },
+          replyToThread: {
+            title: "回复主题",
+            description: "立即回复邮件线程",
+          },
+          markRead: {
+            title: "马克·瑞德",
+            description: "将某个主题标记为已阅读",
+          },
+          markUnread: {
+            title: "标记为未读",
+            description: "将某个主题标记为未读",
+          },
+          moveToTrash: {
+            title: "移动到垃圾箱",
+            description: "将某个主题归档到垃圾箱",
+          },
+          moveToArchive: {
+            title: "存档",
+            description: "存档该主题",
+          },
+          moveToInbox: {
+            title: "移动到收件箱",
+            description: "将某个主题移动到收件箱",
+          },
+          getMailboxStats: {
+            title: "邮箱统计",
+            description: "获取未读邮件数量和邮箱统计信息",
+          },
+          getInbox: {
+            title: "查看收件箱",
+            description: "一种便捷的方式，可以从 Gmail 中获取收件邮件。",
+          },
+        },
+      },
+      outlook: {
+        title: "Outlook 连接器",
+        description:
+          "让您的代理通过 Microsoft Graph API 与 Microsoft Outlook 交互——搜索邮件、阅读邮件线程、撰写草稿、发送邮件以及管理您的收件箱。请查阅相关文档。",
+        multiUserWarning:
+          "由于安全原因，在多用户模式下无法使用 Outlook 集成功能。请先关闭多用户模式，然后再使用此功能。",
+        configuration: "Outlook 设置",
+        authType: "账户类型",
+        authTypeHelp:
+          '选择哪些类型的 Microsoft 账户可以进行身份验证。 "所有账户" 支持个人账户和工作/学校账户。 "仅限个人账户" 仅限于个人 Microsoft 账户。 "仅限工作/学校账户" 仅限于特定 Azure AD 租户的工作/学校账户。',
+        authTypeCommon: "所有账户（包括个人账户和工作/学习账户）",
+        authTypeConsumers: "仅限个人 Microsoft 账户",
+        authTypeOrganization: "仅限组织账户 (需要租户 ID)",
+        clientId: "申请人（客户）ID",
+        clientIdHelp: "您 Azure AD 应用程序注册的应用程序 ID",
+        tenantId: "租户 ID",
+        tenantIdHelp:
+          "您的 Azure AD 应用注册的“租户 ID”。仅在组织内部身份验证时需要。",
+        clientSecret: "客户端密钥",
+        clientSecretHelp: "您的 Azure AD 应用程序注册的客户端机密值",
+        configurationRequired:
+          "请配置客户端 ID 和客户端密钥，以便启用 Outlook 相关功能。",
+        authRequired:
+          "首先保存您的凭据，然后通过 Microsoft 进行身份验证以完成设置。",
+        authenticateWithMicrosoft: "使用 Microsoft 身份验证",
+        authenticated: "已成功与 Microsoft Outlook 认证。",
+        revokeAccess: "撤销权限",
+        configured: "已配置",
+        searchSkills: "搜索技巧...",
+        noSkillsFound: "未找到与您的搜索条件匹配的技能。",
+        categories: {
+          search: {
+            title: "搜索和阅读电子邮件",
+            description: "搜索并阅读您 Outlook 收件箱中的电子邮件。",
+          },
+          drafts: {
+            title: "草稿邮件",
+            description: "创建、编辑和管理电子邮件草稿",
+          },
+          send: {
+            title: "发送电子邮件",
+            description: "立即发送新邮件或回复消息",
+          },
+          account: {
+            title: "集成统计",
+            description: "查看邮件收件箱统计数据和账户信息",
+          },
+        },
+        skills: {
+          getInbox: {
+            title: "查看收件箱",
+            description: "从您的 Outlook 收件箱获取最近的邮件",
+          },
+          search: {
+            title: "搜索邮件",
+            description: "使用 Microsoft 搜索语法搜索电子邮件",
+          },
+          readThread: {
+            title: "阅读对话",
+            description: "阅读完整的电子邮件对话记录",
+          },
+          createDraft: {
+            title: "创建草稿",
+            description: "创建一个新的电子邮件草稿，或回复一个已存在的邮件。",
+          },
+          updateDraft: {
+            title: "更新草稿",
+            description: "更新已有的电子邮件草稿",
+          },
+          listDrafts: {
+            title: "草稿清单",
+            description: "列出所有草稿邮件",
+          },
+          deleteDraft: {
+            title: "删除草稿",
+            description: "删除草稿邮件",
+          },
+          sendDraft: {
+            title: "发送草稿",
+            description: "发送已有的邮件草稿",
+          },
+          sendEmail: {
+            title: "发送电子邮件",
+            description: "立即发送一封新的电子邮件，或回复已存在的消息。",
+          },
+          getMailboxStats: {
+            title: "邮件收件统计",
+            description: "获取文件夹数量和邮箱统计信息",
+          },
+        },
+      },
+      googleCalendar: {
+        title: "Google 日历连接器",
+        description:
+          "让您的代理能够与 Google 日历互动：查看日历、获取活动、创建和更新活动，以及管理确认回复。请参考相关文档。",
+        multiUserWarning:
+          "由于安全原因，在多用户模式下无法使用 Google 日历集成功能。请先禁用多用户模式，然后再使用此功能。",
+        configuration: "谷歌日历配置",
+        deploymentId: "部署ID",
+        deploymentIdHelp: "您的 Google Apps Script 网页应用的部署 ID",
+        apiKey: "API 密钥",
+        apiKeyHelp: "您在 Google Apps Script 部署中配置的 API 密钥。",
+        configurationRequired:
+          "请配置部署 ID 和 API 密钥，以启用 Google 日历功能。",
+        configured: "已配置",
+        searchSkills: "搜索技巧...",
+        noSkillsFound: "未找到与您搜索条件匹配的技能。",
+        categories: {
+          calendars: {
+            title: "日历",
+            description: "查看和管理您的 Google 日历",
+          },
+          readEvents: {
+            title: "查看活动",
+            description: "查看和搜索日历活动",
+          },
+          writeEvents: {
+            title: "创建和更新活动",
+            description: "创建新的活动，并修改现有的活动。",
+          },
+          rsvp: {
+            title: "请回复确认",
+            description: "管理您对活动的响应状态",
+          },
+        },
+        skills: {
+          listCalendars: {
+            title: "日历列表",
+            description: "列出您拥有的或订阅的全部日历。",
+          },
+          getCalendar: {
+            title: "获取日历详情",
+            description: "获取有关特定日历的详细信息",
+          },
+          getEvent: {
+            title: "获取活动",
+            description: "获取有关特定活动的详细信息",
+          },
+          getEventsForDay: {
+            title: "获取当日活动",
+            description: "获取指定日期的所有活动",
+          },
+          getEvents: {
+            title: "获取活动（日期范围）",
+            description: "获取指定日期范围内的活动",
+          },
+          getUpcomingEvents: {
+            title: "查看即将举办的活动",
+            description: "使用简单的关键词，查找今天、本周或本月的活动",
+          },
+          quickAdd: {
+            title: "快速添加活动",
+            description: "从自然语言（例如“明天下午3点开会”）创建一个活动。",
+          },
+          createEvent: {
+            title: "创建活动",
+            description: "创建一个新的活动，并完全控制所有属性。",
+          },
+          updateEvent: {
+            title: "活动更新",
+            description: "更新现有的日历事件",
+          },
+          setMyStatus: {
+            title: "设置回复状态",
+            description: "接受、拒绝或表示初步接受某个活动",
+          },
+        },
+      },
     },
     mcp: {
       title: "MCP 服务器",
@@ -450,7 +811,32 @@ const TRANSLATIONS = {
     description: "API 密钥允许持有者以编程方式访问和管理此 AnythingLLM 实例。",
     link: "阅读 API 文档",
     generate: "生成新的 API 密钥",
+    empty: "未找到 API 密钥",
+    actions: "操作",
+    messages: {
+      error: "错误：{{error}}",
+    },
+    modal: {
+      title: "创建新的 API 密钥",
+      cancel: "取消",
+      close: "关闭",
+      create: "创建 API 密钥",
+      helper: "创建后，API 密钥可用于以编程方式访问并配置此 AnythingLLM 实例。",
+      name: {
+        label: "名称",
+        placeholder: "生产环境集成",
+        helper: "可选。使用一个易于识别的名称，以便之后识别此密钥。",
+      },
+    },
+    row: {
+      copy: "复制 API 密钥",
+      copied: "已复制",
+      unnamed: "--",
+      deleteConfirm:
+        "确定要停用此 API 密钥吗？\n停用后将无法再使用。\n\n此操作不可撤销。",
+    },
     table: {
+      name: "名称",
       key: "API 密钥",
       by: "创建者",
       created: "创建时间",
@@ -687,7 +1073,6 @@ const TRANSLATIONS = {
       select_all: "全选",
       deselect_all: "取消全选",
       remove_selected: "移除所选",
-      costs: "*嵌入时一次性费用",
       save_embed: "保存并嵌入",
       "total-documents_one": "{{count}} 文件",
       "total-documents_other": "{{count}} 类型的文件",
@@ -782,7 +1167,6 @@ const TRANSLATIONS = {
     see_less: "查看更多",
     see_more: "查看更多",
     tools: "工具",
-    browse: "浏览",
     text_size_label: "字体大小",
     select_model: "选择型号",
     sources: "来源",
@@ -795,7 +1179,6 @@ const TRANSLATIONS = {
     edit: "编辑",
     publish: "出版",
     stop_generating: "停止生成回复",
-    pause_tts_speech_message: "暂停消息的语音合成（TTS）功能",
     slash_commands: "快捷命令",
     agent_skills: "代理人技能",
     manage_agent_skills: "管理代理人技能",
@@ -804,6 +1187,14 @@ const TRANSLATIONS = {
     start_agent_session: "开始代理会",
     use_agent_session_to_use_tools:
       "您可以通过在提示词的开头使用'@agent'来启动与代理的聊天，从而使用聊天工具。",
+    agent_invocation: {
+      model_wants_to_call: "该型号希望进行通话。",
+      approve: "批准",
+      reject: "拒绝",
+      always_allow: "请务必留出 {{skillName}}",
+      tool_call_was_approved: "工具使用申请已获得批准。",
+      tool_call_was_rejected: "请求获取工具已被拒绝。",
+    },
   },
   profile_settings: {
     edit_account: "编辑帐户",
@@ -950,6 +1341,67 @@ const TRANSLATIONS = {
     notAssigned:
       "你目前还没有分配到任何工作区。\n请联系你的管理员请求访问一个工作区。",
     goToWorkspace: '前往 "{{workspace}}"',
+  },
+  telegram: {
+    title: "Telegram 机器人",
+    description:
+      "将您的 AnythingLLM 实例与 Telegram 连接起来，这样您就可以从任何设备与您的工作空间进行聊天。",
+    setup: {
+      step1: {
+        title: "第一步：创建您的 Telegram 机器人",
+        description:
+          "打开 Telegram 上的 @BotFather，发送 `/newbot` 到 <code>@BotFather</code>，按照提示操作，并复制 API 令牌。",
+        "open-botfather": "启动 BotFather",
+        "instruction-1": "1. 打开链接或扫描二维码",
+        "instruction-2":
+          "2. 将 <code>/newbot</code> 发送给 <code>@BotFather</code>",
+        "instruction-3": "3. 为您的机器人选择一个名称和用户名",
+        "instruction-4": "4. 复制您收到的 API 令牌",
+      },
+      step2: {
+        title: "步骤 2：连接您的机器人",
+        description:
+          "将您从 @BotFather 获得的 API 令牌粘贴到指定位置，并选择一个默认的工作区，以便您的机器人可以进行对话。",
+        "bot-token": "机器人代币",
+        connecting: "正在连接...",
+        "connect-bot": "连接机器人",
+      },
+      security: {
+        title: "推荐的安全设置",
+        description: "为了进一步增强安全性，请在 @BotFather 中配置这些设置。",
+        "disable-groups": "— 阻止机器人加入群组",
+        "disable-inline": "— 阻止机器人被用于内联搜索",
+        "obscure-username":
+          "使用一个不显眼的机器人用户名，以降低其被发现的可能性。",
+      },
+      "toast-enter-token": "请您输入一个机器人令牌。",
+      "toast-connect-failed": "未能连接机器人。",
+    },
+    connected: {
+      status: "连接",
+      "status-disconnected": "未连接—— 令牌可能已过期或无效",
+      "placeholder-token": "粘贴新的机器人令牌...",
+      reconnect: "重新连接",
+      workspace: "工作空间",
+      "bot-link": "机器人链接",
+      "voice-response": "语音响应",
+      disconnecting: "断开连接...",
+      disconnect: "断开",
+      "voice-text-only": "仅提供文字",
+      "voice-mirror": "回声（当用户发送语音时，会以语音形式回复）",
+      "voice-always": "请务必在回复中添加语音（发送音频）。",
+      "toast-disconnect-failed": "未能成功断开机器人。",
+      "toast-reconnect-failed": "机器人连接失败。",
+      "toast-voice-failed": "无法更新语音模式。",
+      "toast-approve-failed": "未能批准用户。",
+      "toast-deny-failed": "未能拒绝用户请求。",
+      "toast-revoke-failed": "未能撤销用户权限。",
+    },
+    users: {
+      "pending-description":
+        "等待验证的用户。请将此处显示的配对代码与他们在 Telegram 聊天中显示的配对代码进行匹配。",
+      unknown: "未知",
+    },
   },
 };
 

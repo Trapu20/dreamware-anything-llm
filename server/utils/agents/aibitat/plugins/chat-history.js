@@ -12,6 +12,46 @@ const chatHistory = {
     return {
       name: this.name,
       setup: function (aibitat) {
+        // pre-register a workspace chat ID to secure it in the DB
+        aibitat.onMessage(async (message) => {
+          if (message.from !== "USER") return;
+
+          /**
+           * If we don't have a tracked chat ID, we need to create a new one so we can upsert the response later.
+           * Normally, if this was a totally fresh chat from the user, we can assume that the message from the socket is
+           * the message we want to store for the prompt. However, if this is a regeneration of a previous message and that message
+           * called tools the history could include intermediate messages so need to search backwards to find the most recent user message
+           * as that is actually the prompt.
+           */
+          if (!aibitat.trackedChatId) {
+            let userMessage = message.content;
+            if (userMessage.startsWith("@agent:")) {
+              const lastUserMsgIndex = aibitat._chats.findLastIndex(
+                (c) => c.from === "USER" && !c.content.startsWith("@agent:")
+              );
+
+              // When regenerating a message, we need to use the last user message as the prompt.
+              // Also prune the chats array to only include the messages before target prompt to re-run
+              // or else tool call results from the previous run will be included in the history and the model will not re-call tools
+              // that previously worked for the to-be-regenerated prompt.
+              if (lastUserMsgIndex !== -1) {
+                userMessage = aibitat._chats[lastUserMsgIndex].content;
+                aibitat._chats = aibitat._chats.slice(0, lastUserMsgIndex + 1);
+              }
+            }
+
+            const { chat } = await WorkspaceChats.new({
+              workspaceId: Number(aibitat.handlerProps.invocation.workspace_id),
+              user: { id: aibitat.handlerProps.invocation.user_id || null },
+              threadId: aibitat.handlerProps.invocation.thread_id || null,
+              include: false,
+              prompt: userMessage,
+              response: {},
+            });
+            if (chat) aibitat.registerChatId(chat.id);
+          }
+        });
+
         aibitat.onMessage(async () => {
           try {
             const lastResponses = aibitat.chats.slice(-2);
@@ -53,7 +93,8 @@ const chatHistory = {
         const invocation = aibitat.handlerProps.invocation;
         const metrics = aibitat.provider?.getUsage?.() ?? {};
         const citations = aibitat._pendingCitations ?? [];
-        await WorkspaceChats.new({
+        const outputs = aibitat._pendingOutputs ?? [];
+        await WorkspaceChats.upsert(aibitat.trackedChatId, {
           workspaceId: Number(invocation.workspace_id),
           prompt,
           response: {
@@ -62,11 +103,13 @@ const chatHistory = {
             type: "chat",
             attachments,
             metrics,
+            ...(outputs.length > 0 ? { outputs } : {}),
           },
           user: { id: invocation?.user_id || null },
           threadId: invocation?.thread_id || null,
+          include: true,
         });
-        aibitat.clearCitations?.();
+        this._cleanup(aibitat);
       },
       _storeSpecial: async function (
         aibitat,
@@ -75,8 +118,9 @@ const chatHistory = {
         const invocation = aibitat.handlerProps.invocation;
         const metrics = aibitat.provider?.getUsage?.() ?? {};
         const citations = aibitat._pendingCitations ?? [];
+        const outputs = aibitat._pendingOutputs ?? [];
         const existingSources = options?.sources ?? [];
-        await WorkspaceChats.new({
+        await WorkspaceChats.upsert(aibitat.trackedChatId, {
           workspaceId: Number(invocation.workspace_id),
           prompt,
           response: {
@@ -89,12 +133,20 @@ const chatHistory = {
             type: options?.saveAsType ?? "chat",
             attachments,
             metrics,
+            ...(outputs.length > 0 ? { outputs } : {}),
           },
           user: { id: invocation?.user_id || null },
           threadId: invocation?.thread_id || null,
+          include: true,
         });
-        aibitat.clearCitations?.();
         options?.postSave();
+        this._cleanup(aibitat);
+      },
+
+      _cleanup: function (aibitat) {
+        aibitat.clearCitations?.();
+        aibitat._pendingOutputs = [];
+        aibitat.clearTrackedChatId();
       },
     };
   },
