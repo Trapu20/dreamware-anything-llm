@@ -33,7 +33,7 @@ class AIbitat {
   defaultInterrupt;
   maxRounds;
   _chats;
-
+  _trackedChatId = null;
   agents = new Map();
   channels = new Map();
   functions = new Map();
@@ -44,6 +44,14 @@ class AIbitat {
    * @type {Array<{id: string, title: string, text: string, chunkSource?: string, score?: number}>}
    */
   _pendingCitations = [];
+
+  /**
+   * Buffer for attachments (images) collected during tool execution.
+   * Tools can call addToolAttachment() to queue images for injection into the conversation.
+   * These are injected as a user message so all providers' existing attachment handling works.
+   * @type {Array<{name: string, mime: string, contentString: string}>}
+   */
+  _toolAttachments = [];
 
   /**
    * Get the default maximum number of tools an agent can chain for a single response.
@@ -107,6 +115,44 @@ class AIbitat {
   }
 
   /**
+   * Register a new chat ID for tracking for a given conversation exchange
+   * @param {number} chatId - The ID of the chat to register.
+   */
+  registerChatId(chatId = null) {
+    if (!chatId) return;
+    this._trackedChatId = Number(chatId);
+  }
+
+  /**
+   * Get the tracked chat ID for a given conversation exchange
+   * @returns {number|null} The ID of the chat to register.
+   */
+  get trackedChatId() {
+    return this._trackedChatId ?? null;
+  }
+
+  /**
+   * Clear the tracked chat ID for a given conversation exchange
+   */
+  clearTrackedChatId() {
+    this._trackedChatId = null;
+  }
+
+  /**
+   * Emit the tracked chat ID to the frontend via the websocket
+   * plugin (assumed to be attached).
+   * @param {string} [uuid] - The message UUID to associate with this chatId
+   */
+  emitChatId(uuid = null) {
+    if (!this.trackedChatId || !uuid) return null;
+    this.socket?.send?.("reportStreamEvent", {
+      type: "chatId",
+      uuid,
+      chatId: this.trackedChatId,
+    });
+  }
+
+  /**
    * Add citation(s) to be reported when the response is finalized.
    * Citations are buffered and flushed with the correct message UUID.
    * @param {{id: string, title: string, text: string, chunkSource?: string, score?: number}|Array<{id: string, title: string, text: string, chunkSource?: string, score?: number}>} citations - Citation object or array of citation objects
@@ -139,6 +185,28 @@ class AIbitat {
    */
   clearCitations() {
     this._pendingCitations = [];
+  }
+
+  /**
+   * Add an attachment (image) from a tool to be injected into the conversation.
+   * The attachment will be added as a user message so the model can "see" it.
+   * This leverages existing provider attachment handling for user messages.
+   * @param {{name: string, mime: string, contentString: string}} attachment - The attachment object with name, mime type, and base64 data URL
+   */
+  addToolAttachment(attachment) {
+    if (!attachment || !attachment.contentString) return;
+    this._toolAttachments.push(attachment);
+  }
+
+  /**
+   * Collect and clear any pending tool attachments.
+   * @returns {Array<{name: string, mime: string, contentString: string}>} The collected attachments
+   */
+  collectToolAttachments() {
+    if (this._toolAttachments.length === 0) return [];
+    const attachments = [...this._toolAttachments];
+    this._toolAttachments = [];
+    return attachments;
   }
 
   /**
@@ -813,25 +881,18 @@ https://docs.anythingllm.com/agent/intelligent-tool-selection
     );
 
     if (completionStream.functionCall) {
-      if (depth >= this.maxToolCalls) {
-        this.handlerProps?.log?.(
-          `[warning]: Maximum tool call limit (${this.maxToolCalls}) reached. Making final response without tools.`
-        );
-        this?.introspect?.(
-          `Maximum tool call limit (${this.maxToolCalls}) reached. Generating a final response from what I have so far.`
-        );
-
-        const finalStream = await this.#safeProviderCall(() =>
-          provider.stream(messages, [], eventHandler)
-        );
-        const finalResponse =
-          finalStream?.textResponse ||
-          "I reached the maximum number of tool calls allowed for a single response. Here is what I have so far based on the tools I was able to run.";
-        return finalResponse;
-      }
-
       const { name, arguments: args } = completionStream.functionCall;
       const fn = this.functions.get(name);
+      const reachedToolLimit = depth >= this.maxToolCalls;
+
+      if (reachedToolLimit) {
+        this.handlerProps?.log?.(
+          `[warning]: Maximum tool call limit (${this.maxToolCalls}) reached. Executing final tool call then generating response.`
+        );
+        this?.introspect?.(
+          `Maximum tool call limit (${this.maxToolCalls}) reached. After this tool I will generate a final response.`
+        );
+      }
 
       if (!fn) {
         return await this.handleAsyncExecution(
@@ -845,7 +906,7 @@ https://docs.anythingllm.com/agent/intelligent-tool-selection
               originalFunctionCall: completionStream.functionCall,
             },
           ],
-          functions,
+          reachedToolLimit ? [] : functions,
           byAgent,
           depth + 1
         );
@@ -893,21 +954,36 @@ https://docs.anythingllm.com/agent/intelligent-tool-selection
           metrics: provider.getUsage(),
         });
         this?.flushCitations?.(directOutputUUID);
+        this?.emitChatId?.(directOutputUUID);
         return result;
+      }
+
+      const toolAttachments = this.collectToolAttachments();
+      const newMessages = [
+        ...messages,
+        {
+          name,
+          role: "function",
+          content: result,
+          originalFunctionCall: completionStream.functionCall,
+        },
+      ];
+
+      if (toolAttachments.length > 0) {
+        this.handlerProps?.log?.(
+          `[debug]: Injecting ${toolAttachments.length} image attachment(s) from tool result`
+        );
+        newMessages.push({
+          role: "user",
+          content: "[Attached image(s) from tool result]",
+          attachments: toolAttachments,
+        });
       }
 
       return await this.handleAsyncExecution(
         provider,
-        [
-          ...messages,
-          {
-            name,
-            role: "function",
-            content: result,
-            originalFunctionCall: completionStream.functionCall,
-          },
-        ],
-        functions,
+        newMessages,
+        reachedToolLimit ? [] : functions,
         byAgent,
         depth + 1
       );
@@ -920,6 +996,7 @@ https://docs.anythingllm.com/agent/intelligent-tool-selection
       metrics: provider.getUsage(),
     });
     this?.flushCitations?.(responseUuid);
+    this?.emitChatId?.(responseUuid);
     return completionStream?.textResponse;
   }
 
@@ -956,31 +1033,18 @@ https://docs.anythingllm.com/agent/intelligent-tool-selection
     );
 
     if (completion.functionCall) {
-      if (depth >= this.maxToolCalls) {
-        this.handlerProps?.log?.(
-          `[warning]: Maximum tool call limit (${this.maxToolCalls}) reached. Making final response without tools.`
-        );
-        this?.introspect?.(
-          `Maximum tool call limit (${this.maxToolCalls}) reached. Generating a final response from what I have so far.`
-        );
-
-        const finalCompletion = await this.#safeProviderCall(() =>
-          provider.complete(messages, [])
-        );
-        eventHandler?.("reportStreamEvent", {
-          type: "usageMetrics",
-          uuid: msgUUID,
-          metrics: provider.getUsage(),
-        });
-        this?.flushCitations?.(msgUUID);
-        return (
-          finalCompletion?.textResponse ||
-          "I reached the maximum number of tool calls allowed for a single response. Here is what I have so far based on the tools I was able to run."
-        );
-      }
-
       const { name, arguments: args } = completion.functionCall;
       const fn = this.functions.get(name);
+      const reachedToolLimit = depth >= this.maxToolCalls;
+
+      if (reachedToolLimit) {
+        this.handlerProps?.log?.(
+          `[warning]: Maximum tool call limit (${this.maxToolCalls}) reached. Executing final tool call then generating response.`
+        );
+        this?.introspect?.(
+          `Maximum tool call limit (${this.maxToolCalls}) reached. After this tool I will generate a final response.`
+        );
+      }
 
       if (!fn) {
         return await this.handleExecution(
@@ -994,7 +1058,7 @@ https://docs.anythingllm.com/agent/intelligent-tool-selection
               originalFunctionCall: completion.functionCall,
             },
           ],
-          functions,
+          reachedToolLimit ? [] : functions,
           byAgent,
           depth + 1,
           msgUUID
@@ -1034,18 +1098,32 @@ https://docs.anythingllm.com/agent/intelligent-tool-selection
         return result;
       }
 
+      const toolAttachments = this.collectToolAttachments();
+      const newMessages = [
+        ...messages,
+        {
+          name,
+          role: "function",
+          content: result,
+          originalFunctionCall: completion.functionCall,
+        },
+      ];
+
+      if (toolAttachments.length > 0) {
+        this.handlerProps?.log?.(
+          `[debug]: Injecting ${toolAttachments.length} image attachment(s) from tool result`
+        );
+        newMessages.push({
+          role: "user",
+          content: "[Attached image(s) from tool result]",
+          attachments: toolAttachments,
+        });
+      }
+
       return await this.handleExecution(
         provider,
-        [
-          ...messages,
-          {
-            name,
-            role: "function",
-            content: result,
-            originalFunctionCall: completion.functionCall,
-          },
-        ],
-        functions,
+        newMessages,
+        reachedToolLimit ? [] : functions,
         byAgent,
         depth + 1,
         msgUUID
@@ -1058,6 +1136,7 @@ https://docs.anythingllm.com/agent/intelligent-tool-selection
       metrics: provider.getUsage(),
     });
     this?.flushCitations?.(msgUUID);
+    this?.emitChatId?.(msgUUID);
     return completion?.textResponse;
   }
 
