@@ -15,6 +15,11 @@ class BackgroundService {
       timeout: "1m",
       interval: "12hr",
     },
+    {
+      name: "cleanup-generated-files",
+      timeout: "5m",
+      interval: "8hr",
+    },
   ];
 
   #documentSyncJobs = [
@@ -40,6 +45,35 @@ class BackgroundService {
     console.log(`\x1b[36m[${this.name}]\x1b[0m ${text}`, ...args);
   }
 
+  /**
+   * Returns the root path where job files are located.
+   * Handles the difference between development and production (bundled) environments.
+   * @returns {string}
+   */
+  get jobsRoot() {
+    return this.#root;
+  }
+
+  /**
+   * Wraps the logger so that IPC messages carrying `silent: true` are
+   * suppressed. Bree unconditionally calls `logger.info(message)` for
+   * every IPC message from forked processes, so this is the only
+   * interception point.
+   */
+  #makeBreeLogger() {
+    const base = this.logger;
+    const isSilent = (args) => args.length === 1 && args[0]?.silent === true;
+
+    const wrapped = Object.create(base);
+    wrapped.info = (...args) => {
+      if (!isSilent(args)) base.info(...args);
+    };
+    wrapped.log = (...args) => {
+      if (!isSilent(args)) base.log(...args);
+    };
+    return wrapped;
+  }
+
   async boot() {
     const { DocumentSyncQueue } = require("../../models/documentSyncQueue");
     this.documentSyncEnabled = await DocumentSyncQueue.enabled();
@@ -47,7 +81,7 @@ class BackgroundService {
 
     this.#log("Starting...");
     this.bree = new Bree({
-      logger: this.logger,
+      logger: this.#makeBreeLogger(),
       root: this.#root,
       jobs: jobsToRun,
       errorHandler: this.onError,
@@ -86,10 +120,48 @@ class BackgroundService {
   }
 
   onWorkerMessageHandler(message, _workerMetadata) {
+    if (message?.silent || message?.message?.silent) return;
     this.logger.info(`${message.message}`, {
       service: "bg-worker",
       origin: message.name,
     });
+  }
+
+  /**
+   * Spawn a one-off Bree worker process for the given script.
+   * @param {string} scriptPath - Absolute path to the worker JS file
+   * @returns {Promise<{ worker: ChildProcess, jobId: string }>}
+   */
+  async spawnWorker(scriptPath) {
+    if (!this.bree)
+      throw new Error("BackgroundService has not been booted yet");
+
+    const jobId = `${path.basename(scriptPath, ".js")}-${Date.now()}`;
+
+    await this.bree.add({
+      name: jobId,
+      path: scriptPath,
+    });
+
+    await this.bree.run(jobId);
+    const worker = this.bree.workers.get(jobId);
+
+    if (!worker) throw new Error("Failed to get worker reference from Bree");
+
+    return { worker, jobId };
+  }
+
+  /**
+   * Remove a one-off Bree job registration so stale entries don't accumulate.
+   * @param {string} jobId
+   */
+  async removeJob(jobId) {
+    if (!jobId) return;
+    try {
+      if (this.bree) await this.bree.remove(jobId);
+    } catch {
+      /* Job may already be removed */
+    }
   }
 }
 

@@ -17,8 +17,8 @@ const TRANSLATIONS = {
         "AnythingLLM'yi ihtiyaçlarınıza göre oluşturmamıza yardımcı olun. İsteğe bağlı.",
     },
     home: {
-      title: "Hoş Geldiniz",
       getStarted: "Başla",
+      welcome: "Hoş geldiniz",
     },
     llm: {
       title: "LLM Tercihi",
@@ -52,7 +52,6 @@ const TRANSLATIONS = {
   },
   common: {
     "workspaces-name": "Çalışma Alanları Adı",
-    user: "Kullanıcı",
     selection: "Model Seçimi",
     saving: "Kaydediliyor...",
     save: "Değişiklikleri Kaydet",
@@ -105,6 +104,10 @@ const TRANSLATIONS = {
       trending: "Popüler olanları keşfedin",
       "your-account": "Hesabınız",
       "import-item": "İthal Edilen Ürün",
+    },
+    channels: "Kanalalar",
+    "available-channels": {
+      telegram: "Telegram",
     },
   },
   login: {
@@ -182,17 +185,17 @@ const TRANSLATIONS = {
       chat: {
         title: "Sohbet",
         description:
-          "LLM'nin genel bilgisi ve bulunan doküman bağlamıyla cevaplar sunacaktır. Araçları kullanmak için @agent komutunu kullanmanız gerekecektir.",
+          'LLM\'nin genel bilgisi ve bulunan doküman bağlamıyla cevaplar sağlayacaktır. Araçları kullanmak için "@agent" komutunu kullanmanız gerekecektir.',
       },
       query: {
         title: "Sorgu",
         description:
-          "yalnızca doküman bağlamı bulunursa yanıtlar sağlayacaktır.<b>İhtiyaç duyacağınız araçları kullanmak için @agent komutunu kullanmanız gerekecektir.</b>",
+          "yalnızca ilgili belgenin bağlamında yanıtlar sağlayacaktır.<b>Kullanılabilir araçları kullanmak için @agent komutunu kullanmanız gerekecektir.</b>",
       },
       automatic: {
         title: "Oto",
         description:
-          "<br />Varsa, model ve sağlayıcı tarafından desteklenen yerel araçları otomatik olarak kullanacaktır. Yerel araç kullanımı desteklenmiyorsa, araçları kullanmak için @agent komutunu kullanmanız gerekecektir.",
+          "Model ve sağlayıcı tarafından desteklenen araçları otomatik olarak kullanacaktır. Eğer yerel araç çağırma desteklenmiyorsa, araçları kullanmak için @agent komutunu kullanmanız gerekecektir.",
       },
     },
     history: {
@@ -305,11 +308,6 @@ const TRANSLATIONS = {
         description:
           "Varsayılan ajanın, sağlanan veya sohbette yer alan verilere göre çeşitli grafik türleri oluşturmasına izin verin.",
       },
-      save: {
-        title: "Tarayıcıya dosya oluştur & kaydet",
-        description:
-          "Varsayılan ajanın, oluşturduğu dosyaları kaydetmesine ve tarayıcıda indirilebilir hale getirmesine izin verin.",
-      },
       web: {
         title: "Canlı web araması ve gezinme",
         description:
@@ -322,6 +320,412 @@ const TRANSLATIONS = {
       },
       default_skill:
         "Varsayılan olarak bu özellik etkinleştirilmiştir, ancak ajanın kullanmasına izin vermek istemiyorsanız, bu özelliği devre dışı bırakabilirsiniz.",
+      filesystem: {
+        title: "Dosya Sistemi Erişimi",
+        description:
+          "Temsilcinizin, belirli bir klasör içindeki dosyaları okuma, yazma, arama ve yönetme yeteneğini etkinleştirin. Dosya düzenleme, klasör gezinme ve içerik arama özelliklerini destekler.",
+        learnMore:
+          "Bu beceriye nasıl başlanacağını ve nasıl kullanılacağını daha detaylı bir şekilde öğrenin.",
+        configuration: "Yapılandırma",
+        readActions: "Okunmuş Eylemler",
+        writeActions: "Yapılacak İşler",
+        warning:
+          "Dosya sistemine erişim tehlikeli olabilir, çünkü dosyaları değiştirebilir veya silebilir. Bu özelliği etkinleştirmeden önce lütfen <a>belgelendirme</a>'i inceleyin.",
+        skills: {
+          "read-text-file": {
+            title: "Dosyayı aç",
+            description:
+              "Dosyalardaki içeriği okuyun (metin, kod, PDF, resimler vb.)",
+          },
+          "read-multiple-files": {
+            title: "Birden fazla dosyayı okuyun",
+            description: "Birden fazla dosyayı aynı anda okuyun",
+          },
+          "list-directory": {
+            title: "Yönerge Listesi",
+            description: "Bir klasördeki dosyaları ve dizinleri listeleyin.",
+          },
+          "search-files": {
+            title: "Dosyaları Arayın",
+            description: "Dosyaları adlarına veya içeriğine göre arayın",
+          },
+          "get-file-info": {
+            title: "Dosya Hakkında Bilgi Al",
+            description: "Dosyalara ilişkin ayrıntılı meta verileri elde edin.",
+          },
+          "edit-file": {
+            title: "Dosya Düzenle",
+            description: "Metin dosyalarında satır bazlı değişiklikler yapın.",
+          },
+          "create-directory": {
+            title: "Klasör Oluştur",
+            description: "Yeni klasörler oluşturun",
+          },
+          "move-file": {
+            title: "Dosya taşı/yeniden adlandır",
+            description:
+              "Dosyaları ve dizinleri taşıyın veya yeniden adlandırın.",
+          },
+          "copy-file": {
+            title: "Dosyayı Kopyala",
+            description: "Dosyaları ve dizinleri kopyala",
+          },
+          "write-text-file": {
+            title: "Metin dosyası oluştur",
+            description:
+              "Yeni metin dosyaları oluşturun veya mevcut metin dosyalarını üzerine yazın.",
+          },
+        },
+      },
+      createFiles: {
+        title: "Belge Oluşturma",
+        description:
+          "Temsilcinizin, PowerPoint sunumları, Excel tabloları, Word belgeleri ve PDF dosyaları gibi ikili belge formatları oluşturmasına olanak tanıyın. Dosyalar doğrudan sohbet penceresinden indirilebilir.",
+        configuration: "Mevcut Belgeler Türleri",
+        skills: {
+          "create-text-file": {
+            title: "Metin dosyaları",
+            description:
+              "Herhangi bir içerik ve uzantıyla (örneğin .txt, .md, .json, .csv vb.) metin dosyaları oluşturun.",
+          },
+          "create-pptx": {
+            title: "PowerPoint sunumları",
+            description:
+              "Yeni PowerPoint sunumları oluşturun, slaytlar, başlıklar ve madde işaretleri ekleyin.",
+          },
+          "create-pdf": {
+            title: "PDF belgeleri",
+            description:
+              "Temel stillerle markdown veya düz metinlerden PDF belgeleri oluşturun.",
+          },
+          "create-xlsx": {
+            title: "Excel elektronik tabloları",
+            description:
+              "Tablo formatındaki veriler için, sayfalar ve stil özellikleriyle Excel belgeleri oluşturun.",
+          },
+          "create-docx": {
+            title: "Kelime belgeleri",
+            description:
+              "Temel stil ve biçimlendirme ile Word belgeleri oluşturun.",
+          },
+        },
+      },
+      gmail: {
+        title: "GMail Bağlantısı",
+        description:
+          "Ajantınızın Gmail ile etkileşim kurmasını sağlayın: e-postaları aratın, sohbetleri okuyun, taslaklar oluşturun, e-postalar gönderin ve posta kutunuzu yönetin. <a>Dokümantasyonu okuyun</a>.",
+        multiUserWarning:
+          "Gmail entegrasyonu, güvenlik nedenlerinden dolayı çoklu kullanıcı modunda mevcut değildir. Bu özelliği kullanmak için lütfen çoklu kullanıcı modunu devre dışı bırakın.",
+        configuration: "Gmail Yapılandırma",
+        deploymentId: "Dağıtım Kimliği",
+        deploymentIdHelp:
+          "Google Apps Script web uygulamanızın uygulama kimliği",
+        apiKey: "API Anahtarı",
+        apiKeyHelp:
+          "Google Apps Script kurulumunuzda yapılandırdığınız API anahtarı",
+        configurationRequired:
+          "Lütfen Dağıtım Kimliğini ve API Anahtarını yapılandırarak Gmail yeteneklerini etkinleştirin.",
+        configured: "Yapılandırılmış",
+        searchSkills: "Arama becerileri...",
+        noSkillsFound:
+          "Belirttiğiniz kriterlere uyan herhangi bir sonuç bulunamadı.",
+        categories: {
+          search: {
+            title: "E-postaları arayın ve okuyun",
+            description: "Gmail hesabınızdaki e-postaları arayın ve okuyun.",
+          },
+          drafts: {
+            title: "Taslak E-postalar",
+            description:
+              "E-posta taslaklarını oluşturun, düzenleyin ve yönetin.",
+          },
+          send: {
+            title: "E-postaları gönderme ve yanıt verme",
+            description:
+              "E-postalar gönderin ve tartışmalara anında yanıt verin.",
+          },
+          threads: {
+            title: "E-posta dizilerini yönetin",
+            description:
+              "E-posta dizilerini yönetin - okundu/okunmadı olarak işaretleme, arşivleme, çöp kutusuna gönderme",
+          },
+          account: {
+            title: "Entegrasyon İstatistikleri",
+            description:
+              "Post kutunuzdaki istatistikleri ve hesap bilgilerinizi görüntüleyin.",
+          },
+        },
+        skills: {
+          search: {
+            title: "E-postaları arayın",
+            description: "Gmail sorgu sözdizimi kullanarak e-postaları arayın",
+          },
+          readThread: {
+            title: "Makaleyi oku",
+            description:
+              "ID numarasına göre, e-posta iletişimin bütününü okuyun.",
+          },
+          createDraft: {
+            title: "Taslak Oluştur",
+            description: "Yeni bir e-posta taslağı oluşturun",
+          },
+          createDraftReply: {
+            title: "Taslak Yanıt Oluştur",
+            description:
+              "Mevcut bir tartışma başlığına yönelik bir yanıt taslağı oluşturun.",
+          },
+          updateDraft: {
+            title: "Taslak Güncelleme",
+            description: "Mevcut bir e-posta taslağını güncelleyin",
+          },
+          getDraft: {
+            title: "Taslakları görüntüle",
+            description: "Belirli bir taslağı, ID numarası ile alın",
+          },
+          listDrafts: {
+            title: "Taslaklar",
+            description: "Tüm taslak e-postaları listele",
+          },
+          deleteDraft: {
+            title: "Taslağı Sil",
+            description: "Bir taslak e-postayı sil",
+          },
+          sendDraft: {
+            title: "Taslak Gönder",
+            description: "Mevcut bir e-posta taslağını gönderin",
+          },
+          sendEmail: {
+            title: "E-posta gönder",
+            description: "Hemen bir e-posta gönderin",
+          },
+          replyToThread: {
+            title: "Konuya Cevap Ver",
+            description: "Bir e-posta dizisine anında yanıt verin",
+          },
+          markRead: {
+            title: "মার্ক रीड",
+            description: "Bir konuyla ilgili mesajları okundu olarak işaretle.",
+          },
+          markUnread: {
+            title: "Okunmadı olarak işaretle",
+            description: 'Bir gönderiyi "okunmamış" olarak işaretle.',
+          },
+          moveToTrash: {
+            title: "Çöp kutusuna taşı",
+            description: "Bir başlığı çöp kutusuna taşı.",
+          },
+          moveToArchive: {
+            title: "Arşiv",
+            description: "Bir konuyu arşivle",
+          },
+          moveToInbox: {
+            title: "Gelen kutusuna taşı",
+            description:
+              "Bir konuyla ilgili mesajları ana posta kutusuna taşı.",
+          },
+          getMailboxStats: {
+            title: "Posta Kutusu İstatistikleri",
+            description:
+              "Okunmamış mesaj sayılarını ve posta kutusu istatistiklerini görüntüleyin.",
+          },
+          getInbox: {
+            title: "Gelen kutusuna eriş",
+            description:
+              "Gmail'den gelen e-postaları hızlı ve kolay bir şekilde görüntüleme yolu.",
+          },
+        },
+      },
+      outlook: {
+        title: "Outlook Bağlayıcı",
+        description:
+          "Ajantınızın Microsoft Outlook ile etkileşim kurmasını sağlayın: e-postaları arayın, tartışmaları okuyun, taslaklar oluşturun, e-posta gönderin ve Microsoft Graph API aracılığıyla posta kutunuzu yönetin. Dokümantasyonu okuyun.",
+        multiUserWarning:
+          "Outlook entegrasyonu, güvenlik nedenleriyle çoklu kullanıcı modunda mevcut değildir. Bu özelliği kullanmak için lütfen çoklu kullanıcı modunu devre dışı bırakın.",
+        configuration: "Outlook Yapılandırması",
+        authType: "Hesap Türü",
+        authTypeHelp:
+          'Hangi tür Microsoft hesaplarının kimlik doğrulamasına izin verileceğini seçin. "Tüm hesaplar" hem kişisel hem de iş/okul hesaplarını destekler. "Sadece kişisel hesaplar" yalnızca kişisel Microsoft hesaplarını kısıtlar. "Sadece kuruluş hesapları" belirli bir Azure AD kiracısından iş/okul hesaplarını kısıtlar.',
+        authTypeCommon: "Tüm hesaplar (kişisel ve iş/okul)",
+        authTypeConsumers: "Sadece bireysel Microsoft hesapları",
+        authTypeOrganization:
+          "Sadece kuruluş hesapları (Kira sahibi kimlik numarası gerektirir)",
+        clientId: "Uygulama (Müşteri) Kimliği",
+        clientIdHelp:
+          "Azure AD uygulamanızın kaydından elde ettiğiniz Uygulama (Müşteri) Kimliği",
+        tenantId: "Kiralık Konut Kimlik No",
+        tenantIdHelp:
+          "Azure AD uygulamanızın kayıt bilgilerinden elde edilen (Kiralık Alan) Kimliği. Sadece kuruluş içi kimlik doğrulama için gereklidir.",
+        clientSecret: "Müşteri sırrı",
+        clientSecretHelp:
+          "Azure AD uygulamanızın kaydından elde edilen istemci sır değeri",
+        configurationRequired:
+          "Lütfen, Outlook işlevlerini etkinleştirmek için Client ID ve Client Secret değerlerini yapılandırın.",
+        authRequired:
+          "Öncelikle kimlik bilgilerinizi kaydedin, ardından kurulumu tamamlamak için Microsoft ile kimliğinizi doğrulayın.",
+        authenticateWithMicrosoft: "Microsoft ile kimliğinizi doğrulayın",
+        authenticated:
+          "Microsoft Outlook ile başarılı bir şekilde kimlik doğrulaması tamamlandı.",
+        revokeAccess: "Erişi İptal Et",
+        configured: "Yapılandırılmış",
+        searchSkills: "Arama becerileri...",
+        noSkillsFound:
+          "Belirttiğiniz kriterlere uyan herhangi bir sonuç bulunamadı.",
+        categories: {
+          search: {
+            title: "E-postaları arayın ve okuyun",
+            description:
+              "Outlook posta kutunuzdan e-postaları arayın ve okuyun.",
+          },
+          drafts: {
+            title: "Örnek E-postalar",
+            description: "E-posta taslaklarını oluştur, düzenle ve yönet",
+          },
+          send: {
+            title: "E-posta gönderme",
+            description:
+              "Yeni e-postalar gönderin veya mesajlara anında cevap verin.",
+          },
+          account: {
+            title: "Entegrasyon İstatistikleri",
+            description:
+              "Post kutunuzdaki istatistikleri ve hesap bilgilerinizi görüntüleyin.",
+          },
+        },
+        skills: {
+          getInbox: {
+            title: "Gelen kutusuna eriş",
+            description:
+              "En son gelen e-postalarınızı Outlook posta kutunuzdan alın.",
+          },
+          search: {
+            title: "E-postaları arayın",
+            description:
+              "Microsoft arama sözdizimi kullanarak e-postaları arayın",
+          },
+          readThread: {
+            title: "Sohbeti okuyun",
+            description: "Tam bir e-posta konuşma dizisini okuyun.",
+          },
+          createDraft: {
+            title: "Taslak Oluştur",
+            description:
+              "Yeni bir e-posta taslağı oluşturun veya mevcut bir mesajın yanıtını taslağına ekleyin.",
+          },
+          updateDraft: {
+            title: "Taslak Güncelleme",
+            description: "Mevcut bir e-posta taslağını güncelleyin",
+          },
+          listDrafts: {
+            title: "Taslaklar",
+            description: "Tüm taslak e-postaları listele",
+          },
+          deleteDraft: {
+            title: "Taslak Sil",
+            description: "Bir taslak e-postayı sil",
+          },
+          sendDraft: {
+            title: "Taslak Gönder",
+            description: "Mevcut bir e-posta taslağını gönderin",
+          },
+          sendEmail: {
+            title: "E-posta gönder",
+            description:
+              "Yeni bir e-posta gönderin veya mevcut bir mesajı hemen yanıtlayın.",
+          },
+          getMailboxStats: {
+            title: "Post kutusu istatistikleri",
+            description:
+              "Klasörlerin ve posta kutusu istatistiklerinin sayısını alın.",
+          },
+        },
+      },
+      googleCalendar: {
+        title: "Google Takvim Bağlayıcı",
+        description:
+          "Ajantınızın Google Takvim ile etkileşim kurmasını sağlayın - takvimleri görüntüleyin, etkinlikleri alın, etkinlikleri oluşturun ve güncelleyin, ve katılımcıların yanıtlarını yönetin. Dokümantasyonu okuyun.",
+        multiUserWarning:
+          "Google Takvim entegrasyonu, güvenlik nedeniyle çoklu kullanıcı modunda kullanılabilmektedir. Bu özelliği kullanmak için lütfen çoklu kullanıcı modunu devre dışı bırakın.",
+        configuration: "Google Takvim Yapılandırması",
+        deploymentId: "Dağıtım Kimliği",
+        deploymentIdHelp:
+          "Google Apps Script web uygulamanızın dağıtım kimliği",
+        apiKey: "API Anahtarı",
+        apiKeyHelp:
+          "Google Apps Script dağıtımınızda yapılandırdığınız API anahtarı",
+        configurationRequired:
+          "Lütfen Dağıtım Kimliğini ve API Anahtarını yapılandırarak Google Takvim özelliklerini etkinleştirin.",
+        configured: "Yapılandırılmış",
+        searchSkills: "Arama becerileri...",
+        noSkillsFound:
+          "Arama sonuçlarınızda eşleşen herhangi bir beceri bulunmamaktadır.",
+        categories: {
+          calendars: {
+            title: "Takvimler",
+            description: "Google Takvimlerinizi görüntüleyin ve yönetin",
+          },
+          readEvents: {
+            title: "Etkinlikleri oku",
+            description: "Takvimdeki etkinlikleri görüntüleyin ve arayın",
+          },
+          writeEvents: {
+            title: "Etkinlikleri Oluştur ve Güncelle",
+            description:
+              "Yeni etkinlikler oluşturun ve mevcut olanları değiştirin.",
+          },
+          rsvp: {
+            title: "Katılım Yönetimi",
+            description: "Etkinliklere ilişkin yanıt durumunuzu yönetin",
+          },
+        },
+        skills: {
+          listCalendars: {
+            title: "Takvim Listeleri",
+            description:
+              "Sahip olduğunuz veya abonelik yaptığınız tüm takvimleri listeleyin.",
+          },
+          getCalendar: {
+            title: "Takvim Detaylarını Al",
+            description: "Belirli bir takvim hakkında ayrıntılı bilgi edinin.",
+          },
+          getEvent: {
+            title: "Etkinliği Bul",
+            description: "Belirli bir etkinlikle ilgili ayrıntılı bilgi edinin",
+          },
+          getEventsForDay: {
+            title: "Gün İçindeki Etkinlikleri Öğren",
+            description:
+              "Belirli bir güne ait tüm planlanan etkinlikleri görüntüleyin.",
+          },
+          getEvents: {
+            title: "Etkinlikleri (Tarih Aralığı) görüntüle",
+            description: "Belirli bir tarih aralığındaki etkinlikleri alın",
+          },
+          getUpcomingEvents: {
+            title: "Yaklaşan Etkinlikleri Görüntüleyin",
+            description:
+              "Bugün, bu hafta veya bu ay için etkinlikleri, basit anahtar kelimeler kullanarak bulun.",
+          },
+          quickAdd: {
+            title: "Hızlı Olay Ekle",
+            description:
+              'Doğal dilden bir etkinlik oluşturun (örneğin, "Yarın saat 15:00\'te bir toplantı")',
+          },
+          createEvent: {
+            title: "Etkinlik Oluştur",
+            description:
+              "Tüm özellikler üzerinde tam kontrol sağlayarak yeni bir etkinlik oluşturun.",
+          },
+          updateEvent: {
+            title: "Etkinlik Güncellemesi",
+            description: "Mevcut bir takvim olayını güncelleyin",
+          },
+          setMyStatus: {
+            title: "Davetiyeye Cevap Durumu Ayarla",
+            description:
+              "Bir etkinliğe katılımı kabul etmek, reddetmek veya geçici olarak katılmayı kabul etmek.",
+          },
+        },
+      },
     },
     mcp: {
       title: "MCP Sunucuları",
@@ -378,12 +782,39 @@ const TRANSLATIONS = {
     },
   },
   api: {
-    title: "API Anahtarları",
+    title: "API anahtarları",
     description:
       "API anahtarları, bu AnythingLLM örneğine programatik olarak erişmeye ve yönetmeye olanak tanır.",
     link: "API dokümantasyonunu okuyun",
     generate: "Yeni API Anahtarı Oluştur",
+    empty: "API anahtarları bulunamadı",
+    actions: "İşlemler",
+    messages: {
+      error: "Hata: {{error}}",
+    },
+    modal: {
+      title: "Yeni API anahtarı oluştur",
+      cancel: "İptal",
+      close: "Kapat",
+      create: "API anahtarı oluştur",
+      helper:
+        "Oluşturulduktan sonra API anahtarı, bu AnythingLLM örneğine programatik olarak erişmek ve onu yapılandırmak için kullanılabilir.",
+      name: {
+        label: "Ad",
+        placeholder: "Üretim entegrasyonu",
+        helper:
+          "İsteğe bağlıdır. Bu anahtarı daha sonra kolayca tanıyabilmek için açıklayıcı bir ad kullanın.",
+      },
+    },
+    row: {
+      copy: "API anahtarını kopyala",
+      copied: "Kopyalandı",
+      unnamed: "--",
+      deleteConfirm:
+        "Bu API anahtarını devre dışı bırakmak istediğinizden emin misiniz?\nBunu yaptıktan sonra artık kullanılamaz.\n\nBu işlem geri alınamaz.",
+    },
     table: {
+      name: "Ad",
       key: "API Anahtarı",
       by: "Oluşturan",
       created: "Oluşturulma Tarihi",
@@ -639,7 +1070,6 @@ const TRANSLATIONS = {
       select_all: "Tümünü Seç",
       deselect_all: "Tümünün Seçimini Kaldır",
       remove_selected: "Seçilenleri Kaldır",
-      costs: "*Gömmeler için tek seferlik maliyet",
       save_embed: "Kaydet ve Göm",
       "total-documents_one": "{{count}} belgesi",
       "total-documents_other": "{{count}} belgeleri",
@@ -742,7 +1172,6 @@ const TRANSLATIONS = {
     see_less: "Daha az",
     see_more: "Daha Fazla",
     tools: "Araçlar",
-    browse: "Gezin",
     text_size_label: "Metin Boyutu",
     select_model: "Model Seçimi",
     sources: "Kaynaklar",
@@ -755,7 +1184,6 @@ const TRANSLATIONS = {
     edit: "Düzenle",
     publish: "Yayınla",
     stop_generating: "Yanıt üretmeyi durdurun",
-    pause_tts_speech_message: "Mesajın metin okuma (TTS) özelliğini durdur",
     slash_commands: "Komut Satırı Komutları",
     agent_skills: "Ajansın Yetenekleri",
     manage_agent_skills: "Temsilcinin becerilerini yönetin",
@@ -764,6 +1192,20 @@ const TRANSLATIONS = {
     start_agent_session: "Temsilci Oturumu Başlat",
     use_agent_session_to_use_tools:
       'Çatınızdaki araçları kullanmak için, isteminizin başında "@agent" ile bir ajan oturumu başlatabilirsiniz.',
+    agent_invocation: {
+      model_wants_to_call: "Model, arama yapmak istiyor",
+      approve: "Onayla",
+      reject: "Reddet",
+      always_allow: "Her zaman {{skillName}}'ı sağlayın.",
+      tool_call_was_approved: "Araç talebi onaylandı.",
+      tool_call_was_rejected: "Ara çağrısı reddedildi.",
+    },
+    custom_skills: "Özel Beceri",
+    agent_flows: "Ajans Akışları",
+    no_tools_found: "Uyumlu herhangi bir araç bulunamadı",
+    loading_mcp_servers: "MCP sunucularının yüklenmesi...",
+    app_integrations: "Uygulama Entegrasyonları",
+    sub_skills: "Alt beceriler",
   },
   profile_settings: {
     edit_account: "Hesabı Düzenle",
@@ -1012,6 +1454,71 @@ const TRANSLATIONS = {
     notAssigned:
       "Şu anda hiçbir çalışma alanına atanmamışsınız.\nBir çalışma alanına erişmek için yöneticinize başvurun.",
     goToWorkspace: 'Çalışma alanına git "{{workspace}}"',
+  },
+  telegram: {
+    title: "Telegram Bot'u",
+    description:
+      "AnythingLLM örneğinizi Telegram ile bağlantılandırarak, herhangi bir cihazdan çalışma alanlarınızla sohbet edebilmelisiniz.",
+    setup: {
+      step1: {
+        title: "1. Adım: Telegram botunuzu oluşturun",
+        description:
+          "Telegram uygulamasında @BotFather'ı açın, \"<code>/newbot</code>\" komutunu <code>@BotFather</code>'e gönderin, talimatları izleyin ve API anahtarını kopyalayın.",
+        "open-botfather": "BotFather'ı aç",
+        "instruction-1": "1. Bağlantıyı açın veya QR kodunu tarayın",
+        "instruction-2":
+          "2. <code>/newbot</code> adresine <code>@BotFather</code>'e gönderin.",
+        "instruction-3": "3. Botunuz için bir isim ve kullanıcı adı seçin",
+        "instruction-4": "4. Alınan API token'ı kopyalayın",
+      },
+      step2: {
+        title: "Adım 2: Botunuzu bağlayın",
+        description:
+          "Aldığınız API token'ı (@BotFather) kopyalayın ve botunuzun iletişim kuracağı varsayılan çalışma alanını seçin.",
+        "bot-token": "Bot Token",
+        connecting: "Bağlantı kuruluyor...",
+        "connect-bot": "Bağlantı Botu",
+      },
+      security: {
+        title: "Önerilen Güvenlik Ayarları",
+        description:
+          "Ek güvenlik için, bu ayarları @BotFather üzerinden yapılandırın.",
+        "disable-groups": "— Gruplara bot eklenmesini engelleme",
+        "disable-inline":
+          "— Bot'un, arama çubuklarında kullanılmasını engellemek",
+        "obscure-username":
+          "Daha az bilinen bir bot kullanıcı adı kullanarak görünürlüğünü azaltın.",
+      },
+      "toast-enter-token": "Lütfen bir bot belirteci girin.",
+      "toast-connect-failed": "Bot ile bağlantı kurulamadı.",
+    },
+    connected: {
+      status: "Bağlı",
+      "status-disconnected":
+        "Bağlantı kesildi — belirteç geçersiz veya süresi dolmuş olabilir",
+      "placeholder-token": "Yeni bot token'ı yapıştırın...",
+      reconnect: "Yeniden bağlantı kur",
+      workspace: "Çalışma alanı",
+      "bot-link": "Bot bağlantısı",
+      "voice-response": "Sesle etkileşim",
+      disconnecting: "Bağlantıyı kesiyorum...",
+      disconnect: "Bağlantıyı kes",
+      "voice-text-only": "Sadece metin",
+      "voice-mirror":
+        "Sesli yanıt (kullanıcı ses gönderdiğinde, sesli yanıtla cevaplayın)",
+      "voice-always": "Her yanıtla birlikte sesli (sesli yanıt gönderme)",
+      "toast-disconnect-failed": "Bot'u ayırmada başarısız.",
+      "toast-reconnect-failed": "Bot yeniden bağlantı kuramadı.",
+      "toast-voice-failed": "Ses modunu güncelleme başarısız oldu.",
+      "toast-approve-failed": "Kullanıcıın onaylanması başarısız oldu.",
+      "toast-deny-failed": "Kullanıcıyı reddetmeyi başaramadı.",
+      "toast-revoke-failed": "Kullanıcıyı silme işlemi başarısız oldu.",
+    },
+    users: {
+      "pending-description":
+        "Doğrulama işlemi bekleyen kullanıcılar. Burada gösterilen eşleştirme kodunu, Telegram sohbetlerinde görüntülenen kodla karşılaştırın.",
+      unknown: "Bilinmiyor",
+    },
   },
 };
 

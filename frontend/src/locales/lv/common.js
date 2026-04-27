@@ -2,8 +2,8 @@
 const TRANSLATIONS = {
   onboarding: {
     home: {
-      title: "Laipni lūgti",
       getStarted: "Sākt darbu",
+      welcome: "Laipni lūdzam",
     },
     llm: {
       title: "LLM preferences",
@@ -51,7 +51,6 @@ const TRANSLATIONS = {
   },
   common: {
     "workspaces-name": "Darba telpas nosaukums",
-    user: "Lietotājs",
     selection: "Modeļa izvēle",
     saving: "Saglabā...",
     save: "Saglabāt izmaiņas",
@@ -104,6 +103,10 @@ const TRANSLATIONS = {
       trending: "Izpētiet populārākās",
       "your-account": "Jūsu konts",
       "import-item": "Importētā prece",
+    },
+    channels: "Kanāli",
+    "available-channels": {
+      telegram: "Telegram",
     },
   },
   login: {
@@ -189,17 +192,17 @@ const TRANSLATIONS = {
       chat: {
         title: "Saruna",
         description:
-          'sniedz atbildes, izmantojot LLM vispārīgo zināšanu un dokumenta kontekstu, kas ir pieejams.<br />Lai izmantotu rīkus, jums jāizmantojat komandu "@agent".',
+          'sniedz atbildes, izmantojot LLM vispārīgo zināšanu <b> un </b> dokumenta kontekstu, kas ir pieejams. Lai izmantotu rīkus, jums jāizmantojat komandu "@agent".',
       },
       query: {
         title: "Vaicājums",
         description:
-          'sniedz atbildes <b> tikai </b>, ja dokumenta konteksts ir atrasts. <br />Lai izmantotu rīkus, jums būs jāizmanto komanda "@agent".',
+          'sniedz atbildes <b>tikai__, </b>ja dokumenta konteksts ir atrasts.<br />Lai izmantotu rīkus, jums būs jāizmanto komanda "@agent".',
       },
       automatic: {
         title: "Automobiļs",
         description:
-          'automātiski izmantos rīkus, ja modelis un sniedzējs atbalsta vietējo rīku izmantošanu. <br />Ja vietējā rīku izmantošana netiek atbalstīta, jums būs jāizmantojas "@agent" komanda, lai izmantotu rīkus.',
+          'automātiski izmantos rīkus, ja modelis un sniedzējs atbalsta vietējo rīku izmantošanu. <br />Ja vietējā rīku izmantošana nav atbalstīta, jums būs jāizmantojat "@agent" komandu, lai izmantotu rīkus.',
       },
     },
     history: {
@@ -311,11 +314,6 @@ const TRANSLATIONS = {
         description:
           "Iespējot noklusējuma aģentam ģenerēt dažāda veida diagrammas no sarunā sniegtajiem vai dotajiem datiem.",
       },
-      save: {
-        title: "Ģenerēt un saglabāt failus pārlūkā",
-        description:
-          "Iespējot noklusējuma aģentam ģenerēt un rakstīt failus, kas saglabājas un var tikt lejupielādēti jūsu pārlūkā.",
-      },
       web: {
         title: "Tiešsaistes tīmekļa meklēšana un pārlūkošana",
         description:
@@ -328,6 +326,406 @@ const TRANSLATIONS = {
       },
       default_skill:
         "Par iestatījumu, šī spēja ir aktivizēta, taču jūs varat to izslēgt, ja nevēlaties, lai tā būtu pieejama aģentam.",
+      filesystem: {
+        title: "Failu sistēmas piekļuves tiesības",
+        description:
+          "Iespējiet, lai jūsu pārstāvis varētu lasīt, rakstīt, meklēt un pārvaldīt failus noteiktā direktorijā. Atbalsta failu rediģēšanu, direktoriju navigāciju un satura meklēšanu.",
+        learnMore: "Uzziniet vairāk par to, kā izmantot šo prasmi",
+        configuration: "Konfigurācija",
+        readActions: "Lasīt",
+        writeActions: "Rīcības",
+        warning:
+          "Pieejums failu sistēmai var būt bīstams, jo tas var mainīt vai dzēst failus. Lūdzu, konsultējieties ar <a>dokumentāciju</a> pirms aktivizēšanas.",
+        skills: {
+          "read-text-file": {
+            title: "Atvērt failu",
+            description:
+              "Izlasiet failu saturu (tekstus, kodu, PDF failus, attēlus utt.)",
+          },
+          "read-multiple-files": {
+            title: "Izlasīt vairākus failus",
+            description: "Lasi vairākus failus vienlaikus.",
+          },
+          "list-directory": {
+            title: "Saraksta direktorijs",
+            description:
+              "Izveidot failu un direktoru sarakstu ievietotajā mapē",
+          },
+          "search-files": {
+            title: "Meklēt failus",
+            description: "Meklē failus pēc nosaukuma vai satura",
+          },
+          "get-file-info": {
+            title: "Iegūst faila informāciju",
+            description: "Iesaļojiet detalizētus failu metadatus",
+          },
+          "edit-file": {
+            title: "Rediģēt failu",
+            description:
+              "Veiciet teksta failu rediģēšanu, izmantojot rindu bāzes metodi.",
+          },
+          "create-directory": {
+            title: "Izveidot direktoriju",
+            description: "Izveidot jaunas direktorijas",
+          },
+          "move-file": {
+            title: "Pārvietot/Vārdēt failu",
+            description: "Vāc vai pārdzen failus un direktorijus",
+          },
+          "copy-file": {
+            title: "Kopēt failu",
+            description: "Kopēt failus un direktorus",
+          },
+          "write-text-file": {
+            title: "Izveidot teksta failu",
+            description:
+              "Izveidot jaunas teksta failus vai pārrakstīt esošos teksta failus.",
+          },
+        },
+      },
+      createFiles: {
+        title: "Dokumentu izveide",
+        description:
+          "Ļauj savam pārstāvim izveidot binārus dokumentu formātus, piemēram, PowerPoint prezentācijas, Excel tabulas, Word dokumentus un PDF failus. Failus var lejupielādēt tieši no čata.",
+        configuration: "Pieejamās dokumentu veidas",
+        skills: {
+          "create-text-file": {
+            title: "Teksta faili",
+            description:
+              "Izveidot teksta failus ar jebkuru saturu un izplejumu (.txt, .md, .json, .csv utt.)",
+          },
+          "create-pptx": {
+            title: "PowerPoint prezentācijas",
+            description:
+              "Izveidot jaunas PowerPoint prezentācijas ar slaidiem, nosaukumiem un punktiem.",
+          },
+          "create-pdf": {
+            title: "PDF dokumenti",
+            description:
+              "Izveidot PDF dokumentus no Markdown vai vienkāršas teksta, izmantojot pamata formāciju.",
+          },
+          "create-xlsx": {
+            title: "Excel tabulas",
+            description:
+              "Izveidot Excel dokumentus ar tabulas datiem, kas ietver lapas un stila iespējas.",
+          },
+          "create-docx": {
+            title: "Vārdu dokumenti",
+            description:
+              "Izveidot Word dokumentus ar pamata stils un formātēšanu",
+          },
+        },
+      },
+      gmail: {
+        title: "GMail savienojums",
+        description:
+          "Ļauj savam pārstāvim interaktīvi strādāt ar Gmail – meklēt e-pastus, lasīt diskusijas, veidot projekte, nosūtīt e-pastus un pārvaldīt savu e-pasta kārtojumu. <a>Izlasiet dokumentāciju</a>.",
+        multiUserWarning:
+          "Gmail integrācija nav pieejama, kad izmantojat vairākus lietotājus, jo tas ir saistīts ar drošības apsvērumiem. Lūdzu, atslēgt vairāku lietotāju režimu, lai izmantotu šo funkciju.",
+        configuration: "Gmail konfigurācija",
+        deploymentId: "Ieraksta ID",
+        deploymentIdHelp:
+          "Jūsu Google Apps Script veidotās web lietojamās lietojamās ID",
+        apiKey: "API atslēga",
+        apiKeyHelp:
+          "API atslēga, ko jūs konfigurējāt savā Google Apps Script instalēšanā.",
+        configurationRequired:
+          'Lūdzu, konfigurējiet "Deployment ID" un API atslēgu, lai aktivizētu Gmail funkcijas.',
+        configured: "Ierobežots",
+        searchSkills: "Meklēšanas prasmes...",
+        noSkillsFound: "Neatrodītas atbilstības jūsu meklējumiem.",
+        categories: {
+          search: {
+            title: "Meklē un lasiet e-pastus",
+            description:
+              "Meklējiet un lasiet e-pasta vēstnes no jūsu Gmail ievakā.",
+          },
+          drafts: {
+            title: "Pamatraksti e-pasta vēstījumiem",
+            description: "Izveidot, rediģēt un pārvaldīt e-pasta rakstus",
+          },
+          send: {
+            title: "Sūtiet un atbildiet uz e-pasta vēstījumiem",
+            description:
+              "Nosūtiet e-pasta ziņojus un atbildiet uz diskusiju tēriņiem nekavējoties.",
+          },
+          threads: {
+            title: "Aizgrieziet e-pasta sarunas",
+            description:
+              "Aizvadīt e-pasta sarunas – atzīmēt kā lasītu/neizlasītu, glabāt arhīvā, atrast atkritumos",
+          },
+          account: {
+            title: "Integrācijas statistika",
+            description:
+              "Apspriediet pasta skapja statistiku un konta informāciju.",
+          },
+        },
+        skills: {
+          search: {
+            title: "Meklē e-pastus",
+            description:
+              "Meklēt e-pasta vēstures, izmantojot Gmail meklēšanas sintaksi",
+          },
+          readThread: {
+            title: "Izlasīt tēmu",
+            description: "Izlasiet pilnu e-pasta sarunu, izmantojot ID",
+          },
+          createDraft: {
+            title: "Izveidot izstrādi",
+            description: "Izveidot jaunu e-pasta rakstu",
+          },
+          createDraftReply: {
+            title: "Izveidot atbildes projekta",
+            description: "Izveidot atbildes projekta par esošu tematu.",
+          },
+          updateDraft: {
+            title: "Pārredzētās versijas",
+            description: "Atjaunini esošā e-pasta projekta",
+          },
+          getDraft: {
+            title: "Saņemiet projekta versiju",
+            description: "Atgūt specifisku dokumentu pēc identifikatora",
+          },
+          listDrafts: {
+            title: "Pamatdarba projekti",
+            description:
+              "Izveidot sarakstu ar visiem izstrādātajiem e-pasta vēstījumiem",
+          },
+          deleteDraft: {
+            title: "Dzēst projekta versiju",
+            description: "Dzēst izstrādāto e-pastu",
+          },
+          sendDraft: {
+            title: "Nosūtīt projekta versiju",
+            description: "Nosūtiet esošo e-pasta projekta vēstuli",
+          },
+          sendEmail: {
+            title: "Sūtiet e-pastu",
+            description: "Sūtiet e-pastu nekavējoties",
+          },
+          replyToThread: {
+            title: "Atbildēt uz tēmu",
+            description: "Atbildiet uz e-pasta sarunu nekavējoties",
+          },
+          markRead: {
+            title: "Mark Reads",
+            description: "Atzīmējiet tēmu kā lasītu.",
+          },
+          markUnread: {
+            title: "Mark – neizlasīts",
+            description: "Atzīmējiet tēmu kā neizlasītu.",
+          },
+          moveToTrash: {
+            title: "Aizvest uz atkritumu konteineru",
+            description: "Pārvietojiet tēmu uz atkritumu failu",
+          },
+          moveToArchive: {
+            title: "Arhivs",
+            description: "Saglabāt tēmu",
+          },
+          moveToInbox: {
+            title: 'Pārvietot uz "Ienākošās"',
+            description: "Pārvietojiet tēmu uz e-pasta skatīšanās rindā",
+          },
+          getMailboxStats: {
+            title: "Pasta kastes statistika",
+            description:
+              "Iesaļojiet neskaitītās e-pasta ziņojumu un e-pasta kastes statistikas",
+          },
+          getInbox: {
+            title: "Atsvēdināt e-pasta skatīšanās rindu",
+            description: "Efektīvs veids, kā saņemt e-pastus no Gmail konta",
+          },
+        },
+      },
+      outlook: {
+        title: "Outlook savienojums",
+        description:
+          "Ļaujiet savam pārstāvim interaktīvi darboties ar Microsoft Outlook – meklēt e-pasta ziņojus, lasīt diskusijas, veidot projektejus, nosūtīt e-pasta ziņojus un pārvaldīt savu e-pasta skapis, izmantojot Microsoft Graph API. <a>Izlasiet dokumentāciju</a>.",
+        multiUserWarning:
+          '"Outlook integrācija nav pieejama vairāku lietotāju režīmā, lai nodrošinātu drošību. Lūdzu, atgrieziet multilietotāju režīmu, lai izmantotu šo funkciju."',
+        configuration: "Outlook iestatījumu konfigurēšana",
+        authType: "Aģenta veids",
+        authTypeHelp:
+          'Izvēlieties, kādas Microsoft kontu tipus var autentificēt. "Visas kontas" atbalsta gan personiskus, gan darba/skolas kontus. "Tikai personiskie konti" ierobežo izmantošanu tikai ar personiskiem Microsoft kontiem. "Tikai organizācijas konti" ierobežo izmantošanu tikai ar darba/skolas kontiem no konkrēta Azure AD klienta.',
+        authTypeCommon: "Visas kontas (personālās un darba/skolas)",
+        authTypeConsumers: "Personiskas Microsoft kontas tikai",
+        authTypeOrganization:
+          "Tikai organizācijas konti (nepieciešams īpašnieka ID)",
+        clientId: "Pieteikuma (Klienta) ID",
+        clientIdHelp:
+          "Pieteikuma (klienta) ID no jūsu Azure AD lietojamās programmas reģistrācijas",
+        tenantId: "Reģistrācijas numurs (īres lietotājs)",
+        tenantIdHelp:
+          '"Klienta" ID no jūsu Azure AD lietojumprogrammas reģistrācijas. Nepieciešams tikai, ja tiek izmantota tikai organizācijas autentifikācija.',
+        clientSecret: "Klienta slepšvārds",
+        clientSecretHelp:
+          "Klienta slepenas vērtība, kas iegūta no jūsu Azure AD lietojamās programmas reģistrācijas",
+        configurationRequired:
+          "Lūdzu, konfigurējiet klienta ID un klienta sleptu atslēgu, lai iespējotu Outlook funkcijas.",
+        authRequired:
+          "Pirms sākat, saglabājiet savus autentifikācijas datus, un pēc tam veiciet autentifikāciju, lai pabeigtu konfigurēšanu.",
+        authenticateWithMicrosoft: "Autentizējieties ar Microsoft",
+        authenticated: "Izdevīgi sarakstījies ar Microsoft Outlook.",
+        revokeAccess: "Atcel piekļuvi",
+        configured: "Ierādīts",
+        searchSkills: "Meklēšanas prasmes...",
+        noSkillsFound: "Neatrastas atbilstošas prasmes jūsu meklējumiem.",
+        categories: {
+          search: {
+            title: "Meklē un lasiet e-pastus",
+            description:
+              "Meklējiet un lasiet e-pasta ziņojus no jūsu Outlook skapis",
+          },
+          drafts: {
+            title: "Pamatraksti e-pasta vēstījumiem",
+            description: "Izveidot, rediģēt un pārvaldīt e-pasta rakstus",
+          },
+          send: {
+            title: "Nosūtīt e-pastus",
+            description:
+              "Sūtiet jaunas e-pasta vēstules vai atbildiet uz saņemtajām vēstnēm nekavējoties.",
+          },
+          account: {
+            title: "Integrācijas statistika",
+            description:
+              "Apskatiet pasta kastes statistiku un konta informāciju.",
+          },
+        },
+        skills: {
+          getInbox: {
+            title: "Atsvērt e-pasta skatīšanās reklāžu",
+            description:
+              "Iegūstiet jaunākos e-pasta ziņojus no jūsu Outlook skapis",
+          },
+          search: {
+            title: "Meklē e-pastus",
+            description:
+              "Meklē e-pasta ziņojus, izmantojot Microsoft meklēšanas sintaksi",
+          },
+          readThread: {
+            title: "Izlasiet sarunu",
+            description: "Izlasiet pilnu e-pasta sarunu",
+          },
+          createDraft: {
+            title: "Izveidot projekta versiju",
+            description:
+              "Izveidot jaunu e-pasta projekta rakstu vai atbildes projektu esošam ziņojumam.",
+          },
+          updateDraft: {
+            title: "Pēcmājas projekts",
+            description: "Atjaunināt esošo e-pasta projekta",
+          },
+          listDrafts: {
+            title: "Izstrādāto variantu saraksts",
+            description:
+              "Izveidot sarakstu ar visiem izstrādātajiem e-pasta vēstījumiem",
+          },
+          deleteDraft: {
+            title: "Dzēst projekta versiju",
+            description: "Dzēst izstrādāto e-pastu",
+          },
+          sendDraft: {
+            title: "Nosūtīt projekta versiju",
+            description: "Nosūtiet esošā e-pasta projekta versiju",
+          },
+          sendEmail: {
+            title: "Sūtīt e-pastu",
+            description:
+              "Sūtiet jaunu e-pastu vai atbildiet uz esošu ziņu nekavējoties.",
+          },
+          getMailboxStats: {
+            title: "Pasta kastes statistika",
+            description:
+              "Iesaļojiet mapeņu skaitu un e-pasta kontu statistiku.",
+          },
+        },
+      },
+      googleCalendar: {
+        title: "Google Kalendāra integrācija",
+        description:
+          "Ļauj savam pārstāvim interaktīvi darboties ar Google Kalendāru – skatīt kalendārus, iegūt pasākumus, izveidot un atjaunot pasākumus, kā arī pārvaldīt reģistrāciju. <a>Lasiet dokumentāciju</a>.",
+        multiUserWarning:
+          "Google Kalendāra integrācija nav pieejama vairāku lietotāju režīmā, lai nodrošinātu drošību. Lūdzu, atgrieziet multilietotāju režīmu, lai izmantotu šo funkciju.",
+        configuration: "Google kalendāra konfigurācija",
+        deploymentId: "Ierīces identifikators",
+        deploymentIdHelp: "Jūsu Google Apps Script veidlapas ID",
+        apiKey: "API atslēga",
+        apiKeyHelp:
+          "API atslēga, ko jūs konfigurējāt savā Google Apps Script instalācijā",
+        configurationRequired:
+          'Lūdzu, konfigurējiet "Deployment ID" un API atslēgu, lai aktivizētu Google Kalendāra funkcijas.',
+        configured: "Ierīkots",
+        searchSkills: "Meklēšanas prasmes...",
+        noSkillsFound: "Neatrodītas atbilstības jūsu meklējumiem.",
+        categories: {
+          calendars: {
+            title: "Kalendāri",
+            description: "Skatiet un pārvaldiet savus Google kalendārus.",
+          },
+          readEvents: {
+            title: "Lasīt pasākumus",
+            description: "Skatiet un meklējiet kalendāra notikumus",
+          },
+          writeEvents: {
+            title: "Izveidot un atjaunināt pasākumus",
+            description: "Izveidot jaunas pasākumus un mainīt esošos",
+          },
+          rsvp: {
+            title: "Piedalīšanās reģistrācija",
+            description: "Pārvaldiet savu atbildes statusu pasākumiem",
+          },
+        },
+        skills: {
+          listCalendars: {
+            title: "Kalendāri",
+            description:
+              "Izveidojot sarakstu, norādi visus kalendārus, ko tu īpašoj un uz kuriem esi reģistrējies.",
+          },
+          getCalendar: {
+            title: "Iegūstiet kalendāra informāciju",
+            description: "Iesaļojiet detalizētus datus par konkrētu kalendāru.",
+          },
+          getEvent: {
+            title: "Iegūstiet pasākuma informāciju",
+            description:
+              "Iesaļojiet detalizētu informāciju par konkrētu pasākumu",
+          },
+          getEventsForDay: {
+            title: "Ieskats uz pasākumiem šajā dienā",
+            description:
+              "Ieskaitiet visus pasākumus, kas plānoti konkrētā datumā",
+          },
+          getEvents: {
+            title: "Iegūstiet pasākumus (datu diapazons)",
+            description:
+              "Iegūt pasākumus, kas notiek konkrētā datuma diapazonā",
+          },
+          getUpcomingEvents: {
+            title: "Uznāciet nākamo pasākumu",
+            description:
+              "Atrodiet pasākumus šodien, šajā nedēļā vai šajā mēnesī, izmantojot vienkāržus atslēvvadus.",
+          },
+          quickAdd: {
+            title: "Ātri pievienot pasākumu",
+            description:
+              'Izveidot pasākumu, izmantojot dabas valodu (piemēram, "Sanākšana rīt plkst. 15:00")',
+          },
+          createEvent: {
+            title: "Izveidot pasākumu",
+            description:
+              "Izveidot jaunu pasākumu, nodrošinot pilnu kontroli pār visām tās īpašībām.",
+          },
+          updateEvent: {
+            title: "Pasākuma atjauninājums",
+            description: "Atjaunināt esošas kalendāra notikuma informāciju",
+          },
+          setMyStatus: {
+            title: "Norādiet atbildes statusu",
+            description: "Atzīst, atgrūst vai temporāri apstiprināt pasākumu",
+          },
+        },
+      },
     },
     mcp: {
       title: "MCP serveri",
@@ -477,7 +875,34 @@ const TRANSLATIONS = {
       "API atslēgas ļauj to īpašniekam programmatiski piekļūt un pārvaldīt šo AnythingLLM instanci.",
     link: "Lasīt API dokumentāciju",
     generate: "Ģenerēt jaunu API atslēgu",
+    empty: "API atslēgas nav atrastas",
+    actions: "Darbības",
+    messages: {
+      error: "Kļūda: {{error}}",
+    },
+    modal: {
+      title: "Izveidot jaunu API atslēgu",
+      cancel: "Atcelt",
+      close: "Aizvērt",
+      create: "Izveidot API atslēgu",
+      helper:
+        "Pēc izveides API atslēgu var izmantot, lai programmatiski piekļūtu šai AnythingLLM instancei un to konfigurētu.",
+      name: {
+        label: "Nosaukums",
+        placeholder: "Produkcijas integrācija",
+        helper:
+          "Nav obligāti. Izmantojiet saprotamu nosaukumu, lai vēlāk šo atslēgu būtu viegli atpazīt.",
+      },
+    },
+    row: {
+      copy: "Kopēt API atslēgu",
+      copied: "Nokopēts",
+      unnamed: "--",
+      deleteConfirm:
+        "Vai tiešām vēlaties deaktivizēt šo API atslēgu?\nPēc tam to vairs nevarēs izmantot.\n\nŠo darbību nevar atsaukt.",
+    },
     table: {
+      name: "Nosaukums",
       key: "API atslēga",
       by: "Izveidoja",
       created: "Izveidots",
@@ -745,7 +1170,6 @@ const TRANSLATIONS = {
       select_all: "Atlasīt visu",
       deselect_all: "Atcelt visu atlasi",
       remove_selected: "Noņemt atlasītos",
-      costs: "*Vienreizējas izmaksas iegulšanai",
       save_embed: "Saglabāt un iegult",
       "total-documents_one": "{{count}} dokumenta",
       "total-documents_other": "{{count}} dokumenti",
@@ -840,7 +1264,6 @@ const TRANSLATIONS = {
     see_less: "Skatīt mazāk",
     see_more: "Skatīt vairāk",
     tools: "Rīki",
-    browse: "Izpētiet",
     text_size_label: "Teksta izmērs",
     select_model: "Izvēlieties modeli",
     sources: "Avotus",
@@ -853,8 +1276,6 @@ const TRANSLATIONS = {
     edit: "Rediģēt",
     publish: "Publicēt",
     stop_generating: "Atsauciet atbildes ģenerēšanu",
-    pause_tts_speech_message:
-      "Pārtrauciet TTS (teksta-izrunas) žēstā vēstījuma izrunu.",
     slash_commands: "Īs termini komandās",
     agent_skills: "Aģenta prasmes",
     manage_agent_skills: "Iesaista aģenta prasmes",
@@ -863,6 +1284,21 @@ const TRANSLATIONS = {
     start_agent_session: "Sākt aģenta sesiju",
     use_agent_session_to_use_tools:
       'Jūs varat izmantot rīkus čatā, sākot aģenta sesiju, ievietojot "@agent" jūsu iniciālajā tekstā.',
+    agent_invocation: {
+      model_wants_to_call: "Modeļa vēlējas izrunāt",
+      approve: "Aizmaksā, apstiprināts",
+      reject: "Atgrūst",
+      always_allow: "Vienmēr nodrošiniet {{skillName}}",
+      tool_call_was_approved: "Instrumentu pieprasījums tika apstiprināts.",
+      tool_call_was_rejected:
+        "Pieprasījums par instrumenta izmantošanu tika atgrūstīts.",
+    },
+    custom_skills: "Pielāgotas prasmes",
+    agent_flows: "Aģentu plūsmas",
+    no_tools_found: "Neatradusies atbilstošas instrumentus",
+    loading_mcp_servers: "Ielāde MCP serverus...",
+    app_integrations: "Dienvidligzdas integrācijas",
+    sub_skills: "Īpašās prasmes",
   },
   profile_settings: {
     edit_account: "Rediģēt kontu",
@@ -1019,6 +1455,73 @@ const TRANSLATIONS = {
     notAssigned:
       "Jūs nav piešķirts nevienai darba vietai.\nLūdzu, sazinieties ar savu administratoru, lai pieprasītu piekļuvi darba vietai.",
     goToWorkspace: 'Pāriet uz darba vietu "{{workspace}}"',
+  },
+  telegram: {
+    title: "Telegram bot",
+    description:
+      "Iespējiet savu AnythingLLM instanci, lai varētu tikt savienots ar Telegram, un tāpēc varēsat runāt ar saviem darba grupām no jebkura ierīces.",
+    setup: {
+      step1: {
+        title: "1. darbība: Izveidot savu Telegram botu",
+        description:
+          "Atveriet `@BotFather` Telegramā, nosūtiet `/newbot` un ievietojiet to adresē <code>@BotFather</code>, sekojiet norādījumiem un kopējiet API atslēgu.",
+        "open-botfather": "Atvērt BotFather",
+        "instruction-1": "1. Atveriet saiti vai skenējiet QR kodu",
+        "instruction-2":
+          "2. Nosūtiet <code>/newbot</code> uz <code>@BotFather</code>",
+        "instruction-3":
+          "3. Izvēlieties nosaukumu un lietotājvārdu savam botam",
+        "instruction-4": "4. Kopējiet API atslēgu, ko saņemat",
+      },
+      step2: {
+        title: "2. darbība: Pievienojiet savu botu",
+        description:
+          "Ievietojiet API atslēgu, ko saņēsit no @BotFather, un izvēlieties nokārtotā darba telpu, kuras jūsu bots varēs veikt sazi.",
+        "bot-token": "Bots tokens",
+        connecting: "Savienojums...",
+        "connect-bot": "Saistītais bot",
+      },
+      security: {
+        title: "Ieteicamās drošības iestatījumi",
+        description:
+          "Lai nodrošinātu papildu drošību, konfigurējiet šos iestatījumus, izmantojot @BotFather.",
+        "disable-groups": "— Novērst, lai boti tiktu pievienoti grupām",
+        "disable-inline":
+          "— Novērst, lai bots tiktu izmantoti tiešajā meklēšanā.",
+        "obscure-username":
+          "Izmantojiet neparādu botu lietotāju vārdu, lai samazinātu atklājamo iespēju.",
+      },
+      "toast-enter-token": "Lūdzu, ievadiet bot tokenu.",
+      "toast-connect-failed": "Neizdevās pievienot botu.",
+    },
+    connected: {
+      status: "Saistīts",
+      "status-disconnected":
+        "Atvienots — tokens var būt nolaidēts vai nederīgs",
+      "placeholder-token": "Ievietojiet jaunu bot tokenu...",
+      reconnect: "Atjaunot sazi",
+      workspace: "Darba telpa",
+      "bot-link": "Bots saite",
+      "voice-response": "Balss atbildes",
+      disconnecting: "Atvienojot...",
+      disconnect: "Izslēgt",
+      "voice-text-only": "Tikai teksts",
+      "voice-mirror":
+        "Atspoguļošana (atbildēt ar balsi, kad lietotājs nosauc balsi)",
+      "voice-always":
+        "Vienmēr pievienojiet audio (sūtiet audio ar katru atbildi).",
+      "toast-disconnect-failed": "Neizdevās izslēgt botu.",
+      "toast-reconnect-failed": "Neizdevās atjaunot saikni ar botu.",
+      "toast-voice-failed": "Neizdevās atjaunināt balsī noteiktās režimas.",
+      "toast-approve-failed": "Nespēja apstiprināt lietotāju.",
+      "toast-deny-failed": "Nespēja atspējot lietotāju.",
+      "toast-revoke-failed": "Neizdevās atcelt lietotāja tiesības.",
+    },
+    users: {
+      "pending-description":
+        "Izmantotāji, kas gaida apstiprinājumu. Salīdziniet šeit norādīto koda numuru ar to, kas redzams viņu Telegram sarunā.",
+      unknown: "Nezināms",
+    },
   },
 };
 
