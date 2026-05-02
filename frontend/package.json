@@ -50,7 +50,7 @@
     "recharts-to-png": "^2.3.1",
     "text-case": "^1.0.9",
     "truncate": "^3.0.0",
-    "uuid": "^9.0.0"
+    "uuid": "^14.0.0"
   },
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
