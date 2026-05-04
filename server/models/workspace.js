@@ -94,7 +94,8 @@ const Workspace = {
       return n;
     },
     chatMode: (value) => {
-      if (!value || !Workspace.VALID_CHAT_MODES.includes(value)) return "chat";
+      if (!value || !Workspace.VALID_CHAT_MODES.includes(value))
+        return "automatic";
       return value;
     },
     chatProvider: (value) => {
@@ -206,7 +207,7 @@ const Workspace = {
       const workspace = await prisma.workspaces.create({
         data: {
           name: this.validations.name(name),
-          chatMode: "chat", // default to chat mode for now
+          chatMode: "automatic",
           ...this.validateFields(additionalFields),
           slug,
         },
@@ -562,6 +563,29 @@ const Workspace = {
     } catch (error) {
       console.error(error.message);
       return null;
+    }
+  },
+
+  /**
+   * Upsert a workspace.
+   * If the workspace does not exist, it will be created.
+   * If the workspace exists, it will be updated (if data is provided).
+   * @param {Object} clause - The clause to upsert the workspace by.
+   * @param {Object} createData - The data to create the workspace with.
+   * @param {Object} updateData - The data to update the workspace with if it already exists.
+   * @returns {Promise<{workspace: import("@prisma/client").workspaces | null, error: string | null}>} A promise that resolves to an object containing the upserted workspace and an error message if applicable.
+   */
+  upsert: async function (clause = {}, createData = {}, updateData = {}) {
+    try {
+      const workspace = await prisma.workspaces.upsert({
+        where: clause,
+        update: updateData,
+        create: createData,
+      });
+      return { workspace, error: null };
+    } catch (error) {
+      console.error(error.message);
+      return { workspace: null, error: error.message };
     }
   },
 

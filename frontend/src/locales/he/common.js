@@ -2,8 +2,8 @@
 const TRANSLATIONS = {
   onboarding: {
     home: {
-      title: "ברוכים הבאים ל",
       getStarted: "להתחלה",
+      welcome: "ברוכים הבאים",
     },
     llm: {
       title: "העדפות מודל שפה (LLM)",
@@ -49,7 +49,6 @@ const TRANSLATIONS = {
   },
   common: {
     "workspaces-name": "שם סביבת העבודה",
-    user: "משתמש",
     selection: "בחירת מודל",
     saving: "שומר...",
     save: "שמור שינויים",
@@ -103,6 +102,11 @@ const TRANSLATIONS = {
       "your-account": "החשבון שלך",
       "import-item": "ייבוא פריט",
     },
+    channels: "ערוצים",
+    "available-channels": {
+      telegram: "טלגרם",
+    },
+    "scheduled-jobs": "משימות מתוכננות",
   },
   login: {
     "multi-user": {
@@ -185,17 +189,17 @@ const TRANSLATIONS = {
       chat: {
         title: "צ'אט",
         description:
-          'יוכל לספק תשובות בהתבסס על הידע הכללי של ה-LLM ועל ההקשר הרלוונטי מתוך המסמך. <b> ו-</b>\nתצטרכו להשתמש בפקודה "@agent" כדי להשתמש בכלי.',
+          "יוכל לספק תשובות בהתבסס על הידע הכללי של ה-LLM ועל ההקשר הרלוונטי מהמסמכים. <b> ו-</b>\nתצטרכו להשתמש בפקודה @agent כדי להשתמש בכלי.",
       },
       query: {
         title: "שאילתה",
         description:
-          "יספק תשובות <b>רק</b>במידה ויהיה ניתן למצוא הקשר של המסמך.<br />תצטרכו להשתמש בפקודה @agent כדי להשתמש בכלי.",
+          "יוענו עם תשובות <b>רק</b>במידה ויימצא הקשר של המסמך.<br />תצטרכו להשתמש בפקודה @agent כדי להשתמש בכלי.",
       },
       automatic: {
-        title: "רכב",
         description:
-          'הכלי ישתמש באופן אוטומטי בכלים אם המודל והספק תומכים בהם. <br />אם אין תמיכה בכלים מקומיים, תצטרכו להשתמש בפקודה "@agent" כדי להשתמש בכלים.',
+          "התוכנה תשתמש באופן אוטומטי בכלים אם המודל והספק תומכים בהם. <br />אם אין תמיכה בכלים מקומיים, תצטרכו להשתמש בפקודה @agent כדי להשתמש בכלים.",
+        title: "סוכן",
       },
     },
     history: {
@@ -305,11 +309,6 @@ const TRANSLATIONS = {
         description:
           "אפשר לסוכן ברירת המחדל ליצור סוגים שונים של תרשימים מנתונים שסופקו או ניתנו בצ'אט.",
       },
-      save: {
-        title: "יצירה ושמירה של קבצים לדפדפן",
-        description:
-          "אפשר לסוכן ברירת המחדל ליצור ולכתוב לקבצים שנשמרים וניתנים להורדה בדפדפן שלך.",
-      },
       web: {
         title: "חיפוש וגלישה באינטרנט בזמן אמת",
         description:
@@ -322,6 +321,380 @@ const TRANSLATIONS = {
       },
       default_skill:
         "כברירת מחדל, הכישורים הזה מופעל, אך ניתן להשבית אותו אם אינכם רוצים שהוא יהיה זמין עבור הסוכן.",
+      filesystem: {
+        title: "גישה למערכת הקבצים",
+        description:
+          "אפשרו למתווך שלכם לקרוא, לכתוב, לחפש ולנהל קבצים בספריית מסוימת. תומך בעריכת קבצים, ניווט בספריות וחיפוש תוכן.",
+        learnMore: "למידע נוסף על השימוש בכישרון זה",
+        configuration: "הגדרות",
+        readActions: "קריאת פעולות",
+        writeActions: "פעולות",
+        warning:
+          "גישה למערכת הקבצים עלולה להיות מסוכנת, שכן היא עלולה לשנות או למחוק קבצים. אנא התייעצו עם ה<a>תיעוד</a> לפני הפעלתה.",
+        skills: {
+          "read-text-file": {
+            title: "קרא קובץ",
+            description: "קריאת תוכן קבצים (טקסט, קוד, PDF, תמונות וכו')",
+          },
+          "read-multiple-files": {
+            title: "קריאת מספר קבצים",
+            description: "קרא מספר קבצים בו זמנית.",
+          },
+          "list-directory": {
+            title: "רשימת אנשי קשר",
+            description: "רשימת קבצים וספריות בתיקייה",
+          },
+          "search-files": {
+            title: "חיפוש קבצים",
+            description: "חיפוש קבצים לפי שם או תוכן",
+          },
+          "get-file-info": {
+            title: "קבל מידע על הקובץ",
+            description: "קבל מידע מפורט על קבצים",
+          },
+          "edit-file": {
+            title: "ערוך קובץ",
+            description: "בצעו עריכה של קבצי טקסט על בסיס שורות.",
+          },
+          "create-directory": {
+            title: "יצירת תיקייה",
+            description: "ליצור תיקיות חדשות",
+          },
+          "move-file": {
+            title: "העתקה/שינוי שם של קובץ",
+            description: "הזיזו או שנו את שמות הקבצים והתיקיות.",
+          },
+          "copy-file": {
+            title: "העתק קובץ",
+            description: "העתקת קבצים וספריות",
+          },
+          "write-text-file": {
+            title: "יצירת קובץ טקסט",
+            description: "יצירת קבצי טקסט חדשים או החלפת קבצי טקסט קיימים",
+          },
+        },
+      },
+      createFiles: {
+        title: "יצירת מסמכים",
+        description:
+          "אפשרו למתווך שלכם ליצור פורמטים של מסמכים בינאריים, כמו מצגות של פאוורPoint, גיליונות אלקטרוניים של Excel, מסמכי Word ו-PDF. ניתן להוריד את הקבצים ישירות מהחלון של השיחה.",
+        configuration: "סוגי המסמכים הזמינים",
+        skills: {
+          "create-text-file": {
+            title: "קבצי טקסט",
+            description:
+              "צרו קבצי טקסט עם כל תוכן ותוספת (כגון .txt, .md, .json, .csv וכו').",
+          },
+          "create-pptx": {
+            title: "מצגות של פאוור פוינט",
+            description:
+              "צרו מצגות חדשות בפורמט PowerPoint, הכוללות שקופיות, כותרות ונקודות עיקריות.",
+          },
+          "create-pdf": {
+            title: "מסמכים בפורמט PDF",
+            description:
+              "יצירת מסמכים בפורמט PDF ממחרוזות markdown או טקסט פשוט, עם עיצוב בסיסי.",
+          },
+          "create-xlsx": {
+            title: "גיליונות אקסל",
+            description:
+              "צור מסמכי Excel עבור נתונים טבלאיים, הכוללים גיליונות ועריכת עיצוב.",
+          },
+          "create-docx": {
+            title: "מסמכים בפורמט Word",
+            description: "צור מסמכים בפורמט Word עם עיצוב ועיצוב בסיסיים.",
+          },
+        },
+      },
+      gmail: {
+        title: "חיבור ל-GMail",
+        description:
+          'אפשר לאгент שלכם לתקשר עם Gmail – לחפש הודעות דוא"ל, לקרוא דיונים, ליצור טיוטות, לשלוח הודעות דוא"ל ולנהל תיבת הדואר. <a>קרא את התיעוד</a>.',
+        multiUserWarning:
+          "שילוב עם ג'ימל אינו זמין במצב רב משתמשים מטעמי אבטחה. אנא כבו את מצב רב משתמשים כדי להשתמש בתכונה זו.",
+        configuration: "הגדרת חשבון Gmail",
+        deploymentId: "מזהה הפריסה",
+        deploymentIdHelp: "מזהה הפריסה מהאפליקציה שלך של Google Apps Script.",
+        apiKey: "מפתח API",
+        apiKeyHelp:
+          "מפתח ה-API שבה הגדרת בסביבת העבודה של Google Apps Script שלך.",
+        configurationRequired:
+          "אנא הגדירו את מזהה ההפצה ואת מפתח ה-API כדי לאפשר את יכולות Gmail.",
+        configured: "הוגדר",
+        searchSkills: "כישורים לחיפוש...",
+        noSkillsFound: "לא נמצאו תוצאות התואמות את החיפוש שלך.",
+        categories: {
+          search: {
+            title: 'חיפוש וקריאת הודעות דוא"ל',
+            description: 'חפש וקרא הודעות דוא"ל מהתיבת הדוא"ל של ג\'ימל שלך.',
+          },
+          drafts: {
+            title: 'הודעות דוא"ל לדוגמה',
+            description: 'יצירה, עריכה וניהול של טיוטות של הודעות דוא"ל.',
+          },
+          send: {
+            title: "שליחה ומתן מענה למיילים",
+            description: "שלחו מיילים ונענו לדיונים באופן מיידי.",
+          },
+          threads: {
+            title: 'ניהול שרשראות דוא"ל',
+            description:
+              'ניהול תכתובות דוא"ל – סימון כ"קרא/לא קרא", ארכיון, תיבת זבל',
+          },
+          account: {
+            title: "נתונים על שילוב",
+            description: "צפו בסטטיסטיקות של תיבת הדואר ובתמונות החשבון",
+          },
+        },
+        skills: {
+          search: {
+            title: 'חיפוש הודעות דוא"ל',
+            description: "חיפוש הודעות דוא\"ל באמצעות תחביר שאילתות של ג'ימייל",
+          },
+          readThread: {
+            title: "קרא את השרשור",
+            description: "קרא את כל שרשרת האימיילים שנוצרה על ידי ID.",
+          },
+          createDraft: {
+            title: "יצירת טיוטה",
+            description: "צור טיוטת אימייל חדשה",
+          },
+          createDraftReply: {
+            title: "יצירת תגובה ראשונית",
+            description: "צור תגובה ראשונית לפורום קיים.",
+          },
+          updateDraft: {
+            title: "גרסה עדכנית",
+            description: 'עדכן הודעת דוא"ל קיימת',
+          },
+          getDraft: {
+            title: "קבל טיוטה",
+            description: "השגת גרסה ספציפית לפי מספר זיהוי",
+          },
+          listDrafts: {
+            title: "גרסאות טיוטה",
+            description: "רשום את כל ההודעות המאובזרות",
+          },
+          deleteDraft: {
+            title: "מחיקת טיוטה",
+            description: "מחיקת תגובה מקושטת",
+          },
+          sendDraft: {
+            title: "שלח טיוטה",
+            description: "שלח גרסה קיימת של מייל",
+          },
+          sendEmail: {
+            title: "שלח אימייל",
+            description: "שלח מייל באופן מיידי",
+          },
+          replyToThread: {
+            title: "תגובה לדיון",
+            description: "התגובה מיידית לשרשור אימיילים",
+          },
+          markRead: {
+            title: "מרק רד",
+            description: 'סמנו נושא כ"קרא"',
+          },
+          markUnread: {
+            title: "סמן כלא קרא",
+            description: "סמנו נושא כלא קרא",
+          },
+          moveToTrash: {
+            title: "העבר למיחזור",
+            description: "העברת נושא לקבצי האשפה",
+          },
+          moveToArchive: {
+            title: "ארכיון",
+            description: "שמור את הדיון",
+          },
+          moveToInbox: {
+            title: "העבר לסמאר",
+            description: "העבר את הדיון לתיבת הדואר הנכנס",
+          },
+          getMailboxStats: {
+            title: "סטטיסטיקות של תיבת דואר",
+            description:
+              "קבל ספירה של הודעות שטרם נקראו וסטטיסטיקות של תיבת הדואר.",
+          },
+          getInbox: {
+            title: "קבל תיבת הדואר",
+            description:
+              'דרך פשוטה ומהירה לקבל את הודעות הדוא"ל מהתיבת הדוא"ל של ג\'ימל',
+          },
+        },
+      },
+      outlook: {
+        title: "חיבור ל-Outlook",
+        description:
+          'אפשר לאגנט שלכם לתקשר עם Microsoft Outlook – לחפש הודעות דוא"ל, לקרוא דיונים, ליצור טיוטות, לשלוח הודעות דוא"ל ולנהל תיבת הדואר שלכם באמצעות Microsoft Graph API. <a>קראו את התיעוד</a>.',
+        multiUserWarning:
+          "שילוב עם Outlook אינו זמין במצב רב-משתמשים מטעמי אבטחה. אנא בטל את מצב רב-משתמשים כדי להשתמש בתכונה זו.",
+        configuration: "הגדרת תצורה (Outlook)",
+        authType: "סוג חשבון",
+        authTypeHelp:
+          'בחר איזה סוגי חשבונות מיקרוסופט יכולים לאמת. "כל החשבונות" תומך הן בחשבונות אישיים והן בחשבונות עבודה/לימודים. "רק חשבונות אישיים" מגביל את השימוש לחשבונות מיקרוסופט אישיים בלבד. "רק חשבונות ארגוניים" מגביל את השימוש לחשבונות עבודה/לימודים מחשבון Azure AD ספציפי.',
+        authTypeCommon: "כל החשבונות (אישיים וקשורים לעבודה/לימודים)",
+        authTypeConsumers: "חשבונות אישיים של מיקרוסופט בלבד",
+        authTypeOrganization: "חשבונות רק עבור ארגונים (דורש מזהה שוכר)",
+        clientId: "מספר זיהוי של לקוח (יישום)",
+        clientIdHelp: "מזהה היישום (לקוח) מההרשמה של היישום שלך ב-Azure AD",
+        tenantId: "מספר מזהה (שוכר)",
+        tenantIdHelp:
+          "מזהה ה-ID של הלקוח (שוכר) מההרשמה של היישום שלך ב-Azure AD. נדרש רק לאימות מתוך הארגון בלבד.",
+        clientSecret: "סוד לקוח",
+        clientSecretHelp:
+          "הערך הסודי של הלקוח מההרשמה של היישום שלך ב-Azure AD",
+        configurationRequired:
+          "אנא הגדירו את מזהה הלקוח והסיסמה כדי לאפשר את יכולות Outlook.",
+        authRequired:
+          "שמרו את הפרטים שלכם תחילה, ולאחר מכן השתמשו באימות של מיקרוסופט כדי להשלים את ההגדרה.",
+        authenticateWithMicrosoft: "אימות באמצעות מיקרוסופט",
+        authenticated: "התחברות מוצלחת עם Microsoft Outlook.",
+        revokeAccess: "ביטול גישה",
+        configured: "מוגדר",
+        searchSkills: "כישורים במחקר...",
+        noSkillsFound: "אין התאמות לחיפוש שלך.",
+        categories: {
+          search: {
+            title: 'חיפוש וקריאת הודעות דוא"ל',
+            description: 'חפש וקרא הודעות דוא"ל מהתיבת הדוא"ל של Outlook שלך.',
+          },
+          drafts: {
+            title: 'הודעות דוא"ל לדוגמה',
+            description: 'יצירה, עריכה וניהול של טיוטות של הודעות דוא"ל',
+          },
+          send: {
+            title: 'שלח הודעות דוא"ל',
+            description: "שלחו מיילים חדשים או הגיבו למיילים באופן מיידי.",
+          },
+          account: {
+            title: "נתוני אינטגרציה",
+            description: "צפו בסטטיסטיקות של תיבת הדואר ובמידע על החשבון.",
+          },
+        },
+        skills: {
+          getInbox: {
+            title: "קבל תיבת דואר",
+            description: "קבל מיילים חדשים מהתיבת הדואר שלך ב-Outlook.",
+          },
+          search: {
+            title: 'חיפוש הודעות דוא"ל',
+            description: 'חיפוש הודעות דוא"ל באמצעות תחביר החיפוש של Microsoft',
+          },
+          readThread: {
+            title: "קרא שיחה",
+            description: 'קראו את כל רצף ההודעות בדוא"ל.',
+          },
+          createDraft: {
+            title: "יצירת טיוטה",
+            description: "צור טיוטת מייל חדשה או טיוטת תגובה למייל קיים.",
+          },
+          updateDraft: {
+            title: "גרסה עדכנית",
+            description: 'עדכן הודעת דוא"ל קיימת',
+          },
+          listDrafts: {
+            title: "גרסאות ראשוניות",
+            description: "רשום את כל ההודעות המיילים המוצעות",
+          },
+          deleteDraft: {
+            title: "מחיקת טיוטה",
+            description: "מחיקת טיוטת אימייל",
+          },
+          sendDraft: {
+            title: "שלח טיוטה",
+            description: "שלח גרסה קיימת של מייל",
+          },
+          sendEmail: {
+            title: "שלח מייל",
+            description: "שלח מייל חדש או הגיב למייל קיים באופן מיידי.",
+          },
+          getMailboxStats: {
+            title: "סטטיסטיקות של תיבת דואר",
+            description: "קבל ספירת תיקיות ונתונים סטטיסטיים עבור תיבות דואר.",
+          },
+        },
+      },
+      googleCalendar: {
+        title: "חיבור ל-Google Calendar",
+        description:
+          "אפשרו לסוכן שלכם לתקשר עם גוגל קלנדר - לצפות בקלנדרים, לקבל אירועים, ליצור ולעדכן אירועים, ולנהל אישורי השתתפות. <a>קראו את התיעוד</a>.",
+        multiUserWarning:
+          "שילוב עם גוגל קלנדר אינו זמין במצב רב-משתמשים מטעמי אבטחה. אנא כבו את מצב רב-משתמשים כדי להשתמש בתכונה זו.",
+        configuration: "הגדרת גלובל קלנדר",
+        deploymentId: "מזהה הפריסה",
+        deploymentIdHelp: "מזהה הפריסה מהאפליקציה שלך של Google Apps Script",
+        apiKey: "מפתח API",
+        apiKeyHelp:
+          "המפתח של ה-API שקבעת בהגדרות של סקריפט האפליקציות של גוגל.",
+        configurationRequired:
+          "אנא הגדירו את מזהה ההפצה ואת מפתח ה-API כדי לאפשר את הפונקציונליות של גוגל קלנדר.",
+        configured: "מוגדר",
+        searchSkills: "כישורים לחיפוש...",
+        noSkillsFound: "אין התאמות לחיפוש שלך.",
+        categories: {
+          calendars: {
+            title: "יומני",
+            description: "צפו ונהלו את הלוחות שלכם בגוגל",
+          },
+          readEvents: {
+            title: "קרא על אירועים",
+            description: "צפו וחפשו אירועים בלוח השנה",
+          },
+          writeEvents: {
+            title: "יצירה ועדכון אירועים",
+            description: "ליצור אירועים חדשים ולשנות את האירועים הקיימים.",
+          },
+          rsvp: {
+            title: "ניהול אישורי השתתפות",
+            description: "נהלו את סטטוס התגובה שלכם לאירועים",
+          },
+        },
+        skills: {
+          listCalendars: {
+            title: "רשימת לוחות",
+            description: "רשום את כל הקלנדרים שבבעלותך או אליהם מנויים.",
+          },
+          getCalendar: {
+            title: "קבל פרטים על הקלנדר",
+            description: "קבל מידע מפורט על לוח שנה ספציפי.",
+          },
+          getEvent: {
+            title: "קבל אירוע",
+            description: "קבל מידע מפורט על אירוע ספציפי",
+          },
+          getEventsForDay: {
+            title: "מצא אירועים ליום",
+            description: "קבלו את כל האירועים המתוכננים לתאריך ספציפי.",
+          },
+          getEvents: {
+            title: "קבל אירועים (טווח תאריכים)",
+            description: "קבל אירועים בטווח תאריכים מותאם אישית",
+          },
+          getUpcomingEvents: {
+            title: "רשימת אירועים עתידיים",
+            description:
+              "מצאו אירועים של היום, השבוע או החודש באמצעות מילות מפתח פשוטות.",
+          },
+          quickAdd: {
+            title: "הוספה מהירה של אירוע",
+            description:
+              'ליצור אירוע מתוך טקסט טבעי (למשל, "פגישה מחר בשעה 15:00")',
+          },
+          createEvent: {
+            title: "יצירת אירוע",
+            description: "צור אירוע חדש עם שליטה מלאה על כל התכונות.",
+          },
+          updateEvent: {
+            title: "עדכון אירוע",
+            description: "עדכן אירוע קיים בלוח השנה",
+          },
+          setMyStatus: {
+            title: "הגדר סטטוס אישור השתתפות",
+            description: "לקבל, לדחות, או לקבל באופן זמני אירוע",
+          },
+        },
+      },
     },
     mcp: {
       title: "שרתי MCP",
@@ -467,7 +840,33 @@ const TRANSLATIONS = {
       "מפתחות API מאפשרים למחזיק בהם לגשת ולנהל באופן תכנותי את מופע AnythingLLM זה.",
     link: "קרא את תיעוד ה-API",
     generate: "צור מפתח API חדש",
+    empty: "לא נמצאו מפתחות API",
+    actions: "פעולות",
+    messages: {
+      error: "שגיאה: {{error}}",
+    },
+    modal: {
+      title: "יצירת מפתח API חדש",
+      cancel: "ביטול",
+      close: "סגירה",
+      create: "צור מפתח API",
+      helper:
+        "לאחר יצירתו, ניתן להשתמש במפתח ה-API כדי לגשת למופע AnythingLLM זה ולהגדיר אותו באופן תכנותי.",
+      name: {
+        label: "שם",
+        placeholder: "אינטגרציית ייצור",
+        helper: "אופציונלי. השתמש בשם ברור כדי שתוכל לזהות את המפתח הזה בהמשך.",
+      },
+    },
+    row: {
+      copy: "העתק מפתח API",
+      copied: "הועתק",
+      unnamed: "--",
+      deleteConfirm:
+        "האם אתה בטוח שברצונך להשבית את מפתח ה-API הזה?\nלאחר מכן לא יהיה ניתן להשתמש בו יותר.\n\nלא ניתן לבטל פעולה זו.",
+    },
     table: {
+      name: "שם",
       key: "מפתח API",
       by: "נוצר על ידי",
       created: "נוצר",
@@ -724,7 +1123,6 @@ const TRANSLATIONS = {
       select_all: "בחר הכל",
       deselect_all: "בטל בחירת הכל",
       remove_selected: "הסר נבחרים",
-      costs: "*עלות חד פעמית להטמעות",
       save_embed: "שמור והטמע",
       "total-documents_one": "{{count}} מסמך",
       "total-documents_other": "מסמכים {{count}}",
@@ -811,7 +1209,6 @@ const TRANSLATIONS = {
     see_less: "ראה פחות",
     see_more: "לראות עוד",
     tools: "כלים",
-    browse: "גלו",
     text_size_label: "גודל הטקסט",
     select_model: "בחר מודל",
     sources: "מקורות",
@@ -824,8 +1221,6 @@ const TRANSLATIONS = {
     edit: "עריכה",
     publish: "להוציא לאור",
     stop_generating: "הפסיקו ליצור תגובה",
-    pause_tts_speech_message:
-      "השהייה של קריאת טקסט באמצעות תוכנת TTS (Text-to-Speech)",
     slash_commands: "פקודות קיצור",
     agent_skills: "כישורים של סוכן",
     manage_agent_skills: "ניהול מיומנויות של סוכנים",
@@ -834,6 +1229,20 @@ const TRANSLATIONS = {
     start_agent_session: "התחלת סשן עם סוכן",
     use_agent_session_to_use_tools:
       "ניתן להשתמש בכלי הדיון באמצעות פתיחת סשן עם נציג על ידי שימוש בסימן '@agent' בתחילת ההודעה.",
+    agent_invocation: {
+      model_wants_to_call: "המודל רוצה להתקשר",
+      approve: "אישור",
+      reject: "דחייה",
+      always_allow: "יש תמיד להקצות {{skillName}}",
+      tool_call_was_approved: "הבקשה לקבלת הכלי אושרה.",
+      tool_call_was_rejected: "בקשת השימוש בכלי נדחתה.",
+    },
+    custom_skills: "כישורים מותאמים אישית",
+    agent_flows: "זרימת סוכנים",
+    no_tools_found: "לא נמצאו כלים תואמים.",
+    loading_mcp_servers: "טעינת שרתי ה-MCP...",
+    app_integrations: "אינטגרציות עם אפליקציות",
+    sub_skills: "כישורים ספציפיים",
   },
   profile_settings: {
     edit_account: "ערוך חשבון",
@@ -981,6 +1390,225 @@ const TRANSLATIONS = {
     notAssigned:
       "אינך מוקצה לכל סביבת עבודה.\nיש ליצור קשר עם המנהל שלך כדי לבקש גישה לסביבת עבודה.",
     goToWorkspace: 'עבור לסביבת עבודה "{{workspace}}"',
+  },
+  telegram: {
+    title: "בוט של טלגרם",
+    description:
+      "חברו את ההתקנה של AnythingLLM ל-Telegram, כך שתוכלו לתקשר עם סביבות העבודה שלכם ממכשיר כלשהו.",
+    setup: {
+      step1: {
+        title: "שלב 1: צרו את הבוט שלכם ב-Telegram",
+        description:
+          "פתח את <code> ב-Telegram, שלח </code> לכתובת <code>@BotFather, עקוב אחר ההוראות, והעתק את מזהה ה-API.",
+        "open-botfather": "פתוח את BotFather",
+        "instruction-1": "1. פתחו את הקישור או סרקו את קוד ה-QR",
+        "instruction-2":
+          "2. שלחו את <code>/newbot</code> לכתובת <code>@BotFather</code>",
+        "instruction-3": "3. בחרו שם וכינוי משתמש עבור הבוט שלכם",
+        "instruction-4": "4. העתק את מזהה ה-API שקיבלת.",
+      },
+      step2: {
+        title: "שלב 2: חברו את הבוט שלכם",
+        description:
+          "הדבק את טוקן ה-API שקיבלת מחשבון @BotFather ובחר את חלל העבודה הראשי עבור הבוט שלך, כדי שיוכל לתקשר.",
+        "bot-token": "טוקן בוט",
+        connecting: "חיבור...",
+        "connect-bot": "צ'אטבוט",
+      },
+      security: {
+        title: "הגדרות אבטחה מומלצות",
+        description:
+          "לנוחיות נוספת, יש לבצע את ההגדרות הללו דרך חשבון ה-@BotFather.",
+        "disable-groups": "— למנוע הוספת רובוטים לקבוצות",
+        "disable-inline": "– למנוע שימוש בבוט בחיפוש ישיר",
+        "obscure-username":
+          "השתמש בשם משתמש של בוט שאינו בולט, כדי להקטין את הסיכוי שהוא יימצא.",
+      },
+      "toast-enter-token": "אנא הזן את טוקן הבוט.",
+      "toast-connect-failed": "לא הצליח להתחבר עם הבוט.",
+    },
+    connected: {
+      status: "מחובר",
+      "status-disconnected": "נתקע – הטוקן עשוי להיות פג או לא תקין",
+      "placeholder-token": "הדבק את מפתח הבוט החדש...",
+      reconnect: "שוב קשר",
+      workspace: "חלל עבודה",
+      "bot-link": "קישור לבוט",
+      "voice-response": "תגובה קולית",
+      disconnecting: "ניתוק...",
+      disconnect: "ניתוק",
+      "voice-text-only": "טקסט בלבד",
+      "voice-mirror": "משקף (להגיב בקול כאשר המשתמש שולח קול)",
+      "voice-always": "יש לציין תמיד (לשלוח קבצי אודיו עם כל תגובה)",
+      "toast-disconnect-failed": "לא הצלחתי לבטל את פעולת הבוט.",
+      "toast-reconnect-failed": "לא הצליח לשחזר את הבוט.",
+      "toast-voice-failed": "לא הצליח לעדכן את מצב השמע.",
+      "toast-approve-failed": "לא ניתן לאשר את המשתמש.",
+      "toast-deny-failed": "לא הצליח לסרב לבקשה של המשתמש.",
+      "toast-revoke-failed": "לא הצלחתי לבטל את החשבון של המשתמש.",
+    },
+    users: {
+      "pending-description":
+        "משתמשים הממתינים לאישור. יש להתאים את הקוד שמוצג כאן עם הקוד המוצג בשיחה שלהם ב-Telegram.",
+      unknown: "לא ידוע",
+    },
+  },
+  scheduledJobs: {
+    title: "משימות מתוכננות",
+    enableNotifications: "אפשר להפעיל התראות בדפדפן עבור תוצאות חיפוש עבודה.",
+    description:
+      "צור משימות AI חוזרות שיופעלו על פי לוח זמנים. כל משימה תפעיל שאילתה עם כלים אופציונליים ותשמור על התוצאה לבדיקה.",
+    newJob: "תפקיד חדש",
+    loading: "טעינה...",
+    emptyTitle: "אין משימות מתוכננות עדיין",
+    emptySubtitle: "צרו אחד כדי להתחיל.",
+    table: {
+      name: "שם",
+      schedule: "לוח זמנים",
+      status: "סטטוס",
+      lastRun: "הפעולה האחרונה",
+      nextRun: "הפעולה הבאה",
+      actions: "פעולות",
+    },
+    confirmDelete: "האם אתה בטוח שאתה רוצה למחוק משימה זו שתוכננה?",
+    toast: {
+      deleted: "המשרה נמחקת",
+      triggered: "התעסוקה בוצעה בהצלחה.",
+      triggerFailed: "לא הצליח להפעיל את העבודה",
+      triggerSkipped: "העבודה כבר נמצאת בשלבי ביצוע.",
+      killed: "העבודה הסתיימה בהצלחה.",
+      killFailed: "לא הצלחתי לעצור את העבודה",
+    },
+    row: {
+      neverRun: "לעולם אל תרוץ",
+      viewRuns: "מסלולים",
+      runNow: "תתחילו עכשיו",
+      enable: "אפשר",
+      disable: "לכבות",
+      edit: "עריכה",
+      delete: "מחיקה",
+    },
+    modal: {
+      titleEdit: "עריכת משימה מתוכננת",
+      titleNew: "משימה מתוזמנת חדשה",
+      nameLabel: "שם",
+      namePlaceholder: "לדוגמה: תקציר חדשות יומי",
+      promptLabel: "הוראה",
+      promptPlaceholder: "ההוראה להפעיל בכל ביצוע...",
+      scheduleLabel: "לוח זמנים",
+      modeBuilder: "מבנה",
+      modeCustom: "מותאם אישית",
+      cronPlaceholder: "ביטוי לזמני ביצוע (למשל, 0 9 * * *)",
+      currentSchedule: "לוח הזמנים הנוכחי:",
+      toolsLabel: "כלים (אופציונלי)",
+      toolsDescription:
+        "בחר את כלי העבודה שניתן להשתמש בהם עבור משימה זו. אם לא נבחרו כלים, המשימה תפעל ללא שימוש בכלים.",
+      toolsSearch: "חיפוש",
+      toolsNoResults: "אין כלים המתאימים",
+      required: "נדרש",
+      requiredFieldsBanner: "אנא מלאו את כל השדות הנדרשים כדי ליצור משרה.",
+      cancel: "בטל",
+      saving: "חיסכון...",
+      updateJob: "עדכון משרה",
+      createJob: "יצירת משרה",
+      jobUpdated: "פרסום מעודכן",
+      jobCreated: "תפקיד נוצר",
+    },
+    builder: {
+      fallbackWarning:
+        'הביטוי הזה אינו ניתן לעריכה באופן ויזואלי. עברו למצב "מותאם אישית" כדי לשמור עליו, או שנה את כל מה שמתחת כדי להחליף אותו.',
+      run: "לרוץ",
+      frequency: {
+        minute: "כל דקה",
+        hour: "לכל שעה",
+        day: "יומי",
+        week: "שבועי",
+        month: "חודשי",
+      },
+      every: "כל",
+      minuteOne: "1 דקה",
+      minuteOther: "{{count}} דקות",
+      atMinute: "במהלך",
+      pastEveryHour: "כל שעה",
+      at: "במהלך",
+      on: "על",
+      onDay: "ביום",
+      ofEveryMonth: "של כל חודש",
+      weekdays: {
+        sun: "שמש",
+        mon: "יום שני",
+        tue: "יום שני",
+        wed: "יום רביעי",
+        thu: "יום רביעי",
+        fri: "יום שישי",
+        sat: "שבת",
+      },
+    },
+    runHistory: {
+      back: "חזרה למחיפוש עבודה",
+      title: "היסטוריית ריצות: {{name}}",
+      schedule: "לוח זמנים:",
+      emptyTitle: "עדיין לא בוצעו עבודות עבור פרויקט זה.",
+      emptySubtitle: "הפעל את העבודה עכשיו וראה את התוצאות שלה.",
+      runNow: "התחילו עכשיו",
+      table: {
+        status: "סטטוס",
+        started: "התחיל",
+        duration: "משך זמן",
+        error: "שגיאה",
+      },
+      stopJob: "להפסיק עבודה",
+    },
+    runDetail: {
+      loading: "טעינת פרטי הריצה...",
+      notFound: "לא נמצאה פעולה.",
+      back: "חזרה",
+      unknownJob: "תפקיד לא ידוע",
+      runHeading: "{{name}} — הפעל את מספר {{id}}",
+      duration: "משך: {{value}}",
+      creating: "יצירה...",
+      threadFailed: "לא הצליח ליצור דיון.",
+      sections: {
+        prompt: "הוראה",
+        error: "שגיאה",
+        thinking: "מחשבות ({{count}})",
+        toolCalls: "קריאות לכלי ({{count}})",
+        files: "קבצים ({{count}})",
+        response: "תגובה",
+        metrics: "מדדים",
+      },
+      metrics: {
+        promptTokens: "מילות מפתח:",
+        completionTokens: "טוקנים לסיום:",
+      },
+      stopJob: "הפסק עבודה",
+      killing: "עצירה...",
+      continueInThread: "להמשיך בשיחה",
+    },
+    toolCall: {
+      arguments: "טיעונים:",
+      showResult: "הצג תוצאה",
+      hideResult: "הסתר תוצאה",
+    },
+    file: {
+      unknown: "קובץ לא מזוהה",
+      download: "הורדה",
+      downloadFailed: "לא הצליח להוריד את הקובץ",
+      types: {
+        powerpoint: "פאוורPoint",
+        pdf: "מסמך PDF",
+        word: "מסמך מילה",
+        spreadsheet: "טבלה",
+        generic: "קובץ",
+      },
+    },
+    status: {
+      completed: "הושלם",
+      failed: "נכשל",
+      timed_out: "הזמן פג",
+      running: "ריצה",
+      queued: "באי תור",
+    },
   },
 };
 
