@@ -17,8 +17,8 @@ const TRANSLATIONS = {
         "Giúp chúng tôi xây dựng AnythingLLM phù hợp với nhu cầu của bạn. Tùy chọn.",
     },
     home: {
-      title: "Chào mừng đến",
       getStarted: "Bắt đầu",
+      welcome: "Chào mừng",
     },
     llm: {
       title: "Tùy chọn LLM",
@@ -52,7 +52,6 @@ const TRANSLATIONS = {
   },
   common: {
     "workspaces-name": "Tên không gian làm việc",
-    user: "Người dùng",
     selection: "Lựa chọn mô hình",
     saving: "Đang lưu...",
     save: "Lưu thay đổi",
@@ -106,6 +105,11 @@ const TRANSLATIONS = {
       "your-account": "Tài khoản của bạn",
       "import-item": "Nhập hàng",
     },
+    channels: "Kênh",
+    "available-channels": {
+      telegram: "Telegram",
+    },
+    "scheduled-jobs": "Công việc theo lịch trình",
   },
   login: {
     "multi-user": {
@@ -182,17 +186,17 @@ const TRANSLATIONS = {
       chat: {
         title: "Trò chuyện",
         description:
-          "sẽ cung cấp câu trả lời dựa trên kiến thức chung của LLM và ngữ cảnh tài liệu được cung cấp.<br />Bạn cần sử dụng lệnh @agent để sử dụng các công cụ.",
+          "sẽ cung cấp câu trả lời dựa trên kiến thức chung của LLM và ngữ cảnh tài liệu được cung cấp.<br />Bạn sẽ cần sử dụng lệnh @agent để sử dụng các công cụ.",
       },
       query: {
         title: "Truy vấn",
         description:
-          "sẽ cung cấp câu trả lời <b>chỉ</b> khi ngữ cảnh của tài liệu được tìm thấy.<br />Bạn cần sử dụng lệnh @agent để sử dụng các công cụ.",
+          "sẽ cung cấp câu trả lời <b>chỉ</b> nếu ngữ cảnh của tài liệu được tìm thấy.<br />Bạn sẽ cần sử dụng lệnh @agent để sử dụng các công cụ.",
       },
       automatic: {
-        title: "Tự động",
         description:
-          "sẽ tự động sử dụng các công cụ nếu mô hình và nhà cung cấp hỗ trợ gọi công cụ gốc.<br />Nếu không hỗ trợ gọi công cụ gốc, bạn sẽ cần sử dụng lệnh `@agent` để sử dụng các công cụ.",
+          "sẽ tự động sử dụng các công cụ nếu mô hình và nhà cung cấp hỗ trợ gọi công cụ gốc. Nếu không hỗ trợ gọi công cụ gốc, bạn sẽ cần sử dụng lệnh `@agent` để sử dụng các công cụ.",
+        title: "Đại lý",
       },
     },
     history: {
@@ -304,11 +308,6 @@ const TRANSLATIONS = {
         description:
           "Cho phép agent mặc định tạo các loại biểu đồ khác nhau từ dữ liệu được cung cấp hoặc đưa ra trong trò chuyện.",
       },
-      save: {
-        title: "Tạo & lưu tệp",
-        description:
-          "Cho phép agent mặc định tạo và ghi vào các tệp có thể lưu vào máy tính của bạn.",
-      },
       web: {
         title: "Tìm kiếm web trực tiếp và duyệt web",
         description:
@@ -321,6 +320,399 @@ const TRANSLATIONS = {
       },
       default_skill:
         "Theo mặc định, kỹ năng này được kích hoạt, nhưng bạn có thể tắt nó nếu không muốn nó được sử dụng bởi người đại diện.",
+      filesystem: {
+        title: "Quyền truy cập hệ thống tệp",
+        description:
+          "Cho phép đại lý của bạn đọc, ghi, tìm kiếm và quản lý các tệp tin trong một thư mục được chỉ định. Hỗ trợ chỉnh sửa tệp, điều hướng thư mục và tìm kiếm nội dung.",
+        learnMore: "Tìm hiểu thêm về cách sử dụng kỹ năng này.",
+        configuration: "Cấu hình",
+        readActions: "Đọc hành động",
+        writeActions: "Các hành động",
+        warning:
+          "Việc truy cập hệ thống tệp có thể gây nguy hiểm vì nó có thể sửa đổi hoặc xóa các tệp. Vui lòng tham khảo tài liệu <a> trước khi kích hoạt.",
+        skills: {
+          "read-text-file": {
+            title: "Đọc tệp",
+            description:
+              "Đọc nội dung của các tệp (văn bản, mã, PDF, hình ảnh, v.v.)",
+          },
+          "read-multiple-files": {
+            title: "Đọc nhiều tệp",
+            description: "Đọc nhiều tệp tin cùng lúc.",
+          },
+          "list-directory": {
+            title: "Danh sách",
+            description: "Liệt kê các tệp tin và thư mục trong một thư mục.",
+          },
+          "search-files": {
+            title: "Tìm kiếm tệp",
+            description: "Tìm kiếm các tệp theo tên hoặc nội dung",
+          },
+          "get-file-info": {
+            title: "Lấy thông tin tệp",
+            description: "Lấy thông tin chi tiết về các tệp tin.",
+          },
+          "edit-file": {
+            title: "Chỉnh sửa tệp",
+            description:
+              "Thực hiện chỉnh sửa dựa trên dòng trong các tệp văn bản.",
+          },
+          "create-directory": {
+            title: "Tạo thư mục",
+            description: "Tạo thư mục mới",
+          },
+          "move-file": {
+            title: "Di chuyển/Đổi tên tệp",
+            description: "Di chuyển hoặc đổi tên các tệp và thư mục.",
+          },
+          "copy-file": {
+            title: "Sao chép tệp",
+            description: "Sao chép các tệp tin và thư mục",
+          },
+          "write-text-file": {
+            title: "Tạo tệp văn bản",
+            description:
+              "Tạo các tệp văn bản mới hoặc ghi đè các tệp văn bản hiện có.",
+          },
+        },
+      },
+      createFiles: {
+        title: "Tạo tài liệu",
+        description:
+          "Cho phép đại lý của bạn tạo các định dạng tài liệu nhị phân như bài thuyết trình PowerPoint, bảng tính Excel, tài liệu Word và PDF. Các tệp có thể tải xuống trực tiếp từ cửa sổ trò chuyện.",
+        configuration: "Các loại tài liệu có sẵn",
+        skills: {
+          "create-text-file": {
+            title: "Tệp văn bản",
+            description:
+              "Tạo các tệp văn bản với bất kỳ nội dung và định dạng nào (ví dụ: .txt, .md, .json, .csv, v.v.)",
+          },
+          "create-pptx": {
+            title: "Bài trình bày bằng PowerPoint",
+            description:
+              "Tạo các bài trình chiếu PowerPoint mới với các slide, tiêu đề và dấu đầu dòng.",
+          },
+          "create-pdf": {
+            title: "Tài liệu PDF",
+            description:
+              "Tạo tài liệu PDF từ Markdown hoặc văn bản thuần túy với các định dạng cơ bản.",
+          },
+          "create-xlsx": {
+            title: "Bảng tính Excel",
+            description:
+              "Tạo các tài liệu Excel cho dữ liệu dạng bảng, bao gồm các sheet và định dạng.",
+          },
+          "create-docx": {
+            title: "Tệp Word",
+            description:
+              "Tạo các tài liệu Word với định dạng và kiểu dáng cơ bản.",
+          },
+        },
+      },
+      gmail: {
+        title: "Kết nối GMail",
+        description:
+          "Cho phép đại lý của bạn tương tác với Gmail – tìm kiếm email, đọc các cuộc trò chuyện, soạn thảo bản nháp, gửi email và quản lý hộp thư. Đọc tài liệu hướng dẫn<a>.",
+        multiUserWarning:
+          "Tính năng tích hợp với Gmail không khả dụng trong chế độ nhiều người dùng vì lý do bảo mật. Vui lòng tắt chế độ nhiều người dùng để sử dụng tính năng này.",
+        configuration: "Cấu hình Gmail",
+        deploymentId: "Mã triển khai",
+        deploymentIdHelp:
+          "Mã triển khai từ ứng dụng web Google Apps Script của bạn",
+        apiKey: "Khóa API",
+        apiKeyHelp:
+          "Khóa API mà bạn đã cấu hình trong quá trình triển khai Google Apps Script của mình.",
+        configurationRequired:
+          "Vui lòng cấu hình ID triển khai và khóa API để kích hoạt các tính năng của Gmail.",
+        configured: "Đã được cấu hình",
+        searchSkills: "Kỹ năng tìm kiếm...",
+        noSkillsFound: "Không có kết quả phù hợp với tìm kiếm của bạn.",
+        categories: {
+          search: {
+            title: "Tìm kiếm và đọc email",
+            description:
+              "Tìm kiếm và đọc các email trong hộp thư Gmail của bạn.",
+          },
+          drafts: {
+            title: "Mẫu email",
+            description: "Tạo, chỉnh sửa và quản lý bản nháp email",
+          },
+          send: {
+            title: "Gửi và trả lời email",
+            description:
+              "Gửi email và trả lời các cuộc thảo luận ngay lập tức.",
+          },
+          threads: {
+            title: "Quản lý các chuỗi email",
+            description:
+              "Quản lý các chuỗi email – đánh dấu là đã đọc/chưa đọc, lưu trữ, xóa",
+          },
+          account: {
+            title: "Thống kê tích hợp",
+            description: "Xem thống kê hộp thư và thông tin tài khoản",
+          },
+        },
+        skills: {
+          search: {
+            title: "Tìm kiếm trong các email",
+            description: "Tìm kiếm trong email bằng cú pháp truy vấn của Gmail",
+          },
+          readThread: {
+            title: "Đọc chủ đề",
+            description: "Đọc toàn bộ chuỗi email theo ID",
+          },
+          createDraft: {
+            title: "Tạo bản nháp",
+            description: "Tạo một bản nháp email mới",
+          },
+          createDraftReply: {
+            title: "Tạo bản nháp trả lời",
+            description: "Tạo một bản dự thảo trả lời cho một chủ đề hiện có.",
+          },
+          updateDraft: {
+            title: "Cập nhật bản nháp",
+            description: "Cập nhật bản nháp email hiện có",
+          },
+          getDraft: {
+            title: "Xem bản nháp",
+            description: "Lấy lại một bản nháp cụ thể theo ID",
+          },
+          listDrafts: {
+            title: "Danh sách dự thảo",
+            description: "Liệt kê tất cả các email đang soạn thảo.",
+          },
+          deleteDraft: {
+            title: "Xóa bản nháp",
+            description: "Xóa bản nháp email",
+          },
+          sendDraft: {
+            title: "Gửi bản nháp",
+            description: "Gửi một bản nháp email đã có",
+          },
+          sendEmail: {
+            title: "Gửi email",
+            description: "Gửi một email ngay lập tức",
+          },
+          replyToThread: {
+            title: "Trả lời cuộc thảo luận",
+            description: "Trả lời một chuỗi email ngay lập tức.",
+          },
+          markRead: {
+            title: "Mark Read",
+            description: "Đánh dấu một chủ đề đã đọc",
+          },
+          markUnread: {
+            title: "Đánh dấu là chưa đọc",
+            description: "Đánh dấu một chủ đề là chưa đọc",
+          },
+          moveToTrash: {
+            title: "Xóa",
+            description: 'Di chuyển một chủ đề vào thư mục "rác"',
+          },
+          moveToArchive: {
+            title: "Thư mục lưu trữ",
+            description: "Lưu trữ một chủ đề",
+          },
+          moveToInbox: {
+            title: "Di chuyển đến mục Thùng thư",
+            description: "Di chuyển một chủ đề vào hộp thư mục",
+          },
+          getMailboxStats: {
+            title: "Thống kê hộp thư",
+            description:
+              "Hiển thị số lượng email chưa đọc và thống kê hộp thư.",
+          },
+          getInbox: {
+            title: "Truy cập hộp thư",
+            description: "Cách đơn giản để lấy các email trong hộp thư Gmail.",
+          },
+        },
+      },
+      outlook: {
+        title: "Kết nối Outlook",
+        description:
+          "Cho phép đại lý của bạn tương tác với Microsoft Outlook – tìm kiếm email, đọc các cuộc thảo luận, soạn thảo bản nháp, gửi email và quản lý hộp thư đến thông qua Microsoft Graph API. Đọc tài liệu hướng dẫn <a>.",
+        multiUserWarning:
+          "Tính năng tích hợp với Outlook không khả dụng trong chế độ nhiều người dùng vì lý do bảo mật. Vui lòng tắt chế độ nhiều người dùng để sử dụng tính năng này.",
+        configuration: "Cấu hình Outlook",
+        authType: "Loại tài khoản",
+        authTypeHelp:
+          'Chọn loại tài khoản Microsoft nào có thể xác thực. "Tất cả các tài khoản" hỗ trợ cả tài khoản cá nhân và tài khoản làm việc/học. "Chỉ tài khoản cá nhân" giới hạn chỉ ở tài khoản Microsoft cá nhân. "Chỉ tài khoản tổ chức" giới hạn ở tài khoản làm việc/học từ một tenant cụ thể của Azure AD.',
+        authTypeCommon:
+          "Tất cả các tài khoản (cá nhân và tài khoản liên quan đến công việc/học tập)",
+        authTypeConsumers: "Chỉ dành cho tài khoản Microsoft cá nhân",
+        authTypeOrganization:
+          "Chỉ dành cho tài khoản tổ chức (cần ID của người thuê).",
+        clientId: "Mã định danh của khách hàng",
+        clientIdHelp:
+          "Mã định danh ứng dụng (Client ID) từ quá trình đăng ký ứng dụng của bạn trong Azure AD",
+        tenantId: "Mã định danh (cho người thuê)",
+        tenantIdHelp:
+          "Mã định danh (Tenant ID) từ ứng dụng Azure AD của bạn. Yêu cầu chỉ khi thực hiện xác thực cho riêng tổ chức.",
+        clientSecret: "Mật khẩu",
+        clientSecretHelp: "Giá trị bí mật của ứng dụng Azure AD của bạn",
+        configurationRequired:
+          "Vui lòng cấu hình ID và bí mật của ứng dụng để kích hoạt các tính năng của Outlook.",
+        authRequired:
+          "Trước tiên, hãy lưu thông tin đăng nhập của bạn, sau đó xác thực với Microsoft để hoàn thành quá trình thiết lập.",
+        authenticateWithMicrosoft: "Xác minh bằng Microsoft",
+        authenticated: "Đã xác thực thành công với Microsoft Outlook.",
+        revokeAccess: "Thu hồi quyền truy cập",
+        configured: "Đã được cấu hình",
+        searchSkills: "Kỹ năng tìm kiếm...",
+        noSkillsFound: "Không có kết quả nào khớp với tìm kiếm của bạn.",
+        categories: {
+          search: {
+            title: "Tìm kiếm và đọc email",
+            description:
+              "Tìm kiếm và đọc các email trong hộp thư Outlook của bạn.",
+          },
+          drafts: {
+            title: "Mẫu email",
+            description: "Tạo, chỉnh sửa và quản lý bản nháp email",
+          },
+          send: {
+            title: "Gửi email",
+            description: "Gửi email mới hoặc trả lời tin nhắn ngay lập tức.",
+          },
+          account: {
+            title: "Thống kê tích hợp",
+            description: "Xem thống kê hộp thư và thông tin tài khoản",
+          },
+        },
+        skills: {
+          getInbox: {
+            title: "Truy cập hộp thư",
+            description: "Lấy các email mới nhất từ hộp thư Outlook của bạn",
+          },
+          search: {
+            title: "Tìm kiếm trong thư điện tử",
+            description:
+              "Tìm kiếm trong các email bằng cú pháp tìm kiếm của Microsoft",
+          },
+          readThread: {
+            title: "Đọc cuộc hội thoại",
+            description: "Đọc toàn bộ chuỗi email.",
+          },
+          createDraft: {
+            title: "Tạo bản nháp",
+            description:
+              "Tạo một bản nháp email mới hoặc một bản nháp trả lời cho một tin nhắn hiện có.",
+          },
+          updateDraft: {
+            title: "Cập nhật bản nháp",
+            description: "Cập nhật một bản nháp email đã có",
+          },
+          listDrafts: {
+            title: "Danh sách dự thảo",
+            description: "Liệt kê tất cả các email đang soạn thảo.",
+          },
+          deleteDraft: {
+            title: "Xóa bản nháp",
+            description: "Xóa bản nháp email",
+          },
+          sendDraft: {
+            title: "Gửi bản nháp",
+            description: "Gửi một bản nháp email đã có",
+          },
+          sendEmail: {
+            title: "Gửi email",
+            description:
+              "Gửi một email mới hoặc trả lời một tin nhắn hiện có ngay lập tức.",
+          },
+          getMailboxStats: {
+            title: "Thống kê hộp thư",
+            description: "Lấy số lượng thư mục và thống kê hộp thư.",
+          },
+        },
+      },
+      googleCalendar: {
+        title: "Kết nối Google Calendar",
+        description:
+          "Cho phép đại lý của bạn tương tác với Google Calendar - xem lịch, lấy thông tin sự kiện, tạo và cập nhật sự kiện, và quản lý xác nhận tham dự. <a>Đọc tài liệu</a>.",
+        multiUserWarning:
+          "Tính năng tích hợp với Google Calendar không khả dụng ở chế độ nhiều người dùng vì lý do bảo mật. Vui lòng tắt chế độ nhiều người dùng để sử dụng tính năng này.",
+        configuration: "Cấu hình Google Calendar",
+        deploymentId: "Mã triển khai",
+        deploymentIdHelp:
+          "Mã định danh ứng dụng từ ứng dụng web Google Apps Script của bạn",
+        apiKey: "Khóa API",
+        apiKeyHelp:
+          "Khóa API mà bạn đã cấu hình trong quá trình triển khai Google Apps Script của mình.",
+        configurationRequired:
+          "Vui lòng cấu hình ID triển khai và khóa API để kích hoạt các tính năng của Google Calendar.",
+        configured: "Đã được cấu hình",
+        searchSkills: "Kỹ năng tìm kiếm...",
+        noSkillsFound:
+          "Không tìm thấy kết quả phù hợp với tiêu chí tìm kiếm của bạn.",
+        categories: {
+          calendars: {
+            title: "Lịch",
+            description: "Xem và quản lý lịch Google của bạn",
+          },
+          readEvents: {
+            title: "Xem sự kiện",
+            description: "Xem và tìm kiếm các sự kiện trong lịch",
+          },
+          writeEvents: {
+            title: "Tạo và cập nhật sự kiện",
+            description:
+              "Tạo các sự kiện mới và chỉnh sửa các sự kiện hiện có.",
+          },
+          rsvp: {
+            title: "Quản lý xác nhận tham dự",
+            description: "Quản lý trạng thái phản hồi của bạn cho các sự kiện",
+          },
+        },
+        skills: {
+          listCalendars: {
+            title: "Danh sách lịch",
+            description: "Liệt kê tất cả các lịch mà bạn sở hữu hoặc đăng ký",
+          },
+          getCalendar: {
+            title: "Lấy thông tin lịch",
+            description: "Lấy thông tin chi tiết về một lịch cụ thể",
+          },
+          getEvent: {
+            title: "Tìm sự kiện",
+            description: "Lấy thông tin chi tiết về một sự kiện cụ thể",
+          },
+          getEventsForDay: {
+            title: "Tìm các sự kiện cho ngày hôm nay",
+            description:
+              "Hiển thị tất cả các sự kiện được lên lịch cho một ngày cụ thể.",
+          },
+          getEvents: {
+            title: "Tìm sự kiện (khoảng thời gian)",
+            description:
+              "Lấy danh sách các sự kiện trong một khoảng thời gian tùy chỉnh.",
+          },
+          getUpcomingEvents: {
+            title: "Xem các sự kiện sắp tới",
+            description:
+              "Tìm kiếm các sự kiện diễn ra hôm nay, tuần này hoặc tháng này bằng cách sử dụng các từ khóa đơn giản.",
+          },
+          quickAdd: {
+            title: "Thêm sự kiện nhanh chóng",
+            description:
+              'Tạo một sự kiện từ ngôn ngữ tự nhiên (ví dụ: "Cuộc họp vào ngày mai lúc 3 giờ chiều")',
+          },
+          createEvent: {
+            title: "Tạo sự kiện",
+            description:
+              "Tạo một sự kiện mới với quyền kiểm soát hoàn toàn đối với tất cả các thuộc tính.",
+          },
+          updateEvent: {
+            title: "Cập nhật sự kiện",
+            description: "Cập nhật một sự kiện đã có trong lịch",
+          },
+          setMyStatus: {
+            title: "Đặt trạng thái xác nhận tham dự",
+            description:
+              "Chấp nhận, từ chối hoặc chấp nhận một sự kiện một cách tạm thời.",
+          },
+        },
+      },
     },
     mcp: {
       title: "Máy chủ MCP",
@@ -382,7 +774,34 @@ const TRANSLATIONS = {
       "Khóa API cho phép người sở hữu truy cập và quản lý phiên bản AnythingLLM này theo chương trình.",
     link: "Đọc tài liệu API",
     generate: "Tạo Khóa API Mới",
+    empty: "Không tìm thấy khóa API nào",
+    actions: "Thao tác",
+    messages: {
+      error: "Lỗi: {{error}}",
+    },
+    modal: {
+      title: "Tạo khóa API mới",
+      cancel: "Hủy",
+      close: "Đóng",
+      create: "Tạo khóa API",
+      helper:
+        "Sau khi được tạo, khóa API có thể được dùng để truy cập và cấu hình phiên bản AnythingLLM này theo chương trình.",
+      name: {
+        label: "Tên",
+        placeholder: "Tích hợp production",
+        helper:
+          "Tùy chọn. Hãy dùng tên dễ nhận biết để bạn có thể xác định khóa này sau này.",
+      },
+    },
+    row: {
+      copy: "Sao chép khóa API",
+      copied: "Đã sao chép",
+      unnamed: "--",
+      deleteConfirm:
+        "Bạn có chắc muốn vô hiệu hóa khóa API này không?\nSau đó khóa sẽ không thể sử dụng được nữa.\n\nHành động này không thể hoàn tác.",
+    },
     table: {
+      name: "Tên",
       key: "Khóa API",
       by: "Tạo bởi",
       created: "Ngày tạo",
@@ -636,7 +1055,6 @@ const TRANSLATIONS = {
       select_all: "Chọn Tất cả",
       deselect_all: "Bỏ chọn Tất cả",
       remove_selected: "Xóa Đã chọn",
-      costs: "*Chi phí một lần cho việc nhúng",
       save_embed: "Lưu và Nhúng",
       "total-documents_one": "{{count}}",
       "total-documents_other": "{{count}}",
@@ -739,7 +1157,6 @@ const TRANSLATIONS = {
     see_less: "Xem ít hơn",
     see_more: "Xem thêm",
     tools: "Dụng cụ",
-    browse: "Duyệt",
     text_size_label: "Kích thước văn bản",
     select_model: "Chọn mẫu",
     sources: "Nguồn",
@@ -752,7 +1169,6 @@ const TRANSLATIONS = {
     edit: "Chỉnh sửa",
     publish: "Đăng tải",
     stop_generating: "Dừng tạo ra phản hồi",
-    pause_tts_speech_message: "Tạm dừng phát giọng đọc của tin nhắn",
     slash_commands: "Lệnh tắt/bật",
     agent_skills: "Kỹ năng của đại lý",
     manage_agent_skills: "Quản lý kỹ năng của đại lý",
@@ -761,6 +1177,20 @@ const TRANSLATIONS = {
     start_agent_session: "Bắt đầu phiên làm việc với đại lý",
     use_agent_session_to_use_tools:
       "Bạn có thể sử dụng các công cụ trong cuộc trò chuyện bằng cách bắt đầu một phiên với trợ lý bằng cách sử dụng '@agent' ở đầu yêu cầu của bạn.",
+    agent_invocation: {
+      model_wants_to_call: "Người mẫu muốn gọi",
+      approve: "Chấp thuận",
+      reject: "Từ chối",
+      always_allow: "Luôn luôn đảm bảo {{skillName}}",
+      tool_call_was_approved: "Đã được phê duyệt yêu cầu dụng cụ.",
+      tool_call_was_rejected: "Yêu cầu gọi công cụ đã bị từ chối.",
+    },
+    custom_skills: "Kỹ năng tùy chỉnh",
+    agent_flows: "Dòng chảy của đại lý",
+    no_tools_found: "Không tìm thấy công cụ tương ứng.",
+    loading_mcp_servers: "Đang tải các máy chủ MCP...",
+    app_integrations: "Tích hợp ứng dụng",
+    sub_skills: "Kỹ năng chuyên môn",
   },
   profile_settings: {
     edit_account: "Chỉnh sửa Tài khoản",
@@ -1011,6 +1441,230 @@ const TRANSLATIONS = {
     notAssigned:
       "Bạn hiện không được giao việc nào.\nLiên hệ với quản trị viên của bạn để yêu cầu truy cập vào khu vực làm việc.",
     goToWorkspace: 'Chuyển đến khu vực làm việc "{{workspace}}"',
+  },
+  telegram: {
+    title: "Bot Telegram",
+    description:
+      "Kết nối phiên bản AnythingLLM của bạn với Telegram để bạn có thể trò chuyện với các không gian làm việc của mình từ bất kỳ thiết bị nào.",
+    setup: {
+      step1: {
+        title: "Bước 1: Tạo bot Telegram của bạn",
+        description:
+          "Mở ứng dụng @BotFather trên Telegram, gửi lệnh <code>/newbot</code> đến tài khoản <code>@BotFather</code>, làm theo hướng dẫn và sao chép mã API.",
+        "open-botfather": "Mở BotFather",
+        "instruction-1": "1. Mở liên kết hoặc quét mã QR",
+        "instruction-2":
+          "2. Gửi <code>/newbot</code> đến <code>@BotFather</code>",
+        "instruction-3": "3. Chọn tên và tên người dùng cho bot của bạn",
+        "instruction-4": "4. Sao chép mã API mà bạn nhận được",
+      },
+      step2: {
+        title: "Bước 2: Kết nối bot của bạn",
+        description:
+          "Dán mã API mà bạn nhận được từ @BotFather và chọn không gian làm việc mặc định để bot của bạn có thể trò chuyện.",
+        "bot-token": "Token Bot",
+        connecting: "Kết nối...",
+        "connect-bot": "Bot kết nối",
+      },
+      security: {
+        title: "Các cài đặt bảo mật được khuyến nghị",
+        description:
+          "Để tăng cường bảo mật, hãy cấu hình các cài đặt này trên tài khoản @BotFather.",
+        "disable-groups": "— Ngăn chặn việc thêm bot vào các nhóm",
+        "disable-inline":
+          "— Ngăn chặn việc sử dụng bot trong tìm kiếm trực tiếp.",
+        "obscure-username":
+          "Sử dụng tên người dùng bot không phổ biến để giảm khả năng được tìm thấy.",
+      },
+      "toast-enter-token": "Vui lòng nhập mã token cho bot.",
+      "toast-connect-failed": "Không thể kết nối với trợ lý.",
+    },
+    connected: {
+      status: "Kết nối",
+      "status-disconnected":
+        "Không kết nối — mã token có thể đã hết hạn hoặc không hợp lệ",
+      "placeholder-token": "Dán mã token mới cho bot...",
+      reconnect: "Khôi phục kết nối",
+      workspace: "Không gian làm việc",
+      "bot-link": "Liên kết Bot",
+      "voice-response": "Phản hồi bằng giọng nói",
+      disconnecting: "Ngắt kết nối...",
+      disconnect: "Ngắt kết nối",
+      "voice-text-only": "Chỉ nội dung",
+      "voice-mirror": "Trả lời bằng giọng nói (khi người dùng gửi giọng nói)",
+      "voice-always":
+        "Luôn luôn có thể gửi phản hồi bằng giọng nói (gửi kèm âm thanh trong mỗi phản hồi).",
+      "toast-disconnect-failed": "Không thể ngắt kết nối bot.",
+      "toast-reconnect-failed": "Không thể kết nối lại với trình bot.",
+      "toast-voice-failed": "Không thể cập nhật chế độ giọng nói.",
+      "toast-approve-failed": "Không thể xác nhận tài khoản người dùng.",
+      "toast-deny-failed": "Không thể từ chối yêu cầu của người dùng.",
+      "toast-revoke-failed": "Không thể thu hồi quyền truy cập cho người dùng.",
+    },
+    users: {
+      "pending-description":
+        "Người dùng đang chờ xác nhận. So sánh mã ghép đôi được hiển thị ở đây với mã hiển thị trong cuộc trò chuyện Telegram của họ.",
+      unknown: "Không xác định",
+    },
+  },
+  scheduledJobs: {
+    title: "Công việc theo lịch trình",
+    enableNotifications:
+      "Kích hoạt thông báo trình duyệt để nhận kết quả tìm kiếm việc làm",
+    description:
+      "Tạo các tác vụ AI lặp đi lặp lại, chạy theo lịch trình. Mỗi tác vụ sẽ thực hiện một yêu cầu với các công cụ tùy chọn và lưu kết quả để xem xét.",
+    newJob: "Vị trí công việc mới",
+    loading: "Đang tải...",
+    emptyTitle: "Hiện chưa có công việc nào được lên lịch.",
+    emptySubtitle: "Tạo một cái để bắt đầu.",
+    table: {
+      name: "Tên",
+      schedule: "Lịch trình",
+      status: "Trạng thái",
+      lastRun: "Lần chạy cuối",
+      nextRun: "Chuyến đi tiếp theo",
+      actions: "Hành động",
+    },
+    confirmDelete: "Bạn có chắc chắn muốn xóa công việc này?",
+    toast: {
+      deleted: "Việc xóa công việc",
+      triggered: "Việc tìm kiếm việc làm đã thành công.",
+      triggerFailed: "Không thể kích hoạt công việc",
+      triggerSkipped: "Công việc này đã bắt đầu triển khai.",
+      killed: "Việc làm đã được hoàn thành thành công.",
+      killFailed: "Không thể ngăn chặn việc chấm dứt hợp đồng",
+    },
+    row: {
+      neverRun: "Không bao giờ chạy",
+      viewRuns: "Xem theo các lượt",
+      runNow: "Hãy bắt đầu ngay bây giờ.",
+      enable: "Kích hoạt",
+      disable: "Tắt",
+      edit: "Chỉnh sửa",
+      delete: "Xóa",
+    },
+    modal: {
+      titleEdit: "Chỉnh sửa công việc theo lịch",
+      titleNew: "Công việc mới theo lịch trình",
+      nameLabel: "Tên",
+      namePlaceholder: "Ví dụ: Tóm tắt tin tức hàng ngày",
+      promptLabel: "Yêu cầu",
+      promptPlaceholder: "Hướng dẫn để chạy trong mỗi lần thực hiện...",
+      scheduleLabel: "Lịch trình",
+      modeBuilder: "Nhà xây dựng",
+      modeCustom: "Tùy chỉnh",
+      cronPlaceholder: "Biểu thức Cron (ví dụ: 0 9 * * *)",
+      currentSchedule: "Lịch trình hiện tại:",
+      toolsLabel: "Dụng cụ (Tùy chọn)",
+      toolsDescription:
+        "Chọn các công cụ hỗ trợ mà công việc này có thể sử dụng. Nếu không chọn công cụ nào, công việc sẽ chạy mà không sử dụng bất kỳ công cụ nào.",
+      toolsSearch: "Tìm kiếm",
+      toolsNoResults: "Không có công cụ nào phù hợp",
+      required: "Yêu cầu",
+      requiredFieldsBanner:
+        "Vui lòng điền đầy đủ các trường thông tin bắt buộc để tạo công việc.",
+      cancel: "Hủy",
+      saving: "Tiết kiệm...",
+      updateJob: "Cập nhật công việc",
+      createJob: "Tạo công việc",
+      jobUpdated: "Thông tin công việc đã được cập nhật",
+      jobCreated: "Vị trí được tạo",
+    },
+    builder: {
+      fallbackWarning:
+        'Biểu thức này không thể chỉnh sửa trực quan. Để giữ nguyên, hãy chuyển sang chế độ "Tùy chỉnh". Hoặc, bạn có thể thay đổi bất kỳ nội dung nào bên dưới để ghi đè lên biểu thức này.',
+      run: "Chạy",
+      frequency: {
+        minute: "mỗi phút",
+        hour: "theo giờ",
+        day: "hàng ngày",
+        week: "hàng tuần",
+        month: "hàng tháng",
+      },
+      every: "Mỗi",
+      minuteOne: "1 phút",
+      minuteOther: "{{count}} phút",
+      atMinute: "Tại phút",
+      pastEveryHour: "hàng giờ",
+      at: "Tại",
+      on: "Về",
+      onDay: "Trong ngày",
+      ofEveryMonth: "của mỗi tháng",
+      weekdays: {
+        sun: "Mặt trời",
+        mon: "Thứ hai",
+        tue: "Thứ hai",
+        wed: "Thứ Ba",
+        thu: "Tháng",
+        fri: "Thứ Sáu",
+        sat: "Thứ Sáu",
+      },
+    },
+    runHistory: {
+      back: "Quay lại tìm việc",
+      title: "Lịch sử hoạt động: {{name}}",
+      schedule: "Lịch trình:",
+      emptyTitle: "Hiện tại, công việc này chưa có kết quả cụ thể.",
+      emptySubtitle: "Thực hiện công việc ngay bây giờ và xem kết quả.",
+      runNow: "Hãy bắt đầu ngay bây giờ.",
+      table: {
+        status: "Trạng thái",
+        started: "Bắt đầu",
+        duration: "Thời gian",
+        error: "Lỗi",
+      },
+      stopJob: "Ngừng làm",
+    },
+    runDetail: {
+      loading: "Hiển thị chi tiết chạy...",
+      notFound: "Không tìm thấy lệnh.",
+      back: "Quay lại",
+      unknownJob: "Vị trí công việc chưa được xác định",
+      runHeading: "{{name}} — Chạy lệnh #{{id}}",
+      duration: "Thời gian: {{value}}",
+      creating: "Tạo ra...",
+      threadFailed: "Không thể tạo ra luồng (thread).",
+      sections: {
+        prompt: "Yêu cầu",
+        error: "Lỗi",
+        thinking: "Ý kiến ({{count}})",
+        toolCalls: "Gọi công cụ ({{count}})",
+        files: "Tệp tin ({{count}})",
+        response: "Phản hồi",
+        metrics: "Các chỉ số",
+      },
+      metrics: {
+        promptTokens: "Từ gợi ý:",
+        completionTokens: "Các token hoàn thành:",
+      },
+      stopJob: "Dừng việc",
+      killing: "Dừng lại...",
+      continueInThread: "Tiếp tục trò chuyện",
+    },
+    toolCall: {
+      arguments: "Các lập luận:",
+      showResult: "Hiển thị kết quả",
+      hideResult: "Ẩn kết quả",
+    },
+    file: {
+      unknown: "Tệp không xác định",
+      download: "Tải xuống",
+      downloadFailed: "Không thể tải xuống tệp",
+      types: {
+        powerpoint: "Trình chiếu PowerPoint",
+        pdf: "Tài liệu PDF",
+        word: "Tệp Word",
+        spreadsheet: "Bảng tính",
+        generic: "Tệp",
+      },
+    },
+    status: {
+      completed: "Hoàn thành",
+      failed: "Thất bại",
+      timed_out: "Thời gian đã hết",
+      running: "Chạy bộ",
+      queued: "Đang chờ",
+    },
   },
 };
 
