@@ -43,7 +43,7 @@
     "strip-ansi": "^7.1.2",
     "tesseract.js": "^6.0.0",
     "url-pattern": "^1.0.3",
-    "uuid": "^9.0.0",
+    "uuid": "^14.0.0",
     "wavefile": "^11.0.0",
     "winston": "^3.13.0",
     "youtube-transcript-plus": "^1.1.2",
