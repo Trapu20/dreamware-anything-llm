@@ -4,7 +4,10 @@ const { Telemetry } = require("../../../models/telemetry");
 const { DocumentVectors } = require("../../../models/vectors");
 const { Workspace } = require("../../../models/workspace");
 const { WorkspaceChats } = require("../../../models/workspaceChats");
-const { getVectorDbClass, getLLMProvider } = require("../../../utils/helpers");
+const {
+  getVectorDbClass,
+  resolveProviderConnector,
+} = require("../../../utils/helpers");
 const { multiUserMode, reqBody } = require("../../../utils/http");
 const { validApiKey } = require("../../../utils/middleware/validApiKey");
 const { VALID_CHAT_MODE } = require("../../../utils/chats/stream");
@@ -15,6 +18,9 @@ const {
 } = require("../../../utils/helpers/chat/responses");
 const { ApiChatHandler } = require("../../../utils/chats/apiChatHandler");
 const { getModelTag } = require("../../utils");
+const {
+  workspaceDeletionProtection,
+} = require("../../../utils/middleware/workspaceDeletionProtection");
 
 function apiWorkspaceEndpoints(app) {
   if (!app) return;
@@ -221,7 +227,7 @@ function apiWorkspaceEndpoints(app) {
 
   app.delete(
     "/v1/workspace/:slug",
-    [validApiKey],
+    [validApiKey, workspaceDeletionProtection],
     async (request, response) => {
       /*
     #swagger.tags = ['Workspaces']
@@ -650,7 +656,7 @@ function apiWorkspaceEndpoints(app) {
         const { slug } = request.params;
         const {
           message,
-          mode = "query",
+          mode = null,
           sessionId = null,
           attachments = [],
           reset = false,
@@ -669,7 +675,11 @@ function apiWorkspaceEndpoints(app) {
           return;
         }
 
-        if ((!message?.length || !VALID_CHAT_MODE.includes(mode)) && !reset) {
+        const resolvedMode = mode ?? workspace.chatMode;
+        if (
+          (!message?.length || !VALID_CHAT_MODE.includes(resolvedMode)) &&
+          !reset
+        ) {
           response.status(400).json({
             id: uuidv4(),
             type: "abort",
@@ -678,7 +688,7 @@ function apiWorkspaceEndpoints(app) {
             close: true,
             error: !message?.length
               ? "Message is empty"
-              : `${mode} is not a valid mode.`,
+              : `${resolvedMode} is not a valid mode.`,
           });
           return;
         }
@@ -686,7 +696,7 @@ function apiWorkspaceEndpoints(app) {
         const result = await ApiChatHandler.chatSync({
           workspace,
           message,
-          mode,
+          mode: resolvedMode,
           user: null,
           thread: null,
           sessionId: !!sessionId ? String(sessionId) : null,
@@ -801,7 +811,7 @@ function apiWorkspaceEndpoints(app) {
         const { slug } = request.params;
         const {
           message,
-          mode = "query",
+          mode = null,
           sessionId = null,
           attachments = [],
           reset = false,
@@ -820,7 +830,11 @@ function apiWorkspaceEndpoints(app) {
           return;
         }
 
-        if ((!message?.length || !VALID_CHAT_MODE.includes(mode)) && !reset) {
+        const resolvedMode = mode ?? workspace.chatMode;
+        if (
+          (!message?.length || !VALID_CHAT_MODE.includes(resolvedMode)) &&
+          !reset
+        ) {
           response.status(400).json({
             id: uuidv4(),
             type: "abort",
@@ -829,7 +843,7 @@ function apiWorkspaceEndpoints(app) {
             close: true,
             error: !message?.length
               ? "Message is empty"
-              : `${mode} is not a valid mode.`,
+              : `${resolvedMode} is not a valid mode.`,
           });
           return;
         }
@@ -844,7 +858,7 @@ function apiWorkspaceEndpoints(app) {
           response,
           workspace,
           message,
-          mode,
+          mode: resolvedMode,
           user: null,
           thread: null,
           sessionId: !!sessionId ? String(sessionId) : null,
@@ -973,10 +987,15 @@ function apiWorkspaceEndpoints(app) {
           return input;
         };
 
+        const { connector: LLMConnector } = await resolveProviderConnector({
+          workspace,
+          prompt: String(query),
+        });
+
         const results = await VectorDb.performSimilaritySearch({
           namespace: workspace.slug,
           input: String(query),
-          LLMConnector: getLLMProvider(),
+          LLMConnector,
           similarityThreshold: parseSimilarityThreshold(),
           topN: parseTopN(),
           rerank: workspace?.vectorSearchMode === "rerank",
