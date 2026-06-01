@@ -2,8 +2,8 @@
 const TRANSLATIONS = {
   onboarding: {
     home: {
-      title: "Vítejte v",
       getStarted: "Začít",
+      welcome: "Vítejte",
     },
     llm: {
       title: "Preferovaný LLM",
@@ -52,7 +52,6 @@ const TRANSLATIONS = {
   },
   common: {
     "workspaces-name": "Název pracovního prostoru",
-    user: "Uživatel",
     selection: "Výběr modelu",
     saving: "Ukládání...",
     save: "Uložit změny",
@@ -113,6 +112,12 @@ const TRANSLATIONS = {
       "your-account": "Váš účet",
       "import-item": "Importovat položku",
     },
+    channels: "Kanály",
+    "available-channels": {
+      telegram: "Telegram",
+    },
+    "scheduled-jobs": "Naplánované úlohy",
+    "model-router": "Modelový router",
   },
   login: {
     "multi-user": {
@@ -197,17 +202,17 @@ const TRANSLATIONS = {
       chat: {
         title: "Chat",
         description:
-          "poskytne odpovědi založené na obecných znalostech LLM a kontextu dokumentu, který je k dispozici.<br />Pro použití nástrojů budete muset použít příkaz @agent.",
+          "bude poskytovat odpovědi založené na obecných znalostech LLM a kontextu dokumentu, který je k dispozici. Budete muset použít příkaz `@agent` pro použití nástrojů.",
       },
       query: {
         title: "Dotaz",
         description:
-          "budou poskytovat odpovědi <b>pouze</b>, pokud je nalezen kontext dokumentu.<br />Pro použití nástrojů budete muset použít příkaz @agent.",
+          "budou poskytovat odpovědi <b>pouze__, pokud je nalezen kontext dokumentu.</b>Budete muset použít příkaz @agent pro použití nástrojů.",
       },
       automatic: {
-        title: "Auto",
         description:
-          "automaticky použije nástroje, pokud to podporují jak model, tak poskytovatel. Pokud není podporováno nativní volání nástrojů, budete muset použít příkaz `@agent` pro použití nástrojů.",
+          "automaticky použije nástroje, pokud to podporují model a poskytovatel. <br />Pokud není podporováno nativní volání nástrojů, budete muset použít příkaz `@agent` pro použití nástrojů.",
+        title: "Zástupce",
       },
     },
     history: {
@@ -320,11 +325,6 @@ const TRANSLATIONS = {
         description:
           "Umožněte výchozímu agentovi generovat různé typy grafů z dat poskytnutých nebo uvedených v chatu.",
       },
-      save: {
-        title: "Generovat a ukládat soubory",
-        description:
-          "Umožněte výchozímu agentovi generovat a zapisovat do souborů, které lze uložit do počítače.",
-      },
       web: {
         title: "Živé webové vyhledávání a prohlížení",
         description:
@@ -337,6 +337,399 @@ const TRANSLATIONS = {
       },
       default_skill:
         "Výchozí nastavení je, že tato schopnost je aktivní, ale můžete ji vypnout, pokud nechcete, aby ji mohl využít zástupce.",
+      filesystem: {
+        title: "Přístup k souborovému systému",
+        description:
+          "Umožněte svému zástupci, aby četl, zapisoval, vyhledával a spravoval soubory v určeném adresáři. Podporuje úpravu souborů, navigaci v adresářích a vyhledávání obsahu.",
+        learnMore: "Zjistěte více o tom, jak tuto dovednost používat.",
+        configuration: "Konfigurace",
+        readActions: "Činnosti",
+        writeActions: "Akce",
+        warning:
+          "Přístup k souborovému systému může být nebezpečný, protože může upravovat nebo mazat soubory. Před zapnutím funkce prosím nahlédněte do dokumentace <a>dokumentace</a>.",
+        skills: {
+          "read-text-file": {
+            title: "Otevřít soubor",
+            description:
+              "Přečtěte obsah souborů (text, kód, PDF, obrázky atd.)",
+          },
+          "read-multiple-files": {
+            title: "Přečtěte více souborů",
+            description: "Přečtěte více souborů najednou",
+          },
+          "list-directory": {
+            title: "Seznam adres",
+            description: "Zobraz seznam souborů a adresářů v daném adresáři.",
+          },
+          "search-files": {
+            title: "Hledat soubory",
+            description: "Vyhledejte soubory podle názvu nebo obsahu",
+          },
+          "get-file-info": {
+            title: "Získejte informace o souboru",
+            description: "Získejte podrobné metadatumy o souborech.",
+          },
+          "edit-file": {
+            title: "Upravit soubor",
+            description:
+              "Proveďte úpravy v textových souborech na základě řádků.",
+          },
+          "create-directory": {
+            title: "Vytvořit adresář",
+            description: "Vytvořte nové adresáře",
+          },
+          "move-file": {
+            title: "Přejmenovat/přesunout soubor",
+            description: "Přesun nebo přejmenování souborů a adresářů",
+          },
+          "copy-file": {
+            title: "Zkopírovat soubor",
+            description: "Zkopírujte soubory a adresáře",
+          },
+          "write-text-file": {
+            title: "Vytvořte soubor s textem",
+            description:
+              "Vytvořte nové textové soubory nebo přepsáním existujících textových souborů.",
+          },
+        },
+      },
+      createFiles: {
+        title: "Vytváření dokumentů",
+        description:
+          "Umožněte svému zástupci vytvářet soubory ve formátech jako PowerPoint prezentace, tabulky v Excelu, dokumenty ve formátu Word a soubory ve formátu PDF. Soubory lze stahovat přímo z chatu.",
+        configuration: "Dostupné typy dokumentů",
+        skills: {
+          "create-text-file": {
+            title: "Soubory v textovém formátu",
+            description:
+              "Vytvořte textové soubory s libovolným obsahem a příponou (např. .txt, .md, .json, .csv atd.)",
+          },
+          "create-pptx": {
+            title: "Prezentace v PowerPointu",
+            description:
+              "Vytvořte nové prezentace v programu PowerPoint, včetně slidů, nadpisů a odrážek.",
+          },
+          "create-pdf": {
+            title: "Dokumenty ve formátu PDF",
+            description:
+              "Vytvořte PDF dokumenty z Markdownu nebo jednoduchého textu s základním formátováním.",
+          },
+          "create-xlsx": {
+            title: "Tabulky v programu Excel",
+            description:
+              "Vytvořte tabulkové dokumenty v programu Excel, které budou obsahovat listy a stylování.",
+          },
+          "create-docx": {
+            title: "Dokumenty ve formátu Word",
+            description:
+              "Vytvořte dokumenty ve formátu Word s základním formátováním a stylováním.",
+          },
+        },
+      },
+      gmail: {
+        title: "Připojení k GMail",
+        description:
+          "Umožněte svému agentovi, aby interagoval s Gmail – vyhledával e-maily, četl konverzace, vytvářel návrhy, posílal e-maily a spravoval vaši schránku. <a>Prostudujte dokumentaci</a>.",
+        multiUserWarning:
+          "Integrace s Gmailem není dostupná v režimu pro více uživatelů z bezpečnostních důvodů. Pro použití této funkce, prosím, deaktivujte režim pro více uživatelů.",
+        configuration: "Konfigurace Gmailu",
+        deploymentId: "ID nasazení",
+        deploymentIdHelp:
+          "Identifikátor nasazení z vaší webové aplikace Google Apps Script",
+        apiKey: "Klíč API",
+        apiKeyHelp:
+          "Klíč API, který jste nakonfigurovali ve vaší instalaci Google Apps Script",
+        configurationRequired:
+          "Prosím, nakonfigurujte ID nasazení a klíč API, abyste aktivovali funkce pro Gmail.",
+        configured: "Nastaveno",
+        searchSkills: "Dovednosti pro vyhledávání...",
+        noSkillsFound: "Žádný z nabízených profilů neodpovídá vašim kritériím.",
+        categories: {
+          search: {
+            title: "Vyhledávání a čtení e-mailů",
+            description: "Vyhledejte a čtěte e-maily z vaší schránky Gmail.",
+          },
+          drafts: {
+            title: "Návrhy e-mailů",
+            description: "Vytvářejte, upravujte a spravujte návrhy e-mailů.",
+          },
+          send: {
+            title: "Odesílejte a odpovídejte na e-maily",
+            description:
+              "Odesílejte e-maily a okamžitě odpovídejte na diskuse.",
+          },
+          threads: {
+            title: "Spravujte emailové vlákna",
+            description:
+              "Spravujte e-mailové vlákna – označte jako přečtené/ne přečtené, archivujte, vyhoďte",
+          },
+          account: {
+            title: "Statistiky integrace",
+            description:
+              "Zobrazte statistiky poštovní schránky a informace o účtu.",
+          },
+        },
+        skills: {
+          search: {
+            title: "Hledat e-maily",
+            description: "Hledejte e-maily pomocí syntaxe dotazů v Gmailu",
+          },
+          readThread: {
+            title: "Přečtěte si vlákno",
+            description: "Přečtěte si kompletní řetězec e-mailů podle ID.",
+          },
+          createDraft: {
+            title: "Vytvořit návrh",
+            description: "Vytvořte nový návrh e-mailu",
+          },
+          createDraftReply: {
+            title: "Vytvořit návrh odpovědi",
+            description: "Vytvořte návrh odpovědi na existující téma.",
+          },
+          updateDraft: {
+            title: "Aktualizovaná verze návrhu",
+            description: "Aktualizujte existující návrh e-mailu",
+          },
+          getDraft: {
+            title: "Získej návrh",
+            description: "Získejte konkrétní verzi dokumentu podle jejího ID.",
+          },
+          listDrafts: {
+            title: "Návrhy (seznam)",
+            description: "Vypište všechny návrhy e-mailů.",
+          },
+          deleteDraft: {
+            title: "Smazat návrh",
+            description: "Smazat návrh e-mailu",
+          },
+          sendDraft: {
+            title: "Odešlete návrh",
+            description: "Odešlete existující návrh e-mailu",
+          },
+          sendEmail: {
+            title: "Odeslat e-mail",
+            description: "Odešlete e-mail co nejrychleji.",
+          },
+          replyToThread: {
+            title: "Odpovědět na vlákno",
+            description: "Odpovězte na e-mailovou diskuzi co nejdříve.",
+          },
+          markRead: {
+            title: "Mark Read",
+            description: "Označit vlákno jako přečtené",
+          },
+          markUnread: {
+            title: "Označit jako nepročtené",
+            description: "Označte vlákno jako nepročtené.",
+          },
+          moveToTrash: {
+            title: "Přesun do koše",
+            description: "Přesuňte vlákno do koše",
+          },
+          moveToArchive: {
+            title: "Archiv",
+            description: "Uložte vlákno do archivu",
+          },
+          moveToInbox: {
+            title: "Přesun do schránky",
+            description: "Přesuňte vlákno do schránky (účetní knihy)",
+          },
+          getMailboxStats: {
+            title: "Statistiky poštovní schránky",
+            description:
+              "Získejte informace o počtu nečtených e-mailů a statistiky poštovní schránky.",
+          },
+          getInbox: {
+            title: "Otevřít schránku",
+            description:
+              "Jednoduchý způsob, jak získat e-maily z vaší schránky Gmail.",
+          },
+        },
+      },
+      outlook: {
+        title: "Připojení k Outlooku",
+        description:
+          "Umožněte svému agentovi interakci s Microsoft Outlook – vyhledávání e-mailů, čtení vláken, vytváření návrhů, odesílání e-mailů a správu vaší poštovní schránky prostřednictvím Microsoft Graph API. <a>Prostudujte dokumentaci</a>.",
+        multiUserWarning:
+          "Integrace s Outlookem není dostupná v režimu pro více uživatelů z důvodu bezpečnosti. Pro použití této funkce, prosím, deaktivujte režim pro více uživatelů.",
+        configuration: "Konfigurace Outlooku",
+        authType: "Typ účtu",
+        authTypeHelp:
+          "Vyberte, jaké typy účtů Microsoft mohou být ověřovány. Možnost „Všechny účty“ podporuje jak osobní, tak pracovní/školní účty. Možnost „Pouze osobní účty“ omezuje na osobní účty Microsoft. Možnost „Pouze organizace“ omezuje na pracovní/školní účty z konkrétního tenantu Azure AD.",
+        authTypeCommon: "Všechny účty (osobní a pracovní/školní)",
+        authTypeConsumers: "Pouze osobní účty Microsoft",
+        authTypeOrganization: "Účty organizací (vyžaduje ID pronajímatele)",
+        clientId: "Identifikátor klienta (ID aplikace)",
+        clientIdHelp:
+          "Identifikátor aplikace (klienta) z registrace vaší aplikace v Azure AD",
+        tenantId: "Identifikátor (pro nájemce)",
+        tenantIdHelp:
+          "ID adresáře (uživatele) z registrace vaší aplikace v Azure AD. Je nutné pouze pro ověřování v rámci organizace.",
+        clientSecret: "Tajný klíč klienta",
+        clientSecretHelp:
+          "Tajná hodnota klienta z registrace vaší aplikace v Azure AD",
+        configurationRequired:
+          "Prosím, nakonfigurujte ID klienta a tajný klíč, aby bylo možné využít funkce Outlook.",
+        authRequired:
+          "Nejprve si uložte své přihlašovací údaje, a poté se ověřte u společnosti Microsoft, abyste dokončili nastavení.",
+        authenticateWithMicrosoft: "Ověřte se pomocí Microsoftu",
+        authenticated: "Úspěšně jsem se ověřil pomocí Microsoft Outlook.",
+        revokeAccess: "Odvolat přístup",
+        configured: "Konfigurováno",
+        searchSkills: "Dovednosti pro vyhledávání...",
+        noSkillsFound: "Žádné výsledky neodpovídají vašemu vyhledávání.",
+        categories: {
+          search: {
+            title: "Vyhledávání a čtení e-mailů",
+            description:
+              "Vyhledejte a čtěte e-maily ve vaší poštovní schránce Outlook.",
+          },
+          drafts: {
+            title: "Návrhy e-mailů",
+            description: "Vytvářejte, upravujte a spravujte návrhy e-mailů.",
+          },
+          send: {
+            title: "Odesílejte e-maily",
+            description:
+              "Odešlete nové e-maily nebo okamžitě odpovězte na zprávy.",
+          },
+          account: {
+            title: "Statistiky integrace",
+            description:
+              "Zobrazte statistiky poštovní schránky a informace o účtu.",
+          },
+        },
+        skills: {
+          getInbox: {
+            title: "Otevřít schránku",
+            description: "Získejte nejnovější e-maily z vaší schránky Outlook.",
+          },
+          search: {
+            title: "Vyhledávání v e-mailech",
+            description:
+              "Hledejte e-maily pomocí syntaxe pro vyhledávání od Microsoftu",
+          },
+          readThread: {
+            title: "Přečtěte si konverzaci",
+            description: "Přečtěte si kompletní vedení e-mailové konverzace.",
+          },
+          createDraft: {
+            title: "Vytvořit návrh",
+            description:
+              "Vytvořte nový návrh e-mailu nebo návrh odpovědi na stávající zprávu.",
+          },
+          updateDraft: {
+            title: "Aktualizovaná verze návrhu",
+            description: "Aktualizujte stávající návrh e-mailu",
+          },
+          listDrafts: {
+            title: "Návrhy (seznam)",
+            description: "Vypište všechny návrhy e-mailů.",
+          },
+          deleteDraft: {
+            title: "Smazat návrh",
+            description: "Smazat návrh e-mailu",
+          },
+          sendDraft: {
+            title: "Ode mne návrh",
+            description: "Odešlete existující návrh e-mailu",
+          },
+          sendEmail: {
+            title: "Odešlete e-mail",
+            description:
+              "Odešlete nový e-mail nebo odpověď na stávající zprávu okamžitě.",
+          },
+          getMailboxStats: {
+            title: "Statistiky poštovní schránky",
+            description:
+              "Získejte informace o počtu složek a statistiky poštovní schránky.",
+          },
+        },
+      },
+      googleCalendar: {
+        title: "Připojení k kalendáři Google",
+        description:
+          "Umožněte svému agentovi interakci s Google Kalendářem – prohlížení kalendářů, získávání událostí, vytváření a aktualizaci událostí a správu potvrzení účasti. <a>Přečtěte si dokumentaci</a>.",
+        multiUserWarning:
+          "Integrace s Google Kalendářem není dostupná v režimu pro více uživatelů z důvodu bezpečnosti. Pro použití této funkce, prosím, deaktivujte režim pro více uživatelů.",
+        configuration: "Konfigurace kalendáře Google",
+        deploymentId: "ID nasazení",
+        deploymentIdHelp:
+          "ID nasazení z vaší webové aplikace Google Apps Script",
+        apiKey: "Klíč API",
+        apiKeyHelp:
+          "Klíč API, který jste nakonfigurovali ve vaší instalaci Google Apps Script",
+        configurationRequired:
+          "Prosím, nakonfigurujte ID nasazení a API klíč, abyste mohli využívat funkce Google Kalendáře.",
+        configured: "Konfigurováno",
+        searchSkills: "Dovednosti pro vyhledávání...",
+        noSkillsFound: "Žádné výsledky neodpovídají vašemu vyhledávání.",
+        categories: {
+          calendars: {
+            title: "Kalendáře",
+            description: "Zobrazte a spravujte své kalendáře Google.",
+          },
+          readEvents: {
+            title: "Seznam událostí",
+            description: "Zobrazte a vyhledejte události v kalendáři",
+          },
+          writeEvents: {
+            title: "Vytvořit a aktualizovat události",
+            description: "Vytvořte nové akce a upravte stávající.",
+          },
+          rsvp: {
+            title: "Správa odpovědí na pozvánky",
+            description: "Spravujte stav své odpovědi pro události",
+          },
+        },
+        skills: {
+          listCalendars: {
+            title: "Kalendáře v seznamu",
+            description:
+              "Vypište všechny kalendáře, které vlastníte nebo máte aktivní předplatné.",
+          },
+          getCalendar: {
+            title: "Získejte podrobné informace o kalendáři",
+            description: "Získejte podrobné informace o konkrétním kalendáři.",
+          },
+          getEvent: {
+            title: "Získejte informace o události",
+            description: "Získejte podrobné informace o konkrétním události",
+          },
+          getEventsForDay: {
+            title: "Získejte události pro daný den",
+            description:
+              "Získejte všechny události naplánované pro konkrétní den.",
+          },
+          getEvents: {
+            title: "Zobrazit události (rozsah dat)",
+            description: "Získejte události v definovaném časovém rozsahu",
+          },
+          getUpcomingEvents: {
+            title: "Zobrazit nadcházející akce",
+            description:
+              "Najděte události pro dnešek, tento týden nebo tento měsíc pomocí jednoduchých klíčových slov.",
+          },
+          quickAdd: {
+            title: "Rychlé přidání události",
+            description:
+              "Vytvořte událost z přirozeného jazyka (např. „Schůzka zítra ve 15:00“)",
+          },
+          createEvent: {
+            title: "Vytvořit událost",
+            description:
+              "Vytvořte nový event s plnou kontrolou nad všemi jeho vlastnostmi.",
+          },
+          updateEvent: {
+            title: "Aktualizace události",
+            description: "Aktualizovat existující událost v kalendáři",
+          },
+          setMyStatus: {
+            title: "Nastavit stav potvrzení účasti",
+            description: "Přijmout, zamítnout nebo přijmout událost s rezervou",
+          },
+        },
+      },
     },
     mcp: {
       title: "Servery společnosti MCP",
@@ -374,6 +767,17 @@ const TRANSLATIONS = {
           title: "Nástroje Max",
           description:
             "Maximální počet nástrojů, které lze vybrat pro každou dotaz. Doporučujeme nastavit tuto hodnotu na vyšší, pro modely s větším kontextem.",
+        },
+      },
+      "clarifying-questions": {
+        title: "Umožněte zástupci, aby kladl upřesňující otázky.",
+        "beta-badge": "BETA",
+        description:
+          "Pokud je tato funkce povolena, agenti mohou přerušit konverzaci a položit stručné upřesňující otázky, pokud je vaše žádost nejasná.",
+        "max-per-turn": {
+          title: "Maximální počet otázek za kolo",
+          description:
+            "Kolik otázek pro objasnění může agent položit během jedné dotazní?",
         },
       },
     },
@@ -486,7 +890,34 @@ const TRANSLATIONS = {
       "API klíče umožňují držiteli programově přistupovat a spravovat tuto instanci AnythingLLM.",
     link: "Přečíst dokumentaci API",
     generate: "Generovat nový API klíč",
+    empty: "Nebyly nalezeny žádné API klíče",
+    actions: "Akce",
+    messages: {
+      error: "Chyba: {{error}}",
+    },
+    modal: {
+      title: "Vytvořit nový API klíč",
+      cancel: "Zrušit",
+      close: "Zavřít",
+      create: "Vytvořit API klíč",
+      helper:
+        "Po vytvoření lze API klíč použít pro programový přístup k této instanci AnythingLLM a její správu.",
+      name: {
+        label: "Název",
+        placeholder: "Produkční integrace",
+        helper:
+          "Volitelné. Použijte přívětivý název, abyste klíč později snadno rozpoznali.",
+      },
+    },
+    row: {
+      copy: "Kopírovat API klíč",
+      copied: "Zkopírováno",
+      unnamed: "--",
+      deleteConfirm:
+        "Opravdu chcete deaktivovat tento API klíč?\nPoté už nebude možné jej používat.\n\nTuto akci nelze vrátit zpět.",
+    },
     table: {
+      name: "Název",
       key: "API klíč",
       by: "Vytvořil",
       created: "Vytvořeno",
@@ -773,7 +1204,6 @@ const TRANSLATIONS = {
       select_all: "Vybrat vše",
       deselect_all: "Zrušit výběr všeho",
       remove_selected: "Odebrat vybrané",
-      costs: "*Jednorázové náklady pro embeddingy",
       save_embed: "Uložit a vložit",
       "total-documents_one": "{{count}} dokument",
       "total-documents_other": "{{count}} dokumenty",
@@ -863,7 +1293,6 @@ const TRANSLATIONS = {
     see_less: "Zobrazit méně",
     see_more: "Více",
     tools: "Nářadí",
-    browse: "Prohlédněte si",
     text_size_label: "Velikost písma",
     select_model: "Vyberte model",
     sources: "Zdroje",
@@ -871,13 +1300,10 @@ const TRANSLATIONS = {
     similarity_match: "zápas",
     source_count_one: "{{count}} – odkaz",
     source_count_other: "{{count}} – odkazy",
-    preset_exit_description: "Zastavte aktuální relaci s agentem",
     add_new: "Přidat nové",
     edit: "Upravit",
     publish: "Publikovat",
     stop_generating: "Zastavte generování odpovědi",
-    pause_tts_speech_message:
-      "Zastavte čtení textu pomocí syntetické řeči z tohoto zprávy.",
     slash_commands: "Příkazy v řádku",
     agent_skills: "Dovednosti agenta",
     manage_agent_skills: "Řízení dovedností agentů",
@@ -886,6 +1312,72 @@ const TRANSLATIONS = {
     start_agent_session: "Spustit relaci s agentem",
     use_agent_session_to_use_tools:
       "Můžete využít nástroje v chatu spuštěním sezení s agentem pomocí příkazu '@agent' na začátku vašeho vstupu.",
+    agent_invocation: {
+      model_wants_to_call: "Model chce zavolat",
+      approve: "Schválit",
+      reject: "Zamítnout",
+      always_allow: "Vždy dbejte na to, aby {{skillName}}",
+      tool_call_was_approved: "Žádost o použití nástroje byla schválena.",
+      tool_call_was_rejected: "Žádost o použití nástroje byla zamítnuta.",
+      clarifying_skip: "Nechte, aby agent rozhodl",
+      clarifying_submit: "Odeslat",
+      clarifying_skipped: "Necháte rozhodnutí na zástupci.",
+      clarifying_timeout: "Odpověď nebyla doručena včas.",
+      clarifying_pagination: "{{current}} společnosti {{total}}",
+      clarifying_prev_aria: "Předchozí otázka",
+      clarifying_next_aria: "Následující otázka",
+      clarifying_close_aria: "Zavřít a přeskočit",
+      clarifying_other: "Ostatní",
+      clarifying_other_placeholder: "Zadejte své odpovědi",
+      batch_progress: "{{answered}} z {{total}} odpověděl",
+      batch_skip_this: "Přeskočit",
+      batch_submit_all: "Zašlete vše",
+      batch_next: "Další",
+      answer_skipped: "[uživatel přeskočil]",
+    },
+    custom_skills: "Vlastní dovednosti",
+    agent_flows: "Toky agentů",
+    no_tools_found: "Nebyla nalezena žádná odpovídající nářadí.",
+    loading_mcp_servers: "Načítají se servery pro MCP...",
+    app_integrations: "Integrace aplikací",
+    sub_skills: "Specifické dovednosti",
+    memories: {
+      title: "Paměti",
+      empty:
+        "Dosud žádné vzpomínky. Jak budete více komunikovat s chatbotem, budou se postupně objevovat další.",
+      empty_cta: "vytvořit nový paměťový záznam",
+      tab_workspace: "Pracovní prostor",
+      tab_global: "Globální",
+      toggle: {
+        label: "Povolte personalizaci",
+        description:
+          "Nechte svého asistenta, aby si vybavil informace o vás nebo o tomto pracovním prostoru a použil je při konverzaci.",
+      },
+      auto_extraction: {
+        label: "Automatické vzpomínky",
+        description:
+          "Nechte, aby vám váš asistent automaticky vytvářel vzpomínky na pozadí.",
+      },
+      menu: {
+        edit: "Upravit",
+        delete: "Smazat",
+        move_to_global: "Přechod na globální úroveň",
+        move_to_workspace: "Přesun do pracovního prostředí",
+      },
+      modal: {
+        create_title: "Vytvořte vzpomínku",
+        edit_title: "Upravit paměť",
+        create_description:
+          "Paměti by měly být jednoznačné a stručné. Například: „Uživatel preferuje Python před JavaScriptem“",
+        edit_description: "Aktualizujte obsah této paměti.",
+        label: "Paměť",
+        placeholder:
+          "např. Jméno uživatele je Joe, uživatel pracuje na AnythingLLM, atd.",
+        create: "Vytvořit",
+        save: "Uložit",
+        cancel: "Zrušit",
+      },
+    },
   },
   profile_settings: {
     edit_account: "Upravit účet",
@@ -1011,6 +1503,411 @@ const TRANSLATIONS = {
           button: "Připojit se ke komunitnímu centru",
         },
       },
+    },
+  },
+  telegram: {
+    title: "Bot pro Telegram",
+    description:
+      "Propojte svůj instance AnythingLLM s aplikací Telegram, abyste mohli komunikovat se svými pracovními prostory odkudkoli.",
+    setup: {
+      step1: {
+        title: "Krok 1: Vytvořte svého Telegramového robota",
+        description:
+          "Otevřete aplikaci @BotFather na Telegramu, odešlete příkaz `/newbot` na adresu <code>@BotFather</code>, postupujte podle pokynů a zkopírujte API token.",
+        "open-botfather": "Spusťte BotFather",
+        "instruction-1": "1. Otevřete odkaz nebo naskenujte QR kód",
+        "instruction-2":
+          "2. Pošlete <code>/newbot</code> na adresu <code>@BotFather</code>",
+        "instruction-3":
+          "3. Vyberte jméno a uživatelské jméno pro svého robota.",
+        "instruction-4": "4. Zkopírujte API token, který obdržíte.",
+      },
+      step2: {
+        title: "Krok 2: Připojte svého robota",
+        description:
+          "Vložte API token, který jste obdrželi od účtu @BotFather, a vyberte výchozí pracovní prostor, se kterým bude váš bot komunikovat.",
+        "bot-token": "Token Bot",
+        connecting: "Připojování...",
+        "connect-bot": "Bot pro připojení",
+      },
+      security: {
+        title: "Doporučené bezpečnostní nastavení",
+        description:
+          "Pro zvýšení bezpečnosti, nakonfigurujte tyto nastavení v účtu @BotFather.",
+        "disable-groups": "— Zabránit přidávání bot do skupin",
+        "disable-inline":
+          "— Zabraňte použití robota při vyhledávání v reálném čase.",
+        "obscure-username":
+          "Použijte neobvyklé uživatelské jméno pro robota, abyste snížili jeho snadnou identifikovatelnost.",
+      },
+      "toast-enter-token": "Prosím, zadejte token pro robota.",
+      "toast-connect-failed": "Nedaří se připojit k botovi.",
+    },
+    connected: {
+      status: "Spojené",
+      "status-disconnected": "Neaktivní – token může být prošlý nebo neplatný",
+      "placeholder-token": "Vložte nový token pro robota...",
+      reconnect: "Znovu se spojit",
+      workspace: "Pracovní prostor",
+      "bot-link": "Odkaz na robota",
+      "voice-response": "Reakce na hlasový vstup",
+      disconnecting: "Odpojování...",
+      disconnect: "Odpojit",
+      "voice-text-only": "Pouze text",
+      "voice-mirror":
+        "Zrcadlo (odpovězte hlasem, když uživatel pošle hlasovou zprávu)",
+      "voice-always":
+        "Vždy uveďte zvukový záznam (odesílejte zvukový záznam ke každé odpovědi)",
+      "toast-disconnect-failed": "Nepodařilo se odpojit automat.",
+      "toast-reconnect-failed": "Nedaří se znovu navázat spojení s botem.",
+      "toast-voice-failed": "Nepodařilo se aktualizovat hlasový režim.",
+      "toast-approve-failed": "Neúspěšné schválení uživatele.",
+      "toast-deny-failed": "Nezucceededo v odmítnutí uživatele.",
+      "toast-revoke-failed": "Nezdařilo se zrušit uživatelskou účet.",
+    },
+    users: {
+      "pending-description":
+        "Uživatelé, kteří čekají na ověření. Porovnejte kód pro spárování, který je zde uveden, s tím, který je zobrazen v jejich chatu na Telegramu.",
+      unknown: "Neznámé",
+    },
+  },
+  scheduledJobs: {
+    title: "Naplánované úkoly",
+    enableNotifications:
+      "Povolte oznámení v prohlížeči pro výsledky hledání práce",
+    description:
+      "Vytvořte opakující se úkoly s umělou inteligencí, které se spouští podle stanoveného harmonogramu. Každý úkol provede zadaný požadavek s volitelnými nástroji a uloží výsledek pro pozdější kontrolu.",
+    newJob: "Nová pracovní pozice",
+    loading: "Načítání...",
+    emptyTitle: "V současné době nejsou naplánovány žádné úkoly.",
+    emptySubtitle: "Vytvořte si jeden, abyste začali.",
+    table: {
+      name: "Jméno",
+      schedule: "Harmonogram",
+      status: "Stav",
+      lastRun: "Poslední běh",
+      nextRun: "Další běh",
+      actions: "Akce",
+    },
+    confirmDelete: "Jste si jisti, že chcete tento naplánovaný úkol smazat?",
+    toast: {
+      deleted: "Práce smazána",
+      triggered: "Úkol byl úspěšně spuštěn.",
+      triggerFailed: "Nepodařilo se spustit danou úlohu.",
+      triggerSkipped: "Práce na tomto projektu již probíhá.",
+      killed: "Práce byla úspěšně ukončena",
+      killFailed: "Nebylo možné zastavit pracovní činnost.",
+    },
+    row: {
+      neverRun: "Nikdy nespěchejte",
+      viewRuns: "Prohlídky",
+      runNow: "Začněte hned",
+      enable: "Povolit",
+      disable: "Vypnout",
+      edit: "Upravit",
+      delete: "Smazat",
+    },
+    modal: {
+      titleEdit: "Upravit naplánovanou úlohu",
+      titleNew: "Nový naplánovaný úkol",
+      nameLabel: "Jméno",
+      namePlaceholder: "např. Denní přehled novinek",
+      promptLabel: "Výzva",
+      promptPlaceholder: "Instrukce k provedení při každém spuštění...",
+      scheduleLabel: "Harmonogram",
+      modeBuilder: "Stavební firma",
+      modeCustom: "Na míru vyrobené",
+      cronPlaceholder:
+        "Výraz pro vyjadřování časového intervalu (např. 0 9 * * *)",
+      currentSchedule: "Současný harmonogram:",
+      toolsLabel: "Nářadí (volitelné)",
+      toolsDescription:
+        "Vyberte, které nástroje lze pro tuto úlohu použít. Pokud žádný není vybrán, úloha bude spuštěna bez použití jakýchkoli nástrojů.",
+      toolsSearch: "Vyhledávání",
+      toolsNoResults: "Žádný nástroj neodpovídá",
+      required: "Nutné",
+      requiredFieldsBanner:
+        "Prosím, vyplňte všechny povinné pole, abyste mohli vytvořit inzerát.",
+      cancel: "Zrušit",
+      saving: "Úspora...",
+      updateJob: "Aktualizovat pracovní pozici",
+      createJob: "Vytvořte pracovní pozici",
+      jobUpdated: "Pozice byla aktualizována",
+      jobCreated: "Vytvořena pozice",
+    },
+    builder: {
+      fallbackWarning:
+        'Tento výraz nelze upravit vizuálně. Pokud jej chcete zachovat, přejděte do režimu "Custom". Jinak můžete změnit cokoliv níže, abyste jej nahradili.',
+      run: "Běhat",
+      frequency: {
+        minute: "každou minutu",
+        hour: "za hodinu",
+        day: "denně",
+        week: "každý týden",
+        month: "měsíční",
+      },
+      every: "Každý",
+      minuteOne: "1 minuta",
+      minuteOther: "{{count}} minut",
+      atMinute: "V minutě",
+      pastEveryHour: "v každou hodinu",
+      at: "V",
+      on: "Na",
+      onDay: "Jednoho dne",
+      ofEveryMonth: "každého měsíce",
+      weekdays: {
+        sun: "Slunce",
+        mon: "Pondělí",
+        tue: "Úterý",
+        wed: "Středa",
+        thu: "Čtvrtek",
+        fri: "Pátek",
+        sat: "Sobota",
+      },
+    },
+    runHistory: {
+      back: "Zpět na nabídku práce",
+      title: "Historie běhu: {{name}}",
+      schedule: "Harmonogram:",
+      emptyTitle: "Dosud nebyla žádná úspěšná realizace tohoto projektu.",
+      emptySubtitle: "Spusťte úlohu nyní a zkontrolujte její výsledky.",
+      runNow: "Začněte hned",
+      table: {
+        status: "Stav",
+        started: "Začal",
+        duration: "Délka",
+        error: "Chyba",
+      },
+      stopJob: "Zastavit práci",
+    },
+    runDetail: {
+      loading: "Načítám podrobnosti o běhu...",
+      notFound: "Nemožná nalezení běhu.",
+      back: "Zpět",
+      unknownJob: "Neznámá pracovní pozice",
+      runHeading: "{{name}} — Spustit #{{id}}",
+      duration: "Doba trvání: {{value}}",
+      creating: "Vytváření...",
+      threadFailed: "Nedaří se vytvořit vlákno.",
+      sections: {
+        prompt: "Návod",
+        error: "Chyba",
+        thinking: "Myšlenky ({{count}})",
+        toolCalls: "Volání nástrojů ({{count}})",
+        files: "Soubory ({{count}})",
+        response: "Reakce",
+        metrics: "Metriky",
+      },
+      metrics: {
+        promptTokens: "Klíčová slova:",
+        completionTokens: "Tokeny pro dokončení:",
+      },
+      stopJob: "Zastavení práce",
+      killing: "Zastavte...",
+      continueInThread: "Pokračovat v chatu",
+    },
+    toolCall: {
+      arguments: "Argumenty:",
+      showResult: "Zobrazit výsledek",
+      hideResult: "Skryt výsledek",
+    },
+    file: {
+      unknown: "Neznámý soubor",
+      download: "Stáhnout",
+      downloadFailed: "Nepodařilo se stáhnout soubor",
+      types: {
+        powerpoint: "Prezentace v programu PowerPoint",
+        pdf: "Dokument ve formátu PDF",
+        word: "Dokument ve formátu Word",
+        spreadsheet: "Tabulka (v programu)",
+        generic: "Soubor",
+      },
+    },
+    status: {
+      completed: "Dokončeno",
+      failed: "Neúspěšné",
+      timed_out: "Časový limit dosáhl",
+      running: "Běh",
+      queued: "Na čekací listině",
+    },
+  },
+  "model-router": {
+    title: "Modely routerů",
+    description:
+      "Modely routrů vám umožňují definovat pravidla, která automaticky směrují zprávy z chatu na různé poskytovatele a modely LLM (Large Language Models) na základě určitých podmínek.",
+    table: {
+      name: "Jméno",
+      fallback: "Záložní řešení",
+      rules: "Pravidla",
+      workspaces: "Prostory pro práci",
+    },
+    "no-routers": "Dosud nejsou k dispozici žádné modely routerů.",
+    "empty-description":
+      "Dosud nebyly nakonfigurovány žádné modely routerů. Vytvořte jeden, abyste mohli začít.",
+    "new-router-button": "Nový router",
+    "delete-confirm":
+      'Jste si jistí, že chcete smazat router "{{name}}"?\nTím se odstraní všechny jeho pravidla a odpojí se všechny pracovní prostory, které jej používají.\n\nTato akce je nevratná.',
+    "toast-deleted": "Router byl smazán",
+    "toast-delete-failed": "Nešlo odstranit router: {{error}}",
+    "new-router": {
+      title: "Vytvořit nový model routeru",
+      name: "Jméno",
+      "name-placeholder": "např. Nástroj pro optimalizaci nákladů",
+      description: "Popis",
+      "description-placeholder": "Volitelné popisy",
+      "fallback-label": "Hlavní poskytovatel a model",
+      "fallback-description":
+        "Používá se, když žádná z definovaných pravidel pro směrování neplatí. Používá se také k vyhodnocení pravidel, která jsou klasifikována pomocí LLM (Large Language Model).",
+      "cooldown-label": "Doba chladnutí (sekundy)",
+      "cooldown-help":
+        "Jak dlouho je rozhodnutí o routingu ukládáno v paměti, než se znovu zkontrolují pravidla. Nastavení na 0 vypne ukládání.",
+      "name-required": "Je nutné uvést jméno.",
+      "fallback-required": "Je nutné uvést primární dodavatele a jeho model.",
+      cancel: "Zrušit",
+      create: "Vytvořte směrovač",
+    },
+    "edit-router": {
+      "back-to-routers": "Zpět na modely routerů",
+      title: "Upravit router: {{name}}",
+      save: "Uložit změny",
+      "toast-update-failed": "Nezdařilo se aktualizovat router.",
+    },
+    rules: {
+      title: "Pravidla pro směrování",
+      "title-with-name": "Pravidla pro směrovač: {{name}}",
+      description:
+        "Definujte pravidla, která určují, kdy a jak jsou zprávy v chatu směrovány konkrétním poskytovatelům a modelům.",
+      "add-rule": "Přidat pravidlo",
+      "delete-confirm": 'Smazat pravidlo "{{title}}"?',
+      "toast-delete-failed": "Nedařilo se smazat pravidlo.",
+      "toast-reorder-failed": "Neúspěšné opětovné nastavení pravidel",
+      "no-rules": "Dosud neexistují žádná pravidla.",
+      "empty-description":
+        "Přidejte pravidlo, které způsobí směrování chatových zpráv k určitým poskytovatelům a modelům.",
+      "new-rule-button": "Nová pravidla",
+      "calculated-section-label":
+        "Stanovené pravidla – posouzení v prioritním pořadí",
+      "llm-section-label":
+        "Pravidla LLM – jsou hodnocena jako soubor, pokud žádné z vypočítaných pravidel nebylo nalezeno.",
+      "llm-rule-body":
+        'Spusťte <desc>"{{description}}"</desc>, poté předejte na <route>{{route}}</route>',
+      "calculated-no-conditions":
+        "Bez podmínek – trasa do <route>{{route}}</route>",
+      "calculated-single-condition":
+        'Pokud je <prop> {{property}} </prop> {{comparator}} <val>"{{value}}"</val>, pak přejít na <route>{{route}}</route>',
+      "calculated-multi-condition":
+        "Pokud {{quantifier}} z <cond>{{conditions}}</cond> pak směr je <route>{{route}}</route>",
+      "comparator-contains": "obsahuje",
+      "comparator-matches": "zápasy",
+      "comparator-between": "mezi",
+      "badge-llm": "Velký jazykový model (LLM)",
+      "badge-calculated": "Vypočítáno",
+      "aria-drag-to-reorder": "Přetáhněte, aby se položky uspořádaly znovu",
+      "aria-edit-rule": "Upravit pravidlo",
+      "aria-delete-rule": "Odstranit pravidlo",
+      "quantifier-any": "JAKÝKOLI",
+      "quantifier-all": "VŠECHNO",
+    },
+    "rule-form": {
+      "title-label": "Nadpis",
+      "rule-type": "Typ pravidla",
+      "property-label": "Nemovitost",
+      "property-select": "Vybrat",
+      "comparator-label": "Srovnávací nástroj",
+      "comparator-select": "Vybrat",
+      "value-label": "Hodnota",
+      "add-condition": "Přidat podmínku",
+      "remove-condition": "Odstranit podmínku",
+      "conditions-incomplete":
+        "Podmínka {{index}} není kompletní – vyplňte vlastnosti, porovnávací operátor a hodnotu.",
+      "match-description-label": "Popis utkání",
+      "match-description-placeholder":
+        "např. Uživatel se ptá na právní otázky, smlouvy nebo dodržování předpisů.",
+      "match-description-help":
+        "Popište situaci, ve které by se tato pravidla měla použít. Vaše LLM tuto situaci vyhodnotí, aby určila, zda by měla být použita.",
+      "route-to-label": "Cesta k poskytovateli a model",
+      "route-to-description":
+        "Pokud platí toto pravidlo, použijte tohoto poskytovatele/model.",
+      cancel: "Zrušit",
+      saving: "Úspora...",
+      "update-rule": "Pravidlo aktualizace",
+      "create-rule": "Vytvořte pravidlo",
+      "title-required": "Název je povinný",
+      "toast-save-failed": "Nedařilo se uložit pravidlo",
+      "type-calculated-label": "Vypočítáno",
+      "type-calculated-description":
+        "Porovnávejte podle vlastností zprávy, jako je obsah, počet tokenů nebo čas dne.",
+      "type-llm-label": "Kategorie podle LLM",
+      "type-llm-description":
+        "Použijte jazykový model (LLM) k klasifikaci zprávy na základě popisu, který poskytnete.",
+      "prop-prompt-content": "Obsah, který je požadován",
+      "prop-token-count": "Počet tokenů v konverzaci",
+      "prop-message-count": "Počet zpráv v konverzaci",
+      "prop-current-hour": "Současná hodina (0-23)",
+      "prop-has-image": "Má přílohu ve formě obrázku",
+      "cmp-contains": "obsahuje",
+      "cmp-matches-regex": "vyhovující (regulární výrazy)",
+      "cmp-equals": "se rovná",
+      "cmp-not-equals": "není rovno",
+      "cmp-greater-than": "větší než",
+      "cmp-greater-than-or-equal": "větší nebo rovno",
+      "cmp-less-than": "méně než",
+      "cmp-less-than-or-equal": "méně nebo rovno",
+      "cmp-between": "mezi (včetně)",
+      "placeholder-between-hour": "např. 9:17 (od 9:00 do 17:00)",
+      "placeholder-between-numeric": "např. 10,50",
+      "placeholder-hour": "např. 18 (0-23)",
+      "placeholder-message-count": "např. 10",
+      "placeholder-numeric": "např. 4000",
+      "placeholder-contains": "např. kód, Python, Rust",
+      "placeholder-matches": "např. `/\\bpython\\b/i`",
+      "placeholder-default": "např. kód",
+      "help-contains":
+        "Seznam oddělený čárkami – odpovídá, pokud vstup obsahuje některý z uvedených hodnot (bez ohledu na velikost písmen).",
+      "help-matches":
+        "Předpona regulárního výrazu. Pro zachování citlivosti na velikost písmen použijte `/pattern/s` (s – case-sensitive).",
+      "bool-true": "Skutečné",
+      "bool-false": "Nesprávně",
+    },
+    "provider-picker": {
+      "select-provider": "Vyberte dodavatele",
+      "setup-required": "(vyžaduje se příprava)",
+      "loading-models": "Načítají se modely...",
+      "select-model": "Vyberte model",
+      "enter-model": "Zadejte název modelu",
+      "select-provider-first": "Nejprve vyberte dodavatele.",
+      "configure-to-continue": "Konfigurujte {{name}} pro pokračování.",
+      "configure-provider": "Konfigurujte {{name}}",
+      "setup-credentials":
+        "Zadejte požadovaná přihlašovací údaje, aby bylo možné použít {{name}} jako cílový bod pro směrování.",
+      cancel: "Zrušit",
+      "save-settings": "Uložit nastavení",
+      "toast-save-failed": "Nepodařilo se uložit nastavení: {{error}}",
+    },
+    "router-selection": {
+      "loading-routers": "Načítají se vlastní routovací protokoly...",
+      "no-routers-prefix-settings":
+        "V současné době nejsou žádné routery nakonfigurovány.",
+      "no-routers-prefix-workspace":
+        "Nejsou nakonfigurovány žádné modely routerů.",
+      "no-routers-link": "Vytvořte ho v nastavení modelu routeru.",
+      "model-router-label": "Modelový router",
+      "select-router": "Vyberte si router",
+      "select-description":
+        "Vyberte, který router chcete použít pro tuto pracovní stanici.",
+      "no-routers-chat":
+        "Nejsou nakonfigurovány žádné routery. Vytvořte jeden v části Nastavení > Poskytovatelé AI > Router modelu.",
+      "rule-count": "({{count}} pravidla)",
+    },
+    metrics: {
+      "model-router-default": "Modelový router",
+    },
+    chat: {
+      "select-router-error": "Vyberte si router",
+      "invalid-model": "Neplatná volba modelu",
+      "routed-to": "Přesměrováno na <route>{{model}}</route>",
+      "routed-to-rule":
+        "Přesměrováno na <route>{{model}}</route> prostřednictvím <rule>{{ruleTitle}}</rule>",
     },
   },
 };
