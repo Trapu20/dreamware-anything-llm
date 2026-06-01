@@ -9,6 +9,11 @@ const KEY_MAPPING = {
     envKey: "LLM_PROVIDER",
     checks: [isNotEmpty, supportedLLM],
   },
+  // Model Router Settings
+  ModelRouterId: {
+    envKey: "MODEL_ROUTER_ID",
+    checks: [],
+  },
   // OpenAI Settings
   OpenAiKey: {
     envKey: "OPEN_AI_KEY",
@@ -586,6 +591,10 @@ const KEY_MAPPING = {
     envKey: "AGENT_BING_SEARCH_API_KEY",
     checks: [],
   },
+  AgentBaiduSearchApiKey: {
+    envKey: "AGENT_BAIDU_SEARCH_API_KEY",
+    checks: [],
+  },
   AgentSerplyApiKey: {
     envKey: "AGENT_SERPLY_API_KEY",
     checks: [],
@@ -664,6 +673,26 @@ const KEY_MAPPING = {
   },
   DeepSeekModelPref: {
     envKey: "DEEPSEEK_MODEL_PREF",
+    checks: [isNotEmpty],
+  },
+
+  // Minimax Options
+  MinimaxApiKey: {
+    envKey: "MINIMAX_API_KEY",
+    checks: [isNotEmpty],
+  },
+  MinimaxModelPref: {
+    envKey: "MINIMAX_MODEL_PREF",
+    checks: [isNotEmpty],
+  },
+
+  // Cerebras Options
+  CerebrasApiKey: {
+    envKey: "CEREBRAS_API_KEY",
+    checks: [isNotEmpty],
+  },
+  CerebrasModelPref: {
+    envKey: "CEREBRAS_MODEL_PREF",
     checks: [isNotEmpty],
   },
 
@@ -829,6 +858,10 @@ const KEY_MAPPING = {
     envKey: "LEMONADE_LLM_BASE_PATH",
     checks: [isValidURL],
   },
+  LemonadeLLMApiKey: {
+    envKey: "LEMONADE_LLM_API_KEY",
+    checks: [],
+  },
   LemonadeLLMModelPref: {
     envKey: "LEMONADE_LLM_MODEL_PREF",
     checks: [isNotEmpty],
@@ -968,6 +1001,9 @@ function supportedLLM(input = "") {
     "privatemode",
     "sambanova",
     "lemonade",
+    "minimax",
+    "cerebras",
+    "anythingllm-router",
   ].includes(input);
   return validSelection ? null : `${input} is not a valid LLM provider.`;
 }
@@ -1280,6 +1316,7 @@ function dumpENV() {
 
     "STORAGE_DIR",
     "SERVER_PORT",
+    "COLLECTOR_PORT",
     // For persistent data encryption
     "SIG_KEY",
     "SIG_SALT",
@@ -1297,6 +1334,7 @@ function dumpENV() {
     "HTTPS_KEY_PATH",
     // Other Configuration Keys
     "DISABLE_VIEW_CHAT_HISTORY",
+    "DISABLE_SWAGGER_DOCS",
     // Simple SSO
     "SIMPLE_SSO_ENABLED",
     "SIMPLE_SSO_NO_LOGIN",
@@ -1330,8 +1368,15 @@ function dumpENV() {
     // Allow disabling of streaming for AWS Bedrock
     "AWS_BEDROCK_STREAMING_DISABLED",
 
-    // Allow native tool calling for specific providers.
+    // Allow capabilities for specific providers.
     "PROVIDER_SUPPORTS_NATIVE_TOOL_CALLING",
+    "PROVIDER_SUPPORTS_REASONING",
+    "PROVIDER_SUPPORTS_IMAGE_GENERATION",
+    "PROVIDER_SUPPORTS_VISION",
+    "GENERIC_OPEN_AI_REPORT_USAGE",
+
+    // Allow auto-approval of skills
+    "AGENT_AUTO_APPROVED_SKILLS",
   ];
 
   // Simple sanitization of each value to prevent ENV injection via newline or quote escaping.

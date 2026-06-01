@@ -28,6 +28,9 @@ const ImportedPlugin = require("../utils/agents/imported");
 const {
   simpleSSOLoginDisabledMiddleware,
 } = require("../utils/middleware/simpleSSOEnabled");
+const {
+  workspaceDeletionProtection,
+} = require("../utils/middleware/workspaceDeletionProtection");
 
 function adminEndpoints(app) {
   if (!app) return;
@@ -291,7 +294,11 @@ function adminEndpoints(app) {
 
   app.delete(
     "/admin/workspaces/:id",
-    [validatedRequest, strictMultiUserRoleValid([ROLES.admin, ROLES.manager])],
+    [
+      validatedRequest,
+      strictMultiUserRoleValid([ROLES.admin, ROLES.manager]),
+      workspaceDeletionProtection,
+    ],
     async (request, response) => {
       try {
         const { id } = request.params;
@@ -403,6 +410,18 @@ function adminEndpoints(app) {
             case "disabled_agent_skills":
               requestedSettings[label] = safeJsonParse(setting?.value, []);
               break;
+            case "disabled_filesystem_skills":
+              requestedSettings[label] = safeJsonParse(setting?.value, []);
+              break;
+            case "disabled_create_files_skills":
+              requestedSettings[label] = safeJsonParse(setting?.value, []);
+              break;
+            case "disabled_gmail_skills":
+              requestedSettings[label] = safeJsonParse(setting?.value, []);
+              break;
+            case "disabled_outlook_skills":
+              requestedSettings[label] = safeJsonParse(setting?.value, []);
+              break;
             case "imported_agent_skills":
               requestedSettings[label] = ImportedPlugin.listImportedPlugins();
               break;
@@ -420,6 +439,12 @@ function adminEndpoints(app) {
             case "meta_page_favicon":
               requestedSettings[label] =
                 await SystemSettings.getValueOrFallback({ label }, null);
+              break;
+            case "memory_enabled":
+              requestedSettings[label] = setting?.value || "false";
+              break;
+            case "memory_auto_extraction":
+              requestedSettings[label] = setting?.value ?? "true";
               break;
             default:
               break;
@@ -497,10 +522,11 @@ function adminEndpoints(app) {
     async (request, response) => {
       try {
         const user = await userFromSession(request, response);
-        const { apiKey, error } = await ApiKey.create(user.id);
+        const { name = null } = reqBody(request);
+        const { apiKey, error } = await ApiKey.create(user.id, name);
         await EventLogs.logEvent(
           "api_key_created",
-          { createdBy: user?.username },
+          { createdBy: user?.username, name: apiKey?.name },
           user?.id
         );
         return response.status(200).json({

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { isMobile } from "react-device-detect";
 import useUser from "@/hooks/useUser";
 import { useModal } from "@/hooks/useModal";
 import LLMSelectorModal from "../PromptInput/LLMSelector/index";
@@ -11,16 +12,32 @@ import {
 } from "../PromptInput/LLMSelector/action";
 import Workspace from "@/models/workspace";
 import System from "@/models/system";
+import ModelRouterAPI from "@/models/modelRouter";
 import { SIDEBAR_TOGGLE_EVENT } from "@/components/Sidebar/SidebarToggle";
 
-function fetchModelName(slug, setModelName) {
+async function resolveModelName(workspace, systemSettings, t) {
+  const effectiveProvider =
+    workspace.chatProvider ?? systemSettings?.LLMProvider;
+
+  if (effectiveProvider !== "anythingllm-router")
+    return workspace.chatModel ?? systemSettings?.LLMModel ?? "";
+
+  const routerId = workspace.router_id || systemSettings?.ModelRouterId;
+  if (!routerId) return t("model-router.metrics.model-router-default");
+
+  const { router } = await ModelRouterAPI.get(routerId);
+  if (!router?.name) return t("model-router.metrics.model-router-default");
+
+  return router.name;
+}
+
+async function fetchModelName(slug, setModelName, t) {
   if (!slug) return;
-  Promise.all([Workspace.bySlug(slug), System.keys()]).then(
-    ([workspace, systemSettings]) => {
-      const model = workspace.chatModel ?? systemSettings?.LLMModel ?? "";
-      setModelName(model);
-    }
-  );
+  const [workspace, systemSettings] = await Promise.all([
+    Workspace.bySlug(slug),
+    System.keys(),
+  ]);
+  setModelName(await resolveModelName(workspace, systemSettings, t));
 }
 
 export default function WorkspaceModelPicker({ workspaceSlug = null }) {
@@ -48,13 +65,15 @@ export default function WorkspaceModelPicker({ workspaceSlug = null }) {
   }, []);
 
   // Fetch current model name for display
-  useEffect(() => fetchModelName(slug, setModelName), [slug]);
+  useEffect(() => {
+    fetchModelName(slug, setModelName, t);
+  }, [slug]);
 
   // Close selector and refresh model name when model is saved
   useEffect(() => {
     function handleSave() {
       setShowSelector(false);
-      fetchModelName(slug, setModelName);
+      fetchModelName(slug, setModelName, t);
     }
     window.addEventListener(SAVE_LLM_SELECTOR_EVENT, handleSave);
     return () =>
@@ -75,7 +94,7 @@ export default function WorkspaceModelPicker({ workspaceSlug = null }) {
 
   // This feature is disabled for multi-user instances where the user is not an admin
   if (!!user && user.role !== "admin") return null;
-  if (!slug) return null;
+  if (!slug || isMobile) return null;
 
   return (
     <>
