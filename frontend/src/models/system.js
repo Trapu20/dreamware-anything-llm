@@ -520,10 +520,11 @@ const System = {
         return { apiKey: null, error: e.message };
       });
   },
-  generateApiKey: async function () {
+  generateApiKey: async function (data = {}) {
     return fetch(`${API_BASE}/system/generate-api-key`, {
       method: "POST",
       headers: baseHeaders(),
+      body: JSON.stringify(data),
     })
       .then((res) => {
         if (!res.ok) {
@@ -831,6 +832,60 @@ const System = {
         console.error("Failed to validate SQL connection:", e);
         return { success: false, error: e.message };
       });
+  },
+
+  /**
+   * Checks if the filesystem-agent skill is available.
+   * The filesystem-agent skill is only available when running in a Docker container.
+   * @returns {Promise<boolean>}
+   */
+  isFileSystemAgentAvailable: async function () {
+    return fetch(`${API_BASE}/agent-skills/filesystem-agent/is-available`, {
+      method: "GET",
+      headers: baseHeaders(),
+    })
+      .then((res) => res.json())
+      .then((res) => res?.available ?? false)
+      .catch(() => false);
+  },
+
+  /**
+   * Checks if the create-files-agent skill is available.
+   * The create-files-agent skill is only available when running in a Docker container.
+   * @returns {Promise<boolean>}
+   */
+  isCreateFilesAgentAvailable: async function () {
+    return fetch(`${API_BASE}/agent-skills/create-files-agent/is-available`, {
+      method: "GET",
+      headers: baseHeaders(),
+    })
+      .then((res) => res.json())
+      .then((res) => res?.available ?? false)
+      .catch(() => false);
+  },
+
+  /**
+   * Send a recorded audio blob to the configured server-side STT provider
+   * for transcription. Returns the transcribed text or an error string.
+   * @param {Blob} audioBlob - Recorded audio (e.g., audio/webm) to transcribe.
+   * @param {string} [filename] - Filename hint for the upload.
+   * @returns {Promise<{text: string|null, error: string|null}>}
+   */
+  transcribeAudio: async function (audioBlob, filename = "audio.webm") {
+    const formData = new FormData();
+    formData.append("audio", audioBlob, filename);
+    return fetch(`${API_BASE}/system/transcribe-audio`, {
+      method: "POST",
+      headers: baseHeaders(),
+      body: formData,
+    })
+      .then(async (res) => {
+        const json = await res.json();
+        if (!res.ok)
+          throw new Error(json?.error || "Failed to transcribe audio.");
+        return { text: json?.text ?? "", error: null };
+      })
+      .catch((e) => ({ text: null, error: e.message }));
   },
 
   experimentalFeatures: {

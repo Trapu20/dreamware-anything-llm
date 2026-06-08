@@ -1,23 +1,28 @@
 const Anthropic = require("@anthropic-ai/sdk");
+const { AnthropicLLM } = require("../../../AiProviders/anthropic");
 const { RetryError } = require("../error.js");
 const Provider = require("./ai-provider.js");
 const { v4 } = require("uuid");
 const { safeJsonParse } = require("../../../http");
+const { getAnythingLLMUserAgent } = require("../../../../endpoints/utils");
 
 /**
  * The agent provider for the Anthropic API.
- * By default, the model is set to 'claude-2'.
+ * By default, the model is set to 'claude-sonnet-4-6'.
  */
 class AnthropicProvider extends Provider {
   model;
+  maxTokens = null;
 
   constructor(config = {}) {
     const {
       options = {
         apiKey: process.env.ANTHROPIC_API_KEY,
-        maxRetries: 3,
+        defaultHeaders: {
+          "User-Agent": getAnythingLLMUserAgent(),
+        },
       },
-      model = "claude-3-5-sonnet-20240620",
+      model = "claude-sonnet-4-6",
     } = config;
 
     const client = new Anthropic(options);
@@ -33,6 +38,17 @@ class AnthropicProvider extends Provider {
    */
   supportsNativeToolCalling() {
     return true;
+  }
+
+  /**
+   * Fetches the maximum number of tokens the model should generate in its response.
+   * This varies per model but will fallback to 4096 if the model is not found.
+   * @returns {Promise<number>} The maximum output tokens limit for API calls.
+   */
+  async assertModelMaxTokens() {
+    if (this.maxTokens) return this.maxTokens;
+    this.maxTokens = await AnthropicLLM.fetchModelMaxTokens(this.model);
+    return this.maxTokens;
   }
 
   /**
@@ -223,6 +239,7 @@ class AnthropicProvider extends Provider {
    * @returns {Promise<{ functionCall: any, textResponse: string, uuid: string }>} - The result of the chat completion.
    */
   async stream(messages, functions = [], eventHandler = null) {
+    await this.assertModelMaxTokens();
     this.resetUsage();
 
     try {
@@ -231,7 +248,7 @@ class AnthropicProvider extends Provider {
       const response = await this.client.messages.create(
         {
           model: this.model,
-          max_tokens: 4096,
+          max_tokens: this.maxTokens,
           system: this.#buildSystemPrompt(systemPrompt),
           messages: chats,
           stream: true,
@@ -370,6 +387,7 @@ class AnthropicProvider extends Provider {
    * @returns The completion.
    */
   async complete(messages, functions = []) {
+    await this.assertModelMaxTokens();
     this.resetUsage();
 
     try {
@@ -377,7 +395,7 @@ class AnthropicProvider extends Provider {
       const response = await this.client.messages.create(
         {
           model: this.model,
-          max_tokens: 4096,
+          max_tokens: this.maxTokens,
           system: this.#buildSystemPrompt(systemPrompt),
           messages: chats,
           stream: false,
