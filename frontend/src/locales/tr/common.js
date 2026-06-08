@@ -17,8 +17,8 @@ const TRANSLATIONS = {
         "AnythingLLM'yi ihtiyaçlarınıza göre oluşturmamıza yardımcı olun. İsteğe bağlı.",
     },
     home: {
-      title: "Hoş Geldiniz",
       getStarted: "Başla",
+      welcome: "Hoş geldiniz",
     },
     llm: {
       title: "LLM Tercihi",
@@ -52,7 +52,6 @@ const TRANSLATIONS = {
   },
   common: {
     "workspaces-name": "Çalışma Alanları Adı",
-    user: "Kullanıcı",
     selection: "Model Seçimi",
     saving: "Kaydediliyor...",
     save: "Değişiklikleri Kaydet",
@@ -106,6 +105,12 @@ const TRANSLATIONS = {
       "your-account": "Hesabınız",
       "import-item": "İthal Edilen Ürün",
     },
+    channels: "Kanalalar",
+    "available-channels": {
+      telegram: "Telegram",
+    },
+    "scheduled-jobs": "Planlanan İşler",
+    "model-router": "Model Router",
   },
   login: {
     "multi-user": {
@@ -182,17 +187,17 @@ const TRANSLATIONS = {
       chat: {
         title: "Sohbet",
         description:
-          "LLM'nin genel bilgisi ve bulunan doküman bağlamıyla cevaplar sunacaktır. Araçları kullanmak için @agent komutunu kullanmanız gerekecektir.",
+          'LLM\'nin genel bilgisi ve bulunan doküman bağlamıyla cevaplar sağlayacaktır. Araçları kullanmak için "@agent" komutunu kullanmanız gerekecektir.',
       },
       query: {
         title: "Sorgu",
         description:
-          "yalnızca doküman bağlamı bulunursa yanıtlar sağlayacaktır.<b>İhtiyaç duyacağınız araçları kullanmak için @agent komutunu kullanmanız gerekecektir.</b>",
+          "yalnızca ilgili belgenin bağlamında yanıtlar sağlayacaktır.<b>Kullanılabilir araçları kullanmak için @agent komutunu kullanmanız gerekecektir.</b>",
       },
       automatic: {
-        title: "Oto",
         description:
-          "<br />Varsa, model ve sağlayıcı tarafından desteklenen yerel araçları otomatik olarak kullanacaktır. Yerel araç kullanımı desteklenmiyorsa, araçları kullanmak için @agent komutunu kullanmanız gerekecektir.",
+          "Model ve sağlayıcı tarafından desteklenen araçları otomatik olarak kullanacaktır. Eğer yerel araç çağırma desteklenmiyorsa, araçları kullanmak için @agent komutunu kullanmanız gerekecektir.",
+        title: "Temsilci",
       },
     },
     history: {
@@ -305,11 +310,6 @@ const TRANSLATIONS = {
         description:
           "Varsayılan ajanın, sağlanan veya sohbette yer alan verilere göre çeşitli grafik türleri oluşturmasına izin verin.",
       },
-      save: {
-        title: "Tarayıcıya dosya oluştur & kaydet",
-        description:
-          "Varsayılan ajanın, oluşturduğu dosyaları kaydetmesine ve tarayıcıda indirilebilir hale getirmesine izin verin.",
-      },
       web: {
         title: "Canlı web araması ve gezinme",
         description:
@@ -322,6 +322,412 @@ const TRANSLATIONS = {
       },
       default_skill:
         "Varsayılan olarak bu özellik etkinleştirilmiştir, ancak ajanın kullanmasına izin vermek istemiyorsanız, bu özelliği devre dışı bırakabilirsiniz.",
+      filesystem: {
+        title: "Dosya Sistemi Erişimi",
+        description:
+          "Temsilcinizin, belirli bir klasör içindeki dosyaları okuma, yazma, arama ve yönetme yeteneğini etkinleştirin. Dosya düzenleme, klasör gezinme ve içerik arama özelliklerini destekler.",
+        learnMore:
+          "Bu beceriye nasıl başlanacağını ve nasıl kullanılacağını daha detaylı bir şekilde öğrenin.",
+        configuration: "Yapılandırma",
+        readActions: "Okunmuş Eylemler",
+        writeActions: "Yapılacak İşler",
+        warning:
+          "Dosya sistemine erişim tehlikeli olabilir, çünkü dosyaları değiştirebilir veya silebilir. Bu özelliği etkinleştirmeden önce lütfen <a>belgelendirme</a>'i inceleyin.",
+        skills: {
+          "read-text-file": {
+            title: "Dosyayı aç",
+            description:
+              "Dosyalardaki içeriği okuyun (metin, kod, PDF, resimler vb.)",
+          },
+          "read-multiple-files": {
+            title: "Birden fazla dosyayı okuyun",
+            description: "Birden fazla dosyayı aynı anda okuyun",
+          },
+          "list-directory": {
+            title: "Yönerge Listesi",
+            description: "Bir klasördeki dosyaları ve dizinleri listeleyin.",
+          },
+          "search-files": {
+            title: "Dosyaları Arayın",
+            description: "Dosyaları adlarına veya içeriğine göre arayın",
+          },
+          "get-file-info": {
+            title: "Dosya Hakkında Bilgi Al",
+            description: "Dosyalara ilişkin ayrıntılı meta verileri elde edin.",
+          },
+          "edit-file": {
+            title: "Dosya Düzenle",
+            description: "Metin dosyalarında satır bazlı değişiklikler yapın.",
+          },
+          "create-directory": {
+            title: "Klasör Oluştur",
+            description: "Yeni klasörler oluşturun",
+          },
+          "move-file": {
+            title: "Dosya taşı/yeniden adlandır",
+            description:
+              "Dosyaları ve dizinleri taşıyın veya yeniden adlandırın.",
+          },
+          "copy-file": {
+            title: "Dosyayı Kopyala",
+            description: "Dosyaları ve dizinleri kopyala",
+          },
+          "write-text-file": {
+            title: "Metin dosyası oluştur",
+            description:
+              "Yeni metin dosyaları oluşturun veya mevcut metin dosyalarını üzerine yazın.",
+          },
+        },
+      },
+      createFiles: {
+        title: "Belge Oluşturma",
+        description:
+          "Temsilcinizin, PowerPoint sunumları, Excel tabloları, Word belgeleri ve PDF dosyaları gibi ikili belge formatları oluşturmasına olanak tanıyın. Dosyalar doğrudan sohbet penceresinden indirilebilir.",
+        configuration: "Mevcut Belgeler Türleri",
+        skills: {
+          "create-text-file": {
+            title: "Metin dosyaları",
+            description:
+              "Herhangi bir içerik ve uzantıyla (örneğin .txt, .md, .json, .csv vb.) metin dosyaları oluşturun.",
+          },
+          "create-pptx": {
+            title: "PowerPoint sunumları",
+            description:
+              "Yeni PowerPoint sunumları oluşturun, slaytlar, başlıklar ve madde işaretleri ekleyin.",
+          },
+          "create-pdf": {
+            title: "PDF belgeleri",
+            description:
+              "Temel stillerle markdown veya düz metinlerden PDF belgeleri oluşturun.",
+          },
+          "create-xlsx": {
+            title: "Excel elektronik tabloları",
+            description:
+              "Tablo formatındaki veriler için, sayfalar ve stil özellikleriyle Excel belgeleri oluşturun.",
+          },
+          "create-docx": {
+            title: "Kelime belgeleri",
+            description:
+              "Temel stil ve biçimlendirme ile Word belgeleri oluşturun.",
+          },
+        },
+      },
+      gmail: {
+        title: "GMail Bağlantısı",
+        description:
+          "Ajantınızın Gmail ile etkileşim kurmasını sağlayın: e-postaları aratın, sohbetleri okuyun, taslaklar oluşturun, e-postalar gönderin ve posta kutunuzu yönetin. <a>Dokümantasyonu okuyun</a>.",
+        multiUserWarning:
+          "Gmail entegrasyonu, güvenlik nedenlerinden dolayı çoklu kullanıcı modunda mevcut değildir. Bu özelliği kullanmak için lütfen çoklu kullanıcı modunu devre dışı bırakın.",
+        configuration: "Gmail Yapılandırma",
+        deploymentId: "Dağıtım Kimliği",
+        deploymentIdHelp:
+          "Google Apps Script web uygulamanızın uygulama kimliği",
+        apiKey: "API Anahtarı",
+        apiKeyHelp:
+          "Google Apps Script kurulumunuzda yapılandırdığınız API anahtarı",
+        configurationRequired:
+          "Lütfen Dağıtım Kimliğini ve API Anahtarını yapılandırarak Gmail yeteneklerini etkinleştirin.",
+        configured: "Yapılandırılmış",
+        searchSkills: "Arama becerileri...",
+        noSkillsFound:
+          "Belirttiğiniz kriterlere uyan herhangi bir sonuç bulunamadı.",
+        categories: {
+          search: {
+            title: "E-postaları arayın ve okuyun",
+            description: "Gmail hesabınızdaki e-postaları arayın ve okuyun.",
+          },
+          drafts: {
+            title: "Taslak E-postalar",
+            description:
+              "E-posta taslaklarını oluşturun, düzenleyin ve yönetin.",
+          },
+          send: {
+            title: "E-postaları gönderme ve yanıt verme",
+            description:
+              "E-postalar gönderin ve tartışmalara anında yanıt verin.",
+          },
+          threads: {
+            title: "E-posta dizilerini yönetin",
+            description:
+              "E-posta dizilerini yönetin - okundu/okunmadı olarak işaretleme, arşivleme, çöp kutusuna gönderme",
+          },
+          account: {
+            title: "Entegrasyon İstatistikleri",
+            description:
+              "Post kutunuzdaki istatistikleri ve hesap bilgilerinizi görüntüleyin.",
+          },
+        },
+        skills: {
+          search: {
+            title: "E-postaları arayın",
+            description: "Gmail sorgu sözdizimi kullanarak e-postaları arayın",
+          },
+          readThread: {
+            title: "Makaleyi oku",
+            description:
+              "ID numarasına göre, e-posta iletişimin bütününü okuyun.",
+          },
+          createDraft: {
+            title: "Taslak Oluştur",
+            description: "Yeni bir e-posta taslağı oluşturun",
+          },
+          createDraftReply: {
+            title: "Taslak Yanıt Oluştur",
+            description:
+              "Mevcut bir tartışma başlığına yönelik bir yanıt taslağı oluşturun.",
+          },
+          updateDraft: {
+            title: "Taslak Güncelleme",
+            description: "Mevcut bir e-posta taslağını güncelleyin",
+          },
+          getDraft: {
+            title: "Taslakları görüntüle",
+            description: "Belirli bir taslağı, ID numarası ile alın",
+          },
+          listDrafts: {
+            title: "Taslaklar",
+            description: "Tüm taslak e-postaları listele",
+          },
+          deleteDraft: {
+            title: "Taslağı Sil",
+            description: "Bir taslak e-postayı sil",
+          },
+          sendDraft: {
+            title: "Taslak Gönder",
+            description: "Mevcut bir e-posta taslağını gönderin",
+          },
+          sendEmail: {
+            title: "E-posta gönder",
+            description: "Hemen bir e-posta gönderin",
+          },
+          replyToThread: {
+            title: "Konuya Cevap Ver",
+            description: "Bir e-posta dizisine anında yanıt verin",
+          },
+          markRead: {
+            title: "মার্ক रीड",
+            description: "Bir konuyla ilgili mesajları okundu olarak işaretle.",
+          },
+          markUnread: {
+            title: "Okunmadı olarak işaretle",
+            description: 'Bir gönderiyi "okunmamış" olarak işaretle.',
+          },
+          moveToTrash: {
+            title: "Çöp kutusuna taşı",
+            description: "Bir başlığı çöp kutusuna taşı.",
+          },
+          moveToArchive: {
+            title: "Arşiv",
+            description: "Bir konuyu arşivle",
+          },
+          moveToInbox: {
+            title: "Gelen kutusuna taşı",
+            description:
+              "Bir konuyla ilgili mesajları ana posta kutusuna taşı.",
+          },
+          getMailboxStats: {
+            title: "Posta Kutusu İstatistikleri",
+            description:
+              "Okunmamış mesaj sayılarını ve posta kutusu istatistiklerini görüntüleyin.",
+          },
+          getInbox: {
+            title: "Gelen kutusuna eriş",
+            description:
+              "Gmail'den gelen e-postaları hızlı ve kolay bir şekilde görüntüleme yolu.",
+          },
+        },
+      },
+      outlook: {
+        title: "Outlook Bağlayıcı",
+        description:
+          "Ajantınızın Microsoft Outlook ile etkileşim kurmasını sağlayın: e-postaları arayın, tartışmaları okuyun, taslaklar oluşturun, e-posta gönderin ve Microsoft Graph API aracılığıyla posta kutunuzu yönetin. Dokümantasyonu okuyun.",
+        multiUserWarning:
+          "Outlook entegrasyonu, güvenlik nedenleriyle çoklu kullanıcı modunda mevcut değildir. Bu özelliği kullanmak için lütfen çoklu kullanıcı modunu devre dışı bırakın.",
+        configuration: "Outlook Yapılandırması",
+        authType: "Hesap Türü",
+        authTypeHelp:
+          'Hangi tür Microsoft hesaplarının kimlik doğrulamasına izin verileceğini seçin. "Tüm hesaplar" hem kişisel hem de iş/okul hesaplarını destekler. "Sadece kişisel hesaplar" yalnızca kişisel Microsoft hesaplarını kısıtlar. "Sadece kuruluş hesapları" belirli bir Azure AD kiracısından iş/okul hesaplarını kısıtlar.',
+        authTypeCommon: "Tüm hesaplar (kişisel ve iş/okul)",
+        authTypeConsumers: "Sadece bireysel Microsoft hesapları",
+        authTypeOrganization:
+          "Sadece kuruluş hesapları (Kira sahibi kimlik numarası gerektirir)",
+        clientId: "Uygulama (Müşteri) Kimliği",
+        clientIdHelp:
+          "Azure AD uygulamanızın kaydından elde ettiğiniz Uygulama (Müşteri) Kimliği",
+        tenantId: "Kiralık Konut Kimlik No",
+        tenantIdHelp:
+          "Azure AD uygulamanızın kayıt bilgilerinden elde edilen (Kiralık Alan) Kimliği. Sadece kuruluş içi kimlik doğrulama için gereklidir.",
+        clientSecret: "Müşteri sırrı",
+        clientSecretHelp:
+          "Azure AD uygulamanızın kaydından elde edilen istemci sır değeri",
+        configurationRequired:
+          "Lütfen, Outlook işlevlerini etkinleştirmek için Client ID ve Client Secret değerlerini yapılandırın.",
+        authRequired:
+          "Öncelikle kimlik bilgilerinizi kaydedin, ardından kurulumu tamamlamak için Microsoft ile kimliğinizi doğrulayın.",
+        authenticateWithMicrosoft: "Microsoft ile kimliğinizi doğrulayın",
+        authenticated:
+          "Microsoft Outlook ile başarılı bir şekilde kimlik doğrulaması tamamlandı.",
+        revokeAccess: "Erişi İptal Et",
+        configured: "Yapılandırılmış",
+        searchSkills: "Arama becerileri...",
+        noSkillsFound:
+          "Belirttiğiniz kriterlere uyan herhangi bir sonuç bulunamadı.",
+        categories: {
+          search: {
+            title: "E-postaları arayın ve okuyun",
+            description:
+              "Outlook posta kutunuzdan e-postaları arayın ve okuyun.",
+          },
+          drafts: {
+            title: "Örnek E-postalar",
+            description: "E-posta taslaklarını oluştur, düzenle ve yönet",
+          },
+          send: {
+            title: "E-posta gönderme",
+            description:
+              "Yeni e-postalar gönderin veya mesajlara anında cevap verin.",
+          },
+          account: {
+            title: "Entegrasyon İstatistikleri",
+            description:
+              "Post kutunuzdaki istatistikleri ve hesap bilgilerinizi görüntüleyin.",
+          },
+        },
+        skills: {
+          getInbox: {
+            title: "Gelen kutusuna eriş",
+            description:
+              "En son gelen e-postalarınızı Outlook posta kutunuzdan alın.",
+          },
+          search: {
+            title: "E-postaları arayın",
+            description:
+              "Microsoft arama sözdizimi kullanarak e-postaları arayın",
+          },
+          readThread: {
+            title: "Sohbeti okuyun",
+            description: "Tam bir e-posta konuşma dizisini okuyun.",
+          },
+          createDraft: {
+            title: "Taslak Oluştur",
+            description:
+              "Yeni bir e-posta taslağı oluşturun veya mevcut bir mesajın yanıtını taslağına ekleyin.",
+          },
+          updateDraft: {
+            title: "Taslak Güncelleme",
+            description: "Mevcut bir e-posta taslağını güncelleyin",
+          },
+          listDrafts: {
+            title: "Taslaklar",
+            description: "Tüm taslak e-postaları listele",
+          },
+          deleteDraft: {
+            title: "Taslak Sil",
+            description: "Bir taslak e-postayı sil",
+          },
+          sendDraft: {
+            title: "Taslak Gönder",
+            description: "Mevcut bir e-posta taslağını gönderin",
+          },
+          sendEmail: {
+            title: "E-posta gönder",
+            description:
+              "Yeni bir e-posta gönderin veya mevcut bir mesajı hemen yanıtlayın.",
+          },
+          getMailboxStats: {
+            title: "Post kutusu istatistikleri",
+            description:
+              "Klasörlerin ve posta kutusu istatistiklerinin sayısını alın.",
+          },
+        },
+      },
+      googleCalendar: {
+        title: "Google Takvim Bağlayıcı",
+        description:
+          "Ajantınızın Google Takvim ile etkileşim kurmasını sağlayın - takvimleri görüntüleyin, etkinlikleri alın, etkinlikleri oluşturun ve güncelleyin, ve katılımcıların yanıtlarını yönetin. Dokümantasyonu okuyun.",
+        multiUserWarning:
+          "Google Takvim entegrasyonu, güvenlik nedeniyle çoklu kullanıcı modunda kullanılabilmektedir. Bu özelliği kullanmak için lütfen çoklu kullanıcı modunu devre dışı bırakın.",
+        configuration: "Google Takvim Yapılandırması",
+        deploymentId: "Dağıtım Kimliği",
+        deploymentIdHelp:
+          "Google Apps Script web uygulamanızın dağıtım kimliği",
+        apiKey: "API Anahtarı",
+        apiKeyHelp:
+          "Google Apps Script dağıtımınızda yapılandırdığınız API anahtarı",
+        configurationRequired:
+          "Lütfen Dağıtım Kimliğini ve API Anahtarını yapılandırarak Google Takvim özelliklerini etkinleştirin.",
+        configured: "Yapılandırılmış",
+        searchSkills: "Arama becerileri...",
+        noSkillsFound:
+          "Arama sonuçlarınızda eşleşen herhangi bir beceri bulunmamaktadır.",
+        categories: {
+          calendars: {
+            title: "Takvimler",
+            description: "Google Takvimlerinizi görüntüleyin ve yönetin",
+          },
+          readEvents: {
+            title: "Etkinlikleri oku",
+            description: "Takvimdeki etkinlikleri görüntüleyin ve arayın",
+          },
+          writeEvents: {
+            title: "Etkinlikleri Oluştur ve Güncelle",
+            description:
+              "Yeni etkinlikler oluşturun ve mevcut olanları değiştirin.",
+          },
+          rsvp: {
+            title: "Katılım Yönetimi",
+            description: "Etkinliklere ilişkin yanıt durumunuzu yönetin",
+          },
+        },
+        skills: {
+          listCalendars: {
+            title: "Takvim Listeleri",
+            description:
+              "Sahip olduğunuz veya abonelik yaptığınız tüm takvimleri listeleyin.",
+          },
+          getCalendar: {
+            title: "Takvim Detaylarını Al",
+            description: "Belirli bir takvim hakkında ayrıntılı bilgi edinin.",
+          },
+          getEvent: {
+            title: "Etkinliği Bul",
+            description: "Belirli bir etkinlikle ilgili ayrıntılı bilgi edinin",
+          },
+          getEventsForDay: {
+            title: "Gün İçindeki Etkinlikleri Öğren",
+            description:
+              "Belirli bir güne ait tüm planlanan etkinlikleri görüntüleyin.",
+          },
+          getEvents: {
+            title: "Etkinlikleri (Tarih Aralığı) görüntüle",
+            description: "Belirli bir tarih aralığındaki etkinlikleri alın",
+          },
+          getUpcomingEvents: {
+            title: "Yaklaşan Etkinlikleri Görüntüleyin",
+            description:
+              "Bugün, bu hafta veya bu ay için etkinlikleri, basit anahtar kelimeler kullanarak bulun.",
+          },
+          quickAdd: {
+            title: "Hızlı Olay Ekle",
+            description:
+              'Doğal dilden bir etkinlik oluşturun (örneğin, "Yarın saat 15:00\'te bir toplantı")',
+          },
+          createEvent: {
+            title: "Etkinlik Oluştur",
+            description:
+              "Tüm özellikler üzerinde tam kontrol sağlayarak yeni bir etkinlik oluşturun.",
+          },
+          updateEvent: {
+            title: "Etkinlik Güncellemesi",
+            description: "Mevcut bir takvim olayını güncelleyin",
+          },
+          setMyStatus: {
+            title: "Davetiyeye Cevap Durumu Ayarla",
+            description:
+              "Bir etkinliğe katılımı kabul etmek, reddetmek veya geçici olarak katılmayı kabul etmek.",
+          },
+        },
+      },
     },
     mcp: {
       title: "MCP Sunucuları",
@@ -361,6 +767,18 @@ const TRANSLATIONS = {
             "Her sorgu için seçilebilecek maksimum araç sayısı. Daha büyük bağlam modelleri için bu değeri daha yüksek bir değere ayarlamayı öneririz.",
         },
       },
+      "clarifying-questions": {
+        title:
+          "Temsilcinin, konuyu daha iyi anlaması için açıklayıcı sorular sormasına izin verin.",
+        "beta-badge": "BETAM",
+        description:
+          "Etkinleştirildiğinde, ajanlar, talimatınız belirsiz olduğu takdirde, kısa açıklayıcı sorular sorarak durabilirler.",
+        "max-per-turn": {
+          title: "Her turda sorulabilecek maksimum soru sayısı",
+          description:
+            "Bir anket sırasında, temsilci tarafından sorulabilecek en fazla sayıda açıklayıcı soru sayısı nedir?",
+        },
+      },
     },
   },
   recorded: {
@@ -378,12 +796,39 @@ const TRANSLATIONS = {
     },
   },
   api: {
-    title: "API Anahtarları",
+    title: "API anahtarları",
     description:
       "API anahtarları, bu AnythingLLM örneğine programatik olarak erişmeye ve yönetmeye olanak tanır.",
     link: "API dokümantasyonunu okuyun",
     generate: "Yeni API Anahtarı Oluştur",
+    empty: "API anahtarları bulunamadı",
+    actions: "İşlemler",
+    messages: {
+      error: "Hata: {{error}}",
+    },
+    modal: {
+      title: "Yeni API anahtarı oluştur",
+      cancel: "İptal",
+      close: "Kapat",
+      create: "API anahtarı oluştur",
+      helper:
+        "Oluşturulduktan sonra API anahtarı, bu AnythingLLM örneğine programatik olarak erişmek ve onu yapılandırmak için kullanılabilir.",
+      name: {
+        label: "Ad",
+        placeholder: "Üretim entegrasyonu",
+        helper:
+          "İsteğe bağlıdır. Bu anahtarı daha sonra kolayca tanıyabilmek için açıklayıcı bir ad kullanın.",
+      },
+    },
+    row: {
+      copy: "API anahtarını kopyala",
+      copied: "Kopyalandı",
+      unnamed: "--",
+      deleteConfirm:
+        "Bu API anahtarını devre dışı bırakmak istediğinizden emin misiniz?\nBunu yaptıktan sonra artık kullanılamaz.\n\nBu işlem geri alınamaz.",
+    },
     table: {
+      name: "Ad",
       key: "API Anahtarı",
       by: "Oluşturan",
       created: "Oluşturulma Tarihi",
@@ -639,7 +1084,6 @@ const TRANSLATIONS = {
       select_all: "Tümünü Seç",
       deselect_all: "Tümünün Seçimini Kaldır",
       remove_selected: "Seçilenleri Kaldır",
-      costs: "*Gömmeler için tek seferlik maliyet",
       save_embed: "Kaydet ve Göm",
       "total-documents_one": "{{count}} belgesi",
       "total-documents_other": "{{count}} belgeleri",
@@ -742,7 +1186,6 @@ const TRANSLATIONS = {
     see_less: "Daha az",
     see_more: "Daha Fazla",
     tools: "Araçlar",
-    browse: "Gezin",
     text_size_label: "Metin Boyutu",
     select_model: "Model Seçimi",
     sources: "Kaynaklar",
@@ -750,12 +1193,10 @@ const TRANSLATIONS = {
     similarity_match: "maç",
     source_count_one: "{{count}} ile ilgili bilgi",
     source_count_other: "{{count}} referansları",
-    preset_exit_description: "Mevcut ajan oturumunu durdurun",
     add_new: "Yeni ekle",
     edit: "Düzenle",
     publish: "Yayınla",
     stop_generating: "Yanıt üretmeyi durdurun",
-    pause_tts_speech_message: "Mesajın metin okuma (TTS) özelliğini durdur",
     slash_commands: "Komut Satırı Komutları",
     agent_skills: "Ajansın Yetenekleri",
     manage_agent_skills: "Temsilcinin becerilerini yönetin",
@@ -764,6 +1205,76 @@ const TRANSLATIONS = {
     start_agent_session: "Temsilci Oturumu Başlat",
     use_agent_session_to_use_tools:
       'Çatınızdaki araçları kullanmak için, isteminizin başında "@agent" ile bir ajan oturumu başlatabilirsiniz.',
+    agent_invocation: {
+      model_wants_to_call: "Model, arama yapmak istiyor",
+      approve: "Onayla",
+      reject: "Reddet",
+      always_allow: "Her zaman {{skillName}}'ı sağlayın.",
+      tool_call_was_approved: "Araç talebi onaylandı.",
+      tool_call_was_rejected: "Ara çağrısı reddedildi.",
+      clarifying_skip: "Temsilcinin karar vermesine izin verin.",
+      clarifying_submit: "Gönder",
+      clarifying_skipped: "Kararı, temsilcinin belirlemesine izin verin.",
+      clarifying_timeout: "Zamanında yanıt alınamadı.",
+      clarifying_pagination: "{{current}}'ın {{total}}'deki karşılığı",
+      clarifying_prev_aria: "Önceki soru",
+      clarifying_next_aria: "Bir sonraki soru",
+      clarifying_close_aria: "Kapalı ve atla",
+      clarifying_other: "Diğer",
+      clarifying_other_placeholder: "Cevabınızı yazın",
+      batch_progress: "{{answered}}'ın {{total}}'den gelen sorusu yanıtlandı.",
+      batch_skip_this: "Atlamak",
+      batch_submit_all: "Tümünü gönder",
+      batch_next: "Sonra",
+      answer_skipped: "[Kullanıcı atladı]",
+    },
+    custom_skills: "Özel Beceri",
+    agent_flows: "Ajans Akışları",
+    no_tools_found: "Uyumlu herhangi bir araç bulunamadı",
+    loading_mcp_servers: "MCP sunucularının yüklenmesi...",
+    app_integrations: "Uygulama Entegrasyonları",
+    sub_skills: "Alt beceriler",
+    memories: {
+      title: "Anılar",
+      empty:
+        "Şimdilik herhangi bir anı oluşmadı. Chatbot ile etkileşiminiz arttıkça, daha fazla anı oluşacaktır.",
+      empty_cta: "yeni bir anı yarat",
+      tab_workspace: "Çalışma alanı",
+      tab_global: "Küresel",
+      toggle: {
+        label: "Kişiselleştirme özelliğini etkinleştirin",
+        description:
+          "Asistanınızın, sizin veya bu çalışma ortamıyla ilgili bilgileri hatırlamasını ve bunları konuşmalarda kullanmasını sağlayın.",
+      },
+      auto_extraction: {
+        label: "Otomatik Anılar",
+        description:
+          "Yardımcınızın, arka planda otomatik olarak anıları kaydetmesini sağlayın.",
+      },
+      menu: {
+        edit: "Düzenle",
+        delete: "Sil",
+        move_to_global: "Küresel ölçeğe geçin",
+        move_to_workspace: "Çalışma Alanına Geç",
+      },
+      modal: {
+        create_title: "Anılar Oluştur",
+        edit_title: "Bellek düzenle",
+        create_description:
+          'Anılar, tek ve öz bir ifade şeklinde olmalıdır. Örneğin: "Kullanıcı, JavaScript yerine Python\'ı tercih ediyor"',
+        edit_description: "Bu belleğin içeriğini güncelleyin.",
+        label: "Bellek",
+        placeholder:
+          "Örneğin, kullanıcının adı Joe, kullanıcı AnythingLLM üzerinde çalışıyor, vb.",
+        create: "Yarat",
+        save: "Kaydet",
+        cancel: "İptal et",
+      },
+    },
+    stt_unsupported: "Bu tarayıcıda mikrofon erişimi desteklenmemektedir.",
+    stt_mic_denied:
+      "Mikrofonu kullanılamadı. Lütfen izin verin ve tekrar deneyin.",
+    stt_transcription_failed: "Transkripsiyon başarısız: {{error}}",
   },
   profile_settings: {
     edit_account: "Hesabı Düzenle",
@@ -1012,6 +1523,408 @@ const TRANSLATIONS = {
     notAssigned:
       "Şu anda hiçbir çalışma alanına atanmamışsınız.\nBir çalışma alanına erişmek için yöneticinize başvurun.",
     goToWorkspace: 'Çalışma alanına git "{{workspace}}"',
+  },
+  telegram: {
+    title: "Telegram Bot'u",
+    description:
+      "AnythingLLM örneğinizi Telegram ile bağlantılandırarak, herhangi bir cihazdan çalışma alanlarınızla sohbet edebilmelisiniz.",
+    setup: {
+      step1: {
+        title: "1. Adım: Telegram botunuzu oluşturun",
+        description:
+          "Telegram uygulamasında @BotFather'ı açın, \"<code>/newbot</code>\" komutunu <code>@BotFather</code>'e gönderin, talimatları izleyin ve API anahtarını kopyalayın.",
+        "open-botfather": "BotFather'ı aç",
+        "instruction-1": "1. Bağlantıyı açın veya QR kodunu tarayın",
+        "instruction-2":
+          "2. <code>/newbot</code> adresine <code>@BotFather</code>'e gönderin.",
+        "instruction-3": "3. Botunuz için bir isim ve kullanıcı adı seçin",
+        "instruction-4": "4. Alınan API token'ı kopyalayın",
+      },
+      step2: {
+        title: "Adım 2: Botunuzu bağlayın",
+        description:
+          "Aldığınız API token'ı (@BotFather) kopyalayın ve botunuzun iletişim kuracağı varsayılan çalışma alanını seçin.",
+        "bot-token": "Bot Token",
+        connecting: "Bağlantı kuruluyor...",
+        "connect-bot": "Bağlantı Botu",
+      },
+      security: {
+        title: "Önerilen Güvenlik Ayarları",
+        description:
+          "Ek güvenlik için, bu ayarları @BotFather üzerinden yapılandırın.",
+        "disable-groups": "— Gruplara bot eklenmesini engelleme",
+        "disable-inline":
+          "— Bot'un, arama çubuklarında kullanılmasını engellemek",
+        "obscure-username":
+          "Daha az bilinen bir bot kullanıcı adı kullanarak görünürlüğünü azaltın.",
+      },
+      "toast-enter-token": "Lütfen bir bot belirteci girin.",
+      "toast-connect-failed": "Bot ile bağlantı kurulamadı.",
+    },
+    connected: {
+      status: "Bağlı",
+      "status-disconnected":
+        "Bağlantı kesildi — belirteç geçersiz veya süresi dolmuş olabilir",
+      "placeholder-token": "Yeni bot token'ı yapıştırın...",
+      reconnect: "Yeniden bağlantı kur",
+      workspace: "Çalışma alanı",
+      "bot-link": "Bot bağlantısı",
+      "voice-response": "Sesle etkileşim",
+      disconnecting: "Bağlantıyı kesiyorum...",
+      disconnect: "Bağlantıyı kes",
+      "voice-text-only": "Sadece metin",
+      "voice-mirror":
+        "Sesli yanıt (kullanıcı ses gönderdiğinde, sesli yanıtla cevaplayın)",
+      "voice-always": "Her yanıtla birlikte sesli (sesli yanıt gönderme)",
+      "toast-disconnect-failed": "Bot'u ayırmada başarısız.",
+      "toast-reconnect-failed": "Bot yeniden bağlantı kuramadı.",
+      "toast-voice-failed": "Ses modunu güncelleme başarısız oldu.",
+      "toast-approve-failed": "Kullanıcıın onaylanması başarısız oldu.",
+      "toast-deny-failed": "Kullanıcıyı reddetmeyi başaramadı.",
+      "toast-revoke-failed": "Kullanıcıyı silme işlemi başarısız oldu.",
+    },
+    users: {
+      "pending-description":
+        "Doğrulama işlemi bekleyen kullanıcılar. Burada gösterilen eşleştirme kodunu, Telegram sohbetlerinde görüntülenen kodla karşılaştırın.",
+      unknown: "Bilinmiyor",
+    },
+  },
+  scheduledJobs: {
+    title: "Planlanan İşler",
+    enableNotifications:
+      "İş ilanları sonuçları için tarayıcı bildirimlerini etkinleştirin.",
+    description:
+      "Tekrarlayan yapay zeka görevlerini, belirli bir zaman çizelgesine göre otomatik olarak çalıştırın. Her görev, isteğe bağlı araçlarla birlikte bir sorguyu çalıştırır ve sonuçları inceleme için kaydeder.",
+    newJob: "Yeni iş",
+    loading: "Yükleniyor...",
+    emptyTitle: "Şu anda planlanan herhangi bir iş yok.",
+    emptySubtitle: "Başlamak için bir tane oluşturun.",
+    table: {
+      name: "Ad",
+      schedule: "Program",
+      status: "Durum",
+      lastRun: "Son Çalışma",
+      nextRun: "Sonuç",
+      actions: "Eylemler",
+    },
+    confirmDelete: "Bu planlanan görevi silmekten emin misiniz?",
+    toast: {
+      deleted: "İş kayboldu",
+      triggered: "İş başarıyla başlatıldı.",
+      triggerFailed: "İşin başlatılması başarısız oldu.",
+      triggerSkipped: "Bu iş için zaten bir çalışma süreci başlamıştır.",
+      killed: "İş, başarıyla tamamlandı.",
+      killFailed: "İşten ayrılmayı başaramadı",
+    },
+    row: {
+      neverRun: "Asla hızlanmayın.",
+      viewRuns: "Çalışma seansları",
+      runNow: "Hemen harekete geçin",
+      enable: "Etkinleştir",
+      disable: "Devre dışı bırak",
+      edit: "Düzenle",
+      delete: "Sil",
+    },
+    modal: {
+      titleEdit: "Planlanan Görevi Düzenle",
+      titleNew: "Yeni Planlanan İş",
+      nameLabel: "Ad",
+      namePlaceholder: "Örneğin, Günlük Haber Özeti",
+      promptLabel: "Talep",
+      promptPlaceholder: "Her çalışmada çalıştırılma talimatı...",
+      scheduleLabel: "Program",
+      modeBuilder: "İnşaatçı",
+      modeCustom: "Özel",
+      cronPlaceholder: "Cron ifadesi (örneğin, 0 9 * * *)",
+      currentSchedule: "Mevcut program:",
+      toolsLabel: "Araçlar (İsteğe Bağlı)",
+      toolsDescription:
+        "Bu iş için kullanılabilen ajan araçlarını seçin. Eğer hiçbir araç seçilmezse, iş herhangi bir araç olmadan çalışacaktır.",
+      toolsSearch: "Arama",
+      toolsNoResults: "Hiçbir araç bulunamadı",
+      required: "Gereklidir",
+      requiredFieldsBanner:
+        "Lütfen iş ilanını oluşturmak için gerekli tüm alanları doldurunuz.",
+      cancel: "İptal et",
+      saving: "Kaydet...",
+      updateJob: "İş Tanımını Güncelle",
+      createJob: "İş Tanımı Oluştur",
+      jobUpdated: "İş pozisyonu güncellendi",
+      jobCreated: "İş pozisyonu oluşturuldu",
+    },
+    builder: {
+      fallbackWarning:
+        'Bu ifade görsel olarak düzenlenemez. Mevcut haliyle bırakmak için "Özel" seçeneğine geçin veya aşağıdaki herhangi bir alanı değiştirerek üzerine yazın.',
+      run: "Koş",
+      frequency: {
+        minute: "her dakika",
+        hour: "saatlik",
+        day: "günlük",
+        week: "haftalık",
+        month: "aylık",
+      },
+      every: "Her",
+      minuteOne: "1 dakika",
+      minuteOther: "{{count}} dakika",
+      atMinute: "Dakikada",
+      pastEveryHour: "geçmişte, her saat",
+      at: "Saat",
+      on: "On",
+      onDay: "Bir gün",
+      ofEveryMonth: "her ayın",
+      weekdays: {
+        sun: "Güneş",
+        mon: "Pazartesi",
+        tue: "Salı",
+        wed: "Salı",
+        thu: "Perşembe",
+        fri: "Cuma",
+        sat: "Satmak",
+      },
+    },
+    runHistory: {
+      back: "İş ilanlarına dön",
+      title: "Geçmiş Çalışmalar: {{name}}",
+      schedule: "Program:",
+      emptyTitle: "Bu iş için henüz herhangi bir ilerleme kaydedilmedi.",
+      emptySubtitle: "Şimdi işlemi başlatın ve sonuçlarını görüntüleyin.",
+      runNow: "Şimdi koşun",
+      table: {
+        status: "Durum",
+        started: "Başlangıç",
+        duration: "Süre",
+        error: "Hata",
+      },
+      stopJob: "İşten ayrıl",
+    },
+    runDetail: {
+      loading: "Yükleme işleminin ayrıntıları yükleniyor...",
+      notFound: "İstenen komut bulunamadı.",
+      back: "Geri",
+      unknownJob: "Bilinmeyen İş",
+      runHeading: "{{name}} — Çalışma #{{id}}",
+      duration: "Süre: {{value}}",
+      creating: "Yaratmak...",
+      threadFailed: "İşlem başlatma başarısız oldu.",
+      sections: {
+        prompt: "Uyarı",
+        error: "Hata",
+        thinking: "Düşünceler ({{count}})",
+        toolCalls: "Araç Çağrıları ({{count}})",
+        files: "Dosyalar ({{count}})",
+        response: "Cevap",
+        metrics: "Ölçüm değerleri",
+      },
+      metrics: {
+        promptTokens: "Başlangıç belirteçleri:",
+        completionTokens: "Tamamlanmış token'lar:",
+      },
+      stopJob: "İşten Çık",
+      killing: "Dur...",
+      continueInThread: "Sohbeti devam ettir",
+    },
+    toolCall: {
+      arguments: "Tartışmalar:",
+      showResult: "Sonuçları göster",
+      hideResult: "Sonucu gizle",
+    },
+    file: {
+      unknown: "Bilinmeyen dosya",
+      download: "İndir",
+      downloadFailed: "Dosya indirme işlemi başarısız oldu",
+      types: {
+        powerpoint: "PowerPoint",
+        pdf: "PDF belgesi",
+        word: "Kelime Belgesi",
+        spreadsheet: "Tablo",
+        generic: "Dosya",
+      },
+    },
+    status: {
+      completed: "Tamamlandı",
+      failed: "Başarısız",
+      timed_out: "Zaman aşımı",
+      running: "Koşmak",
+      queued: "Bekleme halinde",
+    },
+  },
+  "model-router": {
+    title: "Model Router'ler",
+    description:
+      "Model yönlendiriciler, belirli koşullara göre sohbet mesajlarını otomatik olarak farklı LLM sağlayıcılarına ve modellere yönlendirmek için kurallar tanımlamanıza olanak tanır.",
+    table: {
+      name: "Ad",
+      fallback: "Yedek çözüm",
+      rules: "Kurallar",
+      workspaces: "Çalışma alanları",
+    },
+    "no-routers": "Şu anda herhangi bir model yönlendirici bulunmamaktadır.",
+    "empty-description":
+      "Henüz herhangi bir yönlendirici yapılandırılmamış. Başlamak için bir tane oluşturun.",
+    "new-router-button": "Yeni Router",
+    "delete-confirm":
+      "Emin misiniz, \"{{name}}\" adlı router'ı silmek istiyorsunuz?\n\nBu işlem, tüm kurallarını kaldıracak ve bu router'ı kullanan tüm çalışma alanlarını bağlantısını kesecektir.\n\nBu işlem geri alınamaz.",
+    "toast-deleted": "Router silindi",
+    "toast-delete-failed": "Router'ın silinmesi başarısız oldu: {{error}}",
+    "new-router": {
+      title: "Yeni bir model yönlendirici oluşturun",
+      name: "Ad",
+      "name-placeholder": "Örneğin, Maliyet Optimizasyonu",
+      description: "Açıklama",
+      "description-placeholder": "İsteğe bağlı açıklama",
+      "fallback-label": "Ana Sağlayıcı ve Model",
+      "fallback-description":
+        "Kullanılırken, hiçbir yönlendirme kuralı eşleşmediğinde. Ayrıca, LLM tarafından sınıflandırılan kuralların değerlendirilmesinde de kullanılır.",
+      "cooldown-label": "Önbellek Soğuma Süresi (saniye)",
+      "cooldown-help":
+        "Yol seçimi kararı, kuralların yeniden değerlendirilmeden önce ne kadar süre boyunca önbelleğe alınır? Bu değeri 0 olarak ayarlamak, önbelleklemenin devre dışı kalmasını sağlar.",
+      "name-required": "İsim zorunludur.",
+      "fallback-required": "Temel sağlayıcı ve model bilgisi gereklidir.",
+      cancel: "İptal et",
+      create: "Router oluştur",
+    },
+    "edit-router": {
+      "back-to-routers": "Model Router'lara geri dön",
+      title: "Router'ı Düzenle: {{name}}",
+      save: "Değişiklikleri Kaydet",
+      "toast-update-failed": "Router'ı güncelleyemedi",
+    },
+    rules: {
+      title: "Yönlendirme Kuralları",
+      "title-with-name": "Ruter Kuralları: {{name}}",
+      description:
+        "Belirleyin, hangi mesajların hangi sağlayıcılara ve modellere gönderileceği, hangi zamanlarda ve nasıl yapılacağı ile ilgili kuralları.",
+      "add-rule": "Kuralı ekle",
+      "delete-confirm": '"{{title}}" kuralını silmek mi?',
+      "toast-delete-failed": "Kural silme işlemi başarısız oldu.",
+      "toast-reorder-failed": "Yeniden sıralama kurallarının uygulanmaması",
+      "no-rules": "Henüz herhangi bir kural belirlenmemiş",
+      "empty-description":
+        "Belirli sağlayıcılara ve modellere mesajları yönlendirmeye başlamak için bir kural ekleyin.",
+      "new-rule-button": "Yeni Kural",
+      "calculated-section-label":
+        "Belirlenen kurallar — öncelik sırasına göre değerlendirilir",
+      "llm-section-label":
+        "LLM kuralları — eğer hiçbir hesaplanmış kural eşleşmiyorsa, toplu olarak değerlendirilir.",
+      "llm-rule-body":
+        'Ardından "<desc>" içindeki "{{description}}" öğesini eşleştirin ve ardından <route>\'ye yönlendirin.',
+      "calculated-no-conditions": "Şart yok — <route>'a giden rota",
+      "calculated-single-condition":
+        'Eğer <prop> {{property}} </prop> {{comparator}} <val> "{{value}}" </val> ise, rotayı <route> {{route}} </route> olarak belirle.',
+      "calculated-multi-condition":
+        "Eğer {{quantifier}} (TAG_0) {{conditions}} (TAG_1) ise, rotayı <route> (PLACEHOLDER_2) __PLACEHOLDER_3__ (TAG_3) olarak belirle.",
+      "comparator-contains": "içerir",
+      "comparator-matches": "Maçlar",
+      "comparator-between": "arasında",
+      "badge-llm": "Büyük Dil Modeli",
+      "badge-calculated": "Hesaplanmış",
+      "aria-drag-to-reorder": "Kaydırarak yeniden düzenleyin",
+      "aria-edit-rule": "Düzenleme kuralı",
+      "aria-delete-rule": "Kuralı sil",
+      "quantifier-any": "HERHANGİ",
+      "quantifier-all": "TÜM",
+    },
+    "rule-form": {
+      "title-label": "Başlık",
+      "rule-type": "Kural Türü",
+      "property-label": "Mülk",
+      "property-select": "Seç",
+      "comparator-label": "Karşılaştırma",
+      "comparator-select": "Seç",
+      "value-label": "Değer",
+      "add-condition": "Koşul ekle",
+      "remove-condition": "Koşulu ortadan kaldır",
+      "conditions-incomplete":
+        "Koşul {{index}} eksik — özellik, karşılaştırma ve değeri belirtin.",
+      "match-description-label": "Maç Açıklaması",
+      "match-description-placeholder":
+        "Örneğin, kullanıcı yasal konular, sözleşmeler veya uyumluluk hakkında bilgi almak istiyor.",
+      "match-description-help":
+        "Bu kuralın hangi durumda uygulanması gerektiğini açıklayın. Bu, LLM'iniz tarafından değerlendirilerek, kullanılıp kullanılmaması belirlenecektir.",
+      "route-to-label": "Sağlayıcıya ve Modelin Yol Haritası",
+      "route-to-description":
+        "Bu kural eşleştiğinde, bu sağlayıcıyı/modeli kullanın.",
+      cancel: "İptal et",
+      saving: "Kaydet...",
+      "update-rule": "Güncelleme Kuralı",
+      "create-rule": "Kural Oluştur",
+      "title-required": "Başlık zorunludur",
+      "toast-save-failed": "Kuralı kaydetme başarısız oldu",
+      "type-calculated-label": "Hesaplanmış",
+      "type-calculated-description":
+        "Mesaj özelliklerine (içerik, token sayısı veya günün saati gibi) göre eşleştirme yapın.",
+      "type-llm-label": "LLM Kategorize Edilmiş",
+      "type-llm-description":
+        "Bir LLM (Büyük Dil Modeli) kullanarak, sağladığınız açıklamaya göre mesajı sınıflandırın.",
+      "prop-prompt-content": "İçerik",
+      "prop-token-count": "Konuşma Token Sayısı",
+      "prop-message-count": "Mesaj Sayısı",
+      "prop-current-hour": "Mevcut Saat (0-23)",
+      "prop-has-image": "Resim eklenmiş mi?",
+      "cmp-contains": "içerir",
+      "cmp-matches-regex": "eşleşmeler (düzenli ifadeler)",
+      "cmp-equals": "eşittir",
+      "cmp-not-equals": "eşit değildir",
+      "cmp-greater-than": "daha büyük",
+      "cmp-greater-than-or-equal": "büyük veya eşit",
+      "cmp-less-than": "daha az",
+      "cmp-less-than-or-equal": "daha az veya eşit",
+      "cmp-between": "(dahil olmak üzere)",
+      "placeholder-between-hour": "Örneğin, 9:17 (sabah 9'dan akşam 5'e kadar)",
+      "placeholder-between-numeric": "Örneğin: 10,50",
+      "placeholder-hour": "Örneğin, 18 (0-23)",
+      "placeholder-message-count": "Örneğin: 10",
+      "placeholder-numeric": "Örneğin, 4000",
+      "placeholder-contains": "örneğin, kod, Python, Rust",
+      "placeholder-matches": "Örneğin: /\\bpython\\b/i",
+      "placeholder-default": "Örneğin, kod",
+      "help-contains":
+        "Virgülle ayrılmış liste — Eğer sorgu içinde belirtilen değerlerden herhangi biri varsa eşleşir (büyük/küçük harf duyarlılığı olmadan).",
+      "help-matches":
+        "Düzenli ifade kalıbı. Büyük/küçük harf duyarlılığını belirtmek için `/pattern/flag`lerini kullanın (varsayılan olarak büyük/küçük harf duyarlılığı devre dışıdır).",
+      "bool-true": "Doğru",
+      "bool-false": "Yanlış",
+    },
+    "provider-picker": {
+      "select-provider": "Satıcıyı seçin",
+      "setup-required": "(Kurulum gerektirir)",
+      "loading-models": "Modeller yükleniyor...",
+      "select-model": "Model seçin",
+      "enter-model": "Model adını girin",
+      "select-provider-first": "Öncelikle bir sağlayıcı seçin.",
+      "configure-to-continue": "{{name}}'ı yapılandırarak devam et",
+      "configure-provider": "{{name}}'ı yapılandırın",
+      "setup-credentials":
+        "Gerekli kimlik bilgilerini girerek {{name}}'ı yönlendirme hedefi olarak kullanın.",
+      cancel: "İptal et",
+      "save-settings": "Ayarları kaydet",
+      "toast-save-failed": "Ayarların kaydedilemedi: {{error}}",
+    },
+    "router-selection": {
+      "loading-routers": "Özel yönlendiricileri yükleniyor...",
+      "no-routers-prefix-settings":
+        "Henüz herhangi bir yönlendirici model yapılandırılmamış.",
+      "no-routers-prefix-workspace":
+        "Hiçbir ağ geçimi modeli yapılandırılmamış.",
+      "no-routers-link": "Model Router ayarlarında bir tane oluşturun.",
+      "model-router-label": "Model Router",
+      "select-router": "Bir yönlendirici seçin",
+      "select-description":
+        "Bu çalışma alanı için hangi yönlendiriciyi kullanacağınızı seçin.",
+      "no-routers-chat":
+        "Hiçbir yönlendirici yapılandırılmamış. Ayarlar > Yapay Zeka Sağlayıcıları > Model Yönlendirici bölümünde bir tane oluşturun.",
+      "rule-count": "({{count}} kuralları)",
+    },
+    metrics: {
+      "model-router-default": "Model Router",
+    },
+    chat: {
+      "select-router-error": "Bir yönlendirici seçin",
+      "invalid-model": "Geçersiz model seçimi",
+      "routed-to": "Yönlendirildi: <route> {{model}} </route>",
+      "routed-to-rule":
+        "Yönlendirildi: <route> aracılığıyla {{model}} üzerinden </route>, <rule> aracılığıyla {{ruleTitle}} üzerinden </rule>",
+    },
   },
 };
 
