@@ -58,7 +58,7 @@
     "fix-path": "^4.0.0",
     "graphql": "^16.7.1",
     "ip": "^2.0.1",
-    "joi": "^17.11.0",
+    "joi": "^18.2.1",
     "joi-password-complexity": "^5.2.0",
     "js-tiktoken": "^1.0.8",
     "jsonrepair": "^3.7.0",
